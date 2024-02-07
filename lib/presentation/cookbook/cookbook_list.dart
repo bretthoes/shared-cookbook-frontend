@@ -1,27 +1,28 @@
 import 'package:another_flushbar/flushbar_helper.dart';
 import 'package:boilerplate/core/widgets/progress_indicator_widget.dart';
 import 'package:boilerplate/di/service_locator.dart';
-import 'package:boilerplate/presentation/post/store/post_store.dart';
+import 'package:boilerplate/presentation/cookbook/store/cookbook_store.dart';
 import 'package:boilerplate/utils/locale/app_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 
-class PostListScreen extends StatefulWidget {
+class CookbookListScreen extends StatefulWidget {
   @override
-  _PostListScreenState createState() => _PostListScreenState();
+  _CookbookListScreenState createState() => _CookbookListScreenState();
 }
 
-class _PostListScreenState extends State<PostListScreen> {
+class _CookbookListScreenState extends State<CookbookListScreen> {
   //stores:---------------------------------------------------------------------
-  final PostStore _postStore = getIt<PostStore>();
+  final CookbookStore _cookbookStore = getIt<CookbookStore>();
+  final int _personId = 1; // TODO intitialize from sign-in
 
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
 
     // check to see if already called api
-    if (!_postStore.loading) {
-      _postStore.getPosts();
+    if (!_cookbookStore.loading) {
+      _cookbookStore.getCookbooks(_personId);
     }
   }
 
@@ -43,7 +44,7 @@ class _PostListScreenState extends State<PostListScreen> {
   Widget _buildMainContent() {
     return Observer(
       builder: (context) {
-        return _postStore.loading
+        return _cookbookStore.loading
             ? CustomProgressIndicatorWidget()
             : Material(child: _buildListView());
       },
@@ -51,9 +52,9 @@ class _PostListScreenState extends State<PostListScreen> {
   }
 
   Widget _buildListView() {
-    return _postStore.postList != null
+    return _cookbookStore.cookbookList != null
         ? ListView.separated(
-            itemCount: _postStore.postList!.posts!.length,
+            itemCount: _cookbookStore.cookbookList!.cookbooks!.length,
             separatorBuilder: (context, position) {
               return Divider();
             },
@@ -63,7 +64,8 @@ class _PostListScreenState extends State<PostListScreen> {
           )
         : Center(
             child: Text(
-              AppLocalizations.of(context).translate('home_tv_no_post_found'),
+              AppLocalizations.of(context)
+                  .translate('home_tv_no_cookbook_found'),
             ),
           );
   }
@@ -73,14 +75,14 @@ class _PostListScreenState extends State<PostListScreen> {
       dense: true,
       leading: Icon(Icons.cloud_circle),
       title: Text(
-        '${_postStore.postList?.posts?[position].title}',
+        '${_cookbookStore.cookbookList?.cookbooks?[position].title}',
         maxLines: 1,
         overflow: TextOverflow.ellipsis,
         softWrap: false,
         style: Theme.of(context).textTheme.titleMedium,
       ),
       subtitle: Text(
-        '${_postStore.postList?.posts?[position].body}',
+        '${_cookbookStore.cookbookList?.cookbooks?[position].body}',
         maxLines: 1,
         overflow: TextOverflow.ellipsis,
         softWrap: false,
@@ -91,8 +93,8 @@ class _PostListScreenState extends State<PostListScreen> {
   Widget _handleErrorMessage() {
     return Observer(
       builder: (context) {
-        if (_postStore.errorStore.errorMessage.isNotEmpty) {
-          return _showErrorMessage(_postStore.errorStore.errorMessage);
+        if (_cookbookStore.errorStore.errorMessage.isNotEmpty) {
+          return _showErrorMessage(_cookbookStore.errorStore.errorMessage);
         }
 
         return SizedBox.shrink();

@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:boilerplate/core/data/network/dio/dio_client.dart';
 import 'package:boilerplate/data/network/constants/endpoints.dart';
-import 'package:boilerplate/data/network/rest_client.dart';
+//import 'package:boilerplate/data/network/rest_client.dart';
 import 'package:boilerplate/domain/entity/post/post_list.dart';
 
 class PostApi {
@@ -10,10 +10,10 @@ class PostApi {
   final DioClient _dioClient;
 
   // rest-client instance
-  final RestClient _restClient;
+  //final RestClient _restClient;
 
   // injecting dio instance
-  PostApi(this._dioClient, this._restClient);
+  PostApi(this._dioClient /*, this._restClient*/);
 
   /// Returns list of post in response
   Future<PostList> getPosts() async {
@@ -26,7 +26,7 @@ class PostApi {
     }
   }
 
-/// sample api call with default rest client
+  /// sample api call with default rest client
 //  Future<PostsList> getPosts() {
 //
 //    return _restClient
@@ -34,5 +34,4 @@ class PostApi {
 //        .then((dynamic res) => PostsList.fromJson(res))
 //        .catchError((error) => throw NetworkException(message: error));
 //  }
-
 }

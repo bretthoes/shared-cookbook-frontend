@@ -1,5 +1,4 @@
 import 'dart:async';
-
 import 'package:boilerplate/domain/entity/post/post.dart';
 import 'package:boilerplate/domain/entity/post/post_list.dart';
 

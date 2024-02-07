@@ -1,7 +1,13 @@
 import 'dart:async';
 
+import 'package:boilerplate/domain/repository/cookbook/cookbook_repository.dart';
 import 'package:boilerplate/domain/repository/post/post_repository.dart';
 import 'package:boilerplate/domain/repository/user/user_repository.dart';
+import 'package:boilerplate/domain/usecase/cookbook/delete_cookbook_usecase.dart';
+import 'package:boilerplate/domain/usecase/cookbook/find_cookbook_by_id_usecase.dart';
+import 'package:boilerplate/domain/usecase/cookbook/get_cookbook_usecase.dart';
+import 'package:boilerplate/domain/usecase/cookbook/insert_cookbook_usecase.dart';
+import 'package:boilerplate/domain/usecase/cookbook/update_cookbook_usecase.dart';
 import 'package:boilerplate/domain/usecase/post/delete_post_usecase.dart';
 import 'package:boilerplate/domain/usecase/post/find_post_by_id_usecase.dart';
 import 'package:boilerplate/domain/usecase/post/get_post_usecase.dart';
@@ -41,6 +47,23 @@ mixin UseCaseModule {
     );
     getIt.registerSingleton<DeletePostUseCase>(
       DeletePostUseCase(getIt<PostRepository>()),
+    );
+
+    // cookbook:----------------------------------------------------------------
+    getIt.registerSingleton<GetCookbookUseCase>(
+      GetCookbookUseCase(getIt<CookbookRepository>()),
+    );
+    getIt.registerSingleton<FindCookbookByIdUseCase>(
+      FindCookbookByIdUseCase(getIt<CookbookRepository>()),
+    );
+    getIt.registerSingleton<InsertCookbookUseCase>(
+      InsertCookbookUseCase(getIt<CookbookRepository>()),
+    );
+    getIt.registerSingleton<UpdateCookbookUseCase>(
+      UpdateCookbookUseCase(getIt<CookbookRepository>()),
+    );
+    getIt.registerSingleton<DeleteCookbookUseCase>(
+      DeleteCookbookUseCase(getIt<CookbookRepository>()),
     );
   }
 }
