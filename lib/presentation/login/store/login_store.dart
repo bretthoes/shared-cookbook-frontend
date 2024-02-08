@@ -1,11 +1,10 @@
 import 'package:boilerplate/core/stores/error/error_store.dart';
 import 'package:boilerplate/core/stores/form/form_store.dart';
-import 'package:boilerplate/domain/usecase/user/is_logged_in_usecase.dart';
-import 'package:boilerplate/domain/usecase/user/save_login_in_status_usecase.dart';
+import 'package:boilerplate/domain/usecase/person/is_logged_in_usecase.dart';
+import 'package:boilerplate/domain/usecase/person/save_login_in_status_usecase.dart';
 import 'package:mobx/mobx.dart';
-
-import '../../../domain/entity/user/user.dart';
-import '../../../domain/usecase/user/login_usecase.dart';
+import '../../../domain/entity/person/person.dart';
+import '../../../domain/usecase/person/login_usecase.dart';
 
 part 'login_store.g.dart';
 
@@ -51,7 +50,7 @@ abstract class _UserStore with Store {
   }
 
   // empty responses:-----------------------------------------------------------
-  static ObservableFuture<User?> emptyLoginResponse =
+  static ObservableFuture<Person?> emptyLoginResponse =
       ObservableFuture.value(null);
 
   // store variables:-----------------------------------------------------------
@@ -61,7 +60,7 @@ abstract class _UserStore with Store {
   bool success = false;
 
   @observable
-  ObservableFuture<User?> loginFuture = emptyLoginResponse;
+  ObservableFuture<Person?> loginFuture = emptyLoginResponse;
 
   @computed
   bool get isLoading => loginFuture.status == FutureStatus.pending;

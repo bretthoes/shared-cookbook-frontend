@@ -1,25 +1,25 @@
 class Cookbook {
-  int? userId;
+  int? personId;
   int? id;
   String? title;
   String? body;
 
   Cookbook({
-    this.userId,
+    this.personId,
     this.id,
     this.title,
     this.body,
   });
 
   factory Cookbook.fromMap(Map<String, dynamic> json) => Cookbook(
-        userId: json["userId"],
+        personId: json["personId"],
         id: json["id"],
         title: json["title"],
         body: json["body"],
       );
 
   Map<String, dynamic> toMap() => {
-        "userId": userId,
+        "personId": personId,
         "id": id,
         "title": title,
         "body": body,

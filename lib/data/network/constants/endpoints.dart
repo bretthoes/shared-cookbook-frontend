@@ -14,7 +14,11 @@ class Endpoints {
   // booking endpoints
   static const String getPosts = baseUrl + "/posts";
 
-  // Cookbook endpoints
+  // cookbook endpoints
   static String getCookbooks(int personId) =>
       '$baseUrl/Cookbooks/person/$personId';
+
+  // person endpoints
+  static String postLogin(String email, String password) =>
+      '$baseUrl/People/login';
 }

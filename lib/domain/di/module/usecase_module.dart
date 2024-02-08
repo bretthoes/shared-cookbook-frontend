@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:boilerplate/domain/repository/cookbook/cookbook_repository.dart';
 import 'package:boilerplate/domain/repository/post/post_repository.dart';
-import 'package:boilerplate/domain/repository/user/user_repository.dart';
+import 'package:boilerplate/domain/repository/person/person_repository.dart';
 import 'package:boilerplate/domain/usecase/cookbook/delete_cookbook_usecase.dart';
 import 'package:boilerplate/domain/usecase/cookbook/find_cookbook_by_id_usecase.dart';
 import 'package:boilerplate/domain/usecase/cookbook/get_cookbook_usecase.dart';
@@ -13,23 +13,23 @@ import 'package:boilerplate/domain/usecase/post/find_post_by_id_usecase.dart';
 import 'package:boilerplate/domain/usecase/post/get_post_usecase.dart';
 import 'package:boilerplate/domain/usecase/post/insert_post_usecase.dart';
 import 'package:boilerplate/domain/usecase/post/udpate_post_usecase.dart';
-import 'package:boilerplate/domain/usecase/user/is_logged_in_usecase.dart';
-import 'package:boilerplate/domain/usecase/user/login_usecase.dart';
-import 'package:boilerplate/domain/usecase/user/save_login_in_status_usecase.dart';
+import 'package:boilerplate/domain/usecase/person/is_logged_in_usecase.dart';
+import 'package:boilerplate/domain/usecase/person/login_usecase.dart';
+import 'package:boilerplate/domain/usecase/person/save_login_in_status_usecase.dart';
 
 import '../../../di/service_locator.dart';
 
 mixin UseCaseModule {
   static Future<void> configureUseCaseModuleInjection() async {
-    // user:--------------------------------------------------------------------
+    // person:------------------------------------------------------------------
     getIt.registerSingleton<IsLoggedInUseCase>(
-      IsLoggedInUseCase(getIt<UserRepository>()),
+      IsLoggedInUseCase(getIt<PersonRepository>()),
     );
     getIt.registerSingleton<SaveLoginStatusUseCase>(
-      SaveLoginStatusUseCase(getIt<UserRepository>()),
+      SaveLoginStatusUseCase(getIt<PersonRepository>()),
     );
     getIt.registerSingleton<LoginUseCase>(
-      LoginUseCase(getIt<UserRepository>()),
+      LoginUseCase(getIt<PersonRepository>()),
     );
 
     // post:--------------------------------------------------------------------

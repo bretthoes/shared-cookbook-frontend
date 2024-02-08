@@ -14,7 +14,8 @@ class CookbookListScreen extends StatefulWidget {
 class _CookbookListScreenState extends State<CookbookListScreen> {
   //stores:---------------------------------------------------------------------
   final CookbookStore _cookbookStore = getIt<CookbookStore>();
-  final int _personId = 1; // TODO intitialize from sign-in
+  final int _personId =
+      1; // TODO intitialize from sign-in or get from user store
 
   @override
   void didChangeDependencies() {
