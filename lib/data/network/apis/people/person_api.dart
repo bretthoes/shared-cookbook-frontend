@@ -10,11 +10,11 @@ class PersonApi {
   // injecting dio instance
   PersonApi(this._dioClient);
 
-  /// Returns list of post in response
   Future<Person> login(String email, String password) async {
     try {
-      final res =
-          await _dioClient.dio.get(Endpoints.postLogin(email, password));
+      var person = new Person(email: email, password: password);
+      final res = await _dioClient.dio
+          .post(Endpoints.postLogin, queryParameters: person.toMap());
       return Person.fromMap(res.data);
     } catch (e) {
       print(e.toString());

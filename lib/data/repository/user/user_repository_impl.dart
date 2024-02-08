@@ -19,7 +19,7 @@ class PersonRepositoryImpl extends PersonRepository {
   @override
   Future<Person?> login(LoginParams params) async {
     //return await Future.delayed(Duration(seconds: 2), () => Person());
-    return await _personApi.login(params.username, params.password);
+    return await _personApi.login(params.email, params.password);
   }
 
   @override

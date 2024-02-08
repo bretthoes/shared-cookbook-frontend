@@ -1,5 +1,4 @@
 import 'package:dio/dio.dart';
-
 import 'configs/dio_configs.dart';
 
 class DioClient {
@@ -8,9 +7,11 @@ class DioClient {
 
   DioClient({required this.dioConfigs})
       : _dio = Dio()
-    ..options.baseUrl = dioConfigs.baseUrl
-    ..options.connectTimeout = Duration(milliseconds: dioConfigs.connectionTimeout)
-    ..options.receiveTimeout = Duration(milliseconds: dioConfigs.receiveTimeout);
+          ..options.baseUrl = dioConfigs.baseUrl
+          ..options.connectTimeout =
+              Duration(milliseconds: dioConfigs.connectionTimeout)
+          ..options.receiveTimeout =
+              Duration(milliseconds: dioConfigs.receiveTimeout);
 
   Dio get dio => _dio;
 

@@ -69,7 +69,7 @@ abstract class _UserStore with Store {
   @action
   Future login(String email, String password) async {
     final LoginParams loginParams =
-        LoginParams(username: email, password: password);
+        LoginParams(email: email, password: password);
     final future = _loginUseCase.call(params: loginParams);
     loginFuture = ObservableFuture(future);
 

@@ -25,7 +25,9 @@ mixin RepositoryModule {
     ));
 
     getIt.registerSingleton<PersonRepository>(PersonRepositoryImpl(
-        getIt<PersonApi>(), getIt<SharedPreferenceHelper>()));
+      getIt<PersonApi>(),
+      getIt<SharedPreferenceHelper>(),
+    ));
 
     getIt.registerSingleton<PostRepository>(PostRepositoryImpl(
       getIt<PostApi>(),

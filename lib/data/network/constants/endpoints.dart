@@ -19,6 +19,6 @@ class Endpoints {
       '$baseUrl/Cookbooks/person/$personId';
 
   // person endpoints
-  static String postLogin(String email, String password) =>
-      '$baseUrl/People/login';
+  static String getPerson(int personId) => '$baseUrl/People/$personId';
+  static const String postLogin = '$baseUrl/People/login';
 }

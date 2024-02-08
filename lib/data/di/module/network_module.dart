@@ -2,6 +2,7 @@ import 'package:boilerplate/core/data/network/dio/configs/dio_configs.dart';
 import 'package:boilerplate/core/data/network/dio/dio_client.dart';
 import 'package:boilerplate/core/data/network/dio/interceptors/auth_interceptor.dart';
 import 'package:boilerplate/core/data/network/dio/interceptors/logging_interceptor.dart';
+import 'package:boilerplate/data/network/apis/people/person_api.dart';
 import 'package:boilerplate/data/network/apis/posts/post_api.dart';
 import 'package:boilerplate/data/network/apis/cookbooks/cookbook_api.dart';
 import 'package:boilerplate/data/network/constants/endpoints.dart';
@@ -54,5 +55,7 @@ mixin NetworkModule {
         PostApi(getIt<DioClient>() /*, getIt<RestClient>()*/));
     getIt.registerSingleton(
         CookbookApi(getIt<DioClient>() /*, getIt<RestClient>()*/));
+    getIt.registerSingleton(
+        PersonApi(getIt<DioClient>() /*, getIt<RestClient>()*/));
   }
 }
