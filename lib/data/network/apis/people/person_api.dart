@@ -13,8 +13,10 @@ class PersonApi {
   Future<Person> login(String email, String password) async {
     try {
       var person = new Person(email: email, password: password);
-      final res = await _dioClient.dio
-          .post(Endpoints.postLogin, queryParameters: person.toMap());
+      final res = await _dioClient.dio.post(
+        Endpoints.postLogin,
+        data: person.toMap(),
+      );
       return Person.fromMap(res.data);
     } catch (e) {
       print(e.toString());
