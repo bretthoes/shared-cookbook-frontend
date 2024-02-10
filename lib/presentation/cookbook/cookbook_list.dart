@@ -2,6 +2,7 @@ import 'package:another_flushbar/flushbar_helper.dart';
 import 'package:boilerplate/core/widgets/progress_indicator_widget.dart';
 import 'package:boilerplate/di/service_locator.dart';
 import 'package:boilerplate/presentation/cookbook/store/cookbook_store.dart';
+import 'package:boilerplate/presentation/login/store/login_store.dart';
 import 'package:boilerplate/utils/locale/app_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
@@ -14,8 +15,7 @@ class CookbookListScreen extends StatefulWidget {
 class _CookbookListScreenState extends State<CookbookListScreen> {
   //stores:---------------------------------------------------------------------
   final CookbookStore _cookbookStore = getIt<CookbookStore>();
-  final int _personId =
-      1; // TODO intitialize from sign-in or get from user store
+  final UserStore _loginStore = getIt<UserStore>();
 
   @override
   void didChangeDependencies() {
@@ -23,7 +23,8 @@ class _CookbookListScreenState extends State<CookbookListScreen> {
 
     // check to see if already called api
     if (!_cookbookStore.loading) {
-      _cookbookStore.getCookbooks(_personId);
+      // TODO Should redirect to error if personId <= 0
+      _cookbookStore.getCookbooks(_loginStore.personId ?? 0);
     }
   }
 
@@ -72,6 +73,7 @@ class _CookbookListScreenState extends State<CookbookListScreen> {
   }
 
   Widget _buildListItem(int position) {
+    // TODO selecting a cookbook should GET in new page
     return ListTile(
       dense: true,
       leading: Icon(Icons.cloud_circle),
@@ -82,12 +84,12 @@ class _CookbookListScreenState extends State<CookbookListScreen> {
         softWrap: false,
         style: Theme.of(context).textTheme.titleMedium,
       ),
-      subtitle: Text(
-        '${_cookbookStore.cookbookList?.cookbooks?[position].body}',
-        maxLines: 1,
-        overflow: TextOverflow.ellipsis,
-        softWrap: false,
-      ),
+      // subtitle: Text(
+      //   '${_cookbookStore.cookbookList?.cookbooks?[position].body}',
+      //   maxLines: 1,
+      //   overflow: TextOverflow.ellipsis,
+      //   softWrap: false,
+      // ),
     );
   }
 

@@ -42,8 +42,7 @@ class CookbookDataSource {
     // Making a List<Cookbook> out of List<RecordSnapshot>
     return recordSnapshots.map((snapshot) {
       final cookbook = Cookbook.fromMap(snapshot.value);
-      // An ID is a key of a record from the database.
-      cookbook.id = snapshot.key;
+      cookbook.cookbookId = snapshot.key;
       return cookbook;
     }).toList();
   }
@@ -65,7 +64,7 @@ class CookbookDataSource {
           cookbooks: recordSnapshots.map((snapshot) {
         final cookbook = Cookbook.fromMap(snapshot.value);
         // An ID is a key of a record from the database.
-        cookbook.id = snapshot.key;
+        cookbook.cookbookId = snapshot.key;
         return cookbook;
       }).toList());
     }
@@ -76,7 +75,7 @@ class CookbookDataSource {
   Future<int> update(Cookbook cookbook) async {
     // For filtering by key (ID), RegEx, greater than, and many other criteria,
     // we use a Finder.
-    final finder = Finder(filter: Filter.byKey(cookbook.id));
+    final finder = Finder(filter: Filter.byKey(cookbook.cookbookId));
     return await _cookbooksStore.update(
       _sembastClient.database,
       cookbook.toMap(),
@@ -85,7 +84,7 @@ class CookbookDataSource {
   }
 
   Future<int> delete(Cookbook cookbook) async {
-    final finder = Finder(filter: Filter.byKey(cookbook.id));
+    final finder = Finder(filter: Filter.byKey(cookbook.cookbookId));
     return await _cookbooksStore.delete(
       _sembastClient.database,
       finder: finder,

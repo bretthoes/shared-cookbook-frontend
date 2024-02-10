@@ -1,27 +1,43 @@
 class Cookbook {
-  int? personId;
-  int? id;
+  int? cookbookId;
+  int? creatorPersonId;
   String? title;
-  String? body;
+  String? coverPattern;
+  String? coverFont;
+  String? coverColor;
+  String? coverAccentColor;
+  String? imagePath;
 
   Cookbook({
-    this.personId,
-    this.id,
+    this.cookbookId,
+    this.creatorPersonId,
     this.title,
-    this.body,
+    this.coverPattern,
+    this.coverFont,
+    this.coverColor,
+    this.coverAccentColor,
+    this.imagePath,
   });
 
   factory Cookbook.fromMap(Map<String, dynamic> json) => Cookbook(
-        personId: json["personId"],
-        id: json["id"],
+        cookbookId: json["cookbookId"],
+        creatorPersonId: json["creatorPersonId"],
         title: json["title"],
-        body: json["body"],
+        coverPattern: json["coverPattern"],
+        coverFont: json["coverFont"],
+        coverColor: json["coverColor"],
+        coverAccentColor: json["coverAccentColor"],
+        imagePath: json["imagePath"],
       );
 
   Map<String, dynamic> toMap() => {
-        "personId": personId,
-        "id": id,
+        "cookbookId": cookbookId,
+        "creatorPersonId": creatorPersonId,
         "title": title,
-        "body": body,
+        "coverPattern": coverPattern,
+        "coverFont": coverFont,
+        "coverColor": coverColor,
+        "coverAccentColor": coverAccentColor,
+        "imagePath": imagePath,
       };
 }
