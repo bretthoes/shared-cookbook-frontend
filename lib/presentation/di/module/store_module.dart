@@ -1,10 +1,8 @@
 import 'dart:async';
-
 import 'package:boilerplate/core/stores/error/error_store.dart';
 import 'package:boilerplate/core/stores/form/form_store.dart';
 import 'package:boilerplate/domain/repository/setting/setting_repository.dart';
 import 'package:boilerplate/domain/usecase/cookbook/get_cookbook_usecase.dart';
-import 'package:boilerplate/domain/usecase/post/get_post_usecase.dart';
 import 'package:boilerplate/domain/usecase/person/is_logged_in_usecase.dart';
 import 'package:boilerplate/domain/usecase/person/login_usecase.dart';
 import 'package:boilerplate/domain/usecase/person/save_login_in_status_usecase.dart';
@@ -12,8 +10,6 @@ import 'package:boilerplate/presentation/cookbook/store/cookbook_store.dart';
 import 'package:boilerplate/presentation/home/store/language/language_store.dart';
 import 'package:boilerplate/presentation/home/store/theme/theme_store.dart';
 import 'package:boilerplate/presentation/login/store/login_store.dart';
-import 'package:boilerplate/presentation/post/store/post_store.dart';
-
 import '../../../di/service_locator.dart';
 
 mixin StoreModule {
@@ -32,13 +28,6 @@ mixin StoreModule {
         getIt<SaveLoginStatusUseCase>(),
         getIt<LoginUseCase>(),
         getIt<FormErrorStore>(),
-        getIt<ErrorStore>(),
-      ),
-    );
-
-    getIt.registerSingleton<PostStore>(
-      PostStore(
-        getIt<GetPostUseCase>(),
         getIt<ErrorStore>(),
       ),
     );

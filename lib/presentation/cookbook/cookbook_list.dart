@@ -1,6 +1,7 @@
 import 'package:another_flushbar/flushbar_helper.dart';
 import 'package:boilerplate/core/widgets/progress_indicator_widget.dart';
 import 'package:boilerplate/di/service_locator.dart';
+import 'package:boilerplate/presentation/cookbook/cookbook_details.dart';
 import 'package:boilerplate/presentation/cookbook/store/cookbook_store.dart';
 import 'package:boilerplate/presentation/login/store/login_store.dart';
 import 'package:boilerplate/utils/locale/app_localization.dart';
@@ -84,6 +85,15 @@ class _CookbookListScreenState extends State<CookbookListScreen> {
         softWrap: false,
         style: Theme.of(context).textTheme.titleMedium,
       ),
+      onTap: () {
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => CookbookDetailsPage(
+                    cookbookId: _cookbookStore
+                            .cookbookList?.cookbooks?[position].cookbookId ??
+                        0)));
+      },
       // subtitle: Text(
       //   '${_cookbookStore.cookbookList?.cookbooks?[position].body}',
       //   maxLines: 1,
