@@ -8,7 +8,9 @@
   "login_end": "------------------------------------------------------------------------------------",
 
   "home_start": "Below are list of strings for home",
-  "home_tv_posts": "Publicaciones",
+  "home_tv_home":"Hogar",
+  "home_tv_profile":"Perfil",
+  "home_tv_cookbooks": "Recetario",
   "home_tv_error": "Error",
   "home_tv_no_post_found": "No se han encontrado publicaciones",
   "home_tv_choose_language": "Elige lengua",

@@ -2,12 +2,12 @@ import 'package:boilerplate/data/sharedpref/constants/preferences.dart';
 import 'package:boilerplate/di/service_locator.dart';
 import 'package:boilerplate/presentation/home/store/language/language_store.dart';
 import 'package:boilerplate/presentation/home/store/theme/theme_store.dart';
-//import 'package:boilerplate/presentation/post/post_list.dart';
 import 'package:boilerplate/presentation/cookbook/cookbook_list.dart';
 import 'package:boilerplate/utils/locale/app_localization.dart';
 import 'package:boilerplate/utils/routes/routes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:material_dialog/material_dialog.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -26,13 +26,53 @@ class _HomeScreenState extends State<HomeScreen> {
     return Scaffold(
       appBar: _buildAppBar(),
       body: CookbookListScreen(),
+      bottomNavigationBar: _buildNavBar(),
+    );
+  }
+
+  // nav bar methods:-----------------------------------------------------------
+  // TODO define styles from config
+  Widget _buildNavBar() {
+    return Container(
+      color: Colors.black,
+      child: Padding(
+        padding: const EdgeInsets.symmetric(
+          horizontal: 15.0,
+          vertical: 16,
+        ),
+        child: GNav(
+          onTabChange: (index) {
+            // How can I use this to navigate to different pages?
+          },
+          backgroundColor: Colors.black,
+          color: Colors.white,
+          activeColor: Colors.white,
+          tabBackgroundColor: Colors.grey.shade800,
+          padding: EdgeInsets.all(8),
+          gap: 8,
+          tabs: [
+            GButton(
+              icon: Icons.home,
+              text: AppLocalizations.of(context).translate('home_tv_home'),
+            ),
+            GButton(
+              icon: Icons.cookie,
+              text: AppLocalizations.of(context).translate('home_tv_cookbooks'),
+            ),
+            GButton(
+              icon: Icons.person,
+              text: AppLocalizations.of(context).translate('home_tv_profile'),
+            )
+          ],
+        ),
+      ),
     );
   }
 
   // app bar methods:-----------------------------------------------------------
   PreferredSizeWidget _buildAppBar() {
     return AppBar(
-      title: Text(AppLocalizations.of(context).translate('home_tv_posts')),
+      title: Text(AppLocalizations.of(context).translate('home_tv_cookbooks')),
       actions: _buildActions(context),
     );
   }
