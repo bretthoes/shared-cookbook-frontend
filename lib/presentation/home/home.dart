@@ -21,6 +21,10 @@ class _HomeScreenState extends State<HomeScreen> {
   final ThemeStore _themeStore = getIt<ThemeStore>();
   final LanguageStore _languageStore = getIt<LanguageStore>();
 
+  final screens = [CookbookListScreen()];
+
+  int _page = 0;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -42,7 +46,9 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
         child: GNav(
           onTabChange: (index) {
-            // How can I use this to navigate to different pages?
+            setState(() {
+              _page = index;
+            });
           },
           backgroundColor: Colors.black,
           color: Colors.white,

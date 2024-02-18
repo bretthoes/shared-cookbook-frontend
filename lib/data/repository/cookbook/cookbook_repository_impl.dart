@@ -21,6 +21,7 @@ class CookbookRepositoryImpl extends CookbookRepository {
   // Cookbook: ---------------------------------------------------------------------
   @override
   Future<CookbookList> getCookbooks(int personId) async {
+    // TODO update this to properly check data source before going to api
     // check to see if cookbooks are present in database, then fetch from database
     // else make a network call to get all cookbooks, store them into database for
     // later use

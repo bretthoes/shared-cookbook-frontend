@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:boilerplate/data/local/datasources/cookbook/cookbook_datasource.dart';
+import 'package:boilerplate/data/local/datasources/person/person_datasource.dart';
 import 'package:boilerplate/data/local/datasources/post/post_datasource.dart';
 import 'package:boilerplate/data/network/apis/cookbooks/cookbook_api.dart';
 import 'package:boilerplate/data/network/apis/people/person_api.dart';
@@ -27,6 +28,7 @@ mixin RepositoryModule {
     getIt.registerSingleton<PersonRepository>(PersonRepositoryImpl(
       getIt<PersonApi>(),
       getIt<SharedPreferenceHelper>(),
+      getIt<PersonDataSource>(),
     ));
 
     getIt.registerSingleton<PostRepository>(PostRepositoryImpl(

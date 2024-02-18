@@ -23,4 +23,14 @@ class PersonApi {
       throw e;
     }
   }
+
+  Future<Person> findPersonById(int id) async {
+    try {
+      final res = await _dioClient.dio.get(Endpoints.getPerson(id));
+      return Person.fromMap(res.data);
+    } catch (e) {
+      print(e.toString());
+      throw e;
+    }
+  }
 }

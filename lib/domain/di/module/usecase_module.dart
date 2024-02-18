@@ -8,6 +8,7 @@ import 'package:boilerplate/domain/usecase/cookbook/find_cookbook_by_id_usecase.
 import 'package:boilerplate/domain/usecase/cookbook/get_cookbook_usecase.dart';
 import 'package:boilerplate/domain/usecase/cookbook/insert_cookbook_usecase.dart';
 import 'package:boilerplate/domain/usecase/cookbook/update_cookbook_usecase.dart';
+import 'package:boilerplate/domain/usecase/person/find_person_by_id_usecase.dart';
 import 'package:boilerplate/domain/usecase/post/delete_post_usecase.dart';
 import 'package:boilerplate/domain/usecase/post/find_post_by_id_usecase.dart';
 import 'package:boilerplate/domain/usecase/post/get_post_usecase.dart';
@@ -30,6 +31,9 @@ mixin UseCaseModule {
     );
     getIt.registerSingleton<LoginUseCase>(
       LoginUseCase(getIt<PersonRepository>()),
+    );
+    getIt.registerSingleton<FindPersonByIdUseCase>(
+      FindPersonByIdUseCase(getIt<PersonRepository>()),
     );
 
     // post:--------------------------------------------------------------------
