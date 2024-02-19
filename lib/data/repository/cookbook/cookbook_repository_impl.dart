@@ -25,13 +25,33 @@ class CookbookRepositoryImpl extends CookbookRepository {
     // check to see if cookbooks are present in database, then fetch from database
     // else make a network call to get all cookbooks, store them into database for
     // later use
-    return await _cookbookApi.getCookbooks(personId).then((cookbooks) {
-      cookbooks.cookbooks?.forEach((cookbook) {
-        _cookbookDataSource.insert(cookbook);
-      });
 
-      return cookbooks;
-    }).catchError((error) => throw error);
+    //creating filter
+    List<Filter> filters = [];
+
+    //check to see if dataLogsType is not null
+    Filter dataLogTypeFilter = Filter.equals(DBConstants.FIELD_ID, personId);
+    filters.add(dataLogTypeFilter);
+
+    var cookbooksFromDb = await _cookbookDataSource
+        .getAllSortedByFilter(filters: filters)
+        .then((cookbooks) => cookbooks)
+        .catchError((error) => throw error);
+
+    if (cookbooksFromDb.isNotEmpty) {
+      return new CookbookList(cookbooks: cookbooksFromDb);
+    }
+
+    var cookbooksFromApi = await _cookbookApi.getCookbooks(personId);
+    for (var cookbook in cookbooksFromApi.cookbooks) {
+      await _cookbookDataSource.insert(cookbook);
+    }
+    return cookbooksFromApi;
+    // return await _cookbookApi.getCookbooks(personId).then((cookbooks) async {
+    //   cookbooks.cookbooks.forEach((cookbook) {
+    //     _cookbookDataSource.insert(cookbook);
+    //   });
+    //   return cookbooks;
   }
 
   @override

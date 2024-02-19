@@ -1,10 +1,10 @@
 import 'package:boilerplate/domain/entity/cookbook/cookbook.dart';
 
 class CookbookList {
-  final List<Cookbook>? cookbooks;
+  final List<Cookbook> cookbooks;
 
   CookbookList({
-    this.cookbooks,
+    required this.cookbooks,
   });
 
   factory CookbookList.fromJson(List<dynamic> json) {

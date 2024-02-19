@@ -8,5 +8,5 @@ class DBConstants {
   static const DB_NAME = 'demo.db';
 
   // Fields
-  static const FIELD_ID = 'id';
+  static const FIELD_ID = 'creatorPersonId';
 }

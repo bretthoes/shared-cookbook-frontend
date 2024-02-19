@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:boilerplate/core/data/local/sembast/sembast_client.dart';
 import 'package:boilerplate/data/local/constants/db_constants.dart';
+import 'package:boilerplate/data/local/datasources/person/person_datasource.dart';
 import 'package:boilerplate/data/local/datasources/post/post_datasource.dart';
 import 'package:boilerplate/data/local/datasources/cookbook/cookbook_datasource.dart';
 import 'package:boilerplate/data/sharedpref/shared_preference_helper.dart';
@@ -36,5 +37,7 @@ mixin LocalModule {
         PostDataSource(await getIt.getAsync<SembastClient>()));
     getIt.registerSingleton(
         CookbookDataSource(await getIt.getAsync<SembastClient>()));
+    getIt.registerSingleton(
+        PersonDataSource(await getIt.getAsync<SembastClient>()));
   }
 }

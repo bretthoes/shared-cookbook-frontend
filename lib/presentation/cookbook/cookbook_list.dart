@@ -57,7 +57,7 @@ class _CookbookListScreenState extends State<CookbookListScreen> {
   Widget _buildListView() {
     return _cookbookStore.cookbookList != null
         ? ListView.separated(
-            itemCount: _cookbookStore.cookbookList!.cookbooks!.length,
+            itemCount: _cookbookStore.cookbookList!.cookbooks.length,
             separatorBuilder: (context, position) {
               return Divider();
             },
@@ -79,7 +79,7 @@ class _CookbookListScreenState extends State<CookbookListScreen> {
       dense: true,
       leading: Icon(Icons.cloud_circle),
       title: Text(
-        '${_cookbookStore.cookbookList?.cookbooks?[position].title}',
+        '${_cookbookStore.cookbookList?.cookbooks[position].title}',
         maxLines: 1,
         overflow: TextOverflow.ellipsis,
         softWrap: false,
@@ -91,7 +91,7 @@ class _CookbookListScreenState extends State<CookbookListScreen> {
             MaterialPageRoute(
                 builder: (context) => CookbookDetailsPage(
                     cookbookId: _cookbookStore
-                            .cookbookList?.cookbooks?[position].cookbookId ??
+                            .cookbookList?.cookbooks[position].cookbookId ??
                         0)));
       },
       // subtitle: Text(
