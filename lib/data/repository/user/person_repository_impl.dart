@@ -42,9 +42,6 @@ class PersonRepositoryImpl extends PersonRepository {
   @override
   Future<Person?> findPersonById(int id) async {
     try {
-      // TODO verify this works to store in local data source with 2 calls
-      // first try and get from data source
-      //creating filter
       List<Filter> filters = [];
 
       //check to see if dataLogsType is not null
@@ -57,11 +54,9 @@ class PersonRepositoryImpl extends PersonRepository {
         return personFromDb;
       }
 
-      // if nothing in data source, fetch
-      // from api and update data source
-      var person = await _personApi.findPersonById(id);
-      await _personDataSource.insert(person);
-      return person;
+      var personFromApi = await _personApi.findPersonById(id);
+      await _personDataSource.insert(personFromApi);
+      return personFromApi;
     } catch (e) {
       throw e;
     }

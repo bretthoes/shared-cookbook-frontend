@@ -1,8 +1,10 @@
 import 'package:boilerplate/data/sharedpref/constants/preferences.dart';
 import 'package:boilerplate/di/service_locator.dart';
+import 'package:boilerplate/presentation/feed/feed.dart';
 import 'package:boilerplate/presentation/home/store/language/language_store.dart';
 import 'package:boilerplate/presentation/home/store/theme/theme_store.dart';
 import 'package:boilerplate/presentation/cookbook/cookbook_list.dart';
+import 'package:boilerplate/presentation/profile/profile.dart';
 import 'package:boilerplate/utils/locale/app_localization.dart';
 import 'package:boilerplate/utils/routes/routes.dart';
 import 'package:flutter/material.dart';
@@ -21,7 +23,11 @@ class _HomeScreenState extends State<HomeScreen> {
   final ThemeStore _themeStore = getIt<ThemeStore>();
   final LanguageStore _languageStore = getIt<LanguageStore>();
 
-  final screens = [CookbookListScreen()];
+  final screens = [
+    FeedScreen(),
+    CookbookListScreen(),
+    ProfileScreen(),
+  ];
 
   int _page = 0;
 
@@ -29,7 +35,10 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: _buildAppBar(),
-      body: CookbookListScreen(),
+      body: IndexedStack(
+        index: _page,
+        children: screens,
+      ),
       bottomNavigationBar: _buildNavBar(),
     );
   }
@@ -45,6 +54,7 @@ class _HomeScreenState extends State<HomeScreen> {
           vertical: 16,
         ),
         child: GNav(
+          selectedIndex: _page,
           onTabChange: (index) {
             setState(() {
               _page = index;

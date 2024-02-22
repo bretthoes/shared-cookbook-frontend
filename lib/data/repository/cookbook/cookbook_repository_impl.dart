@@ -21,16 +21,12 @@ class CookbookRepositoryImpl extends CookbookRepository {
   // Cookbook: ---------------------------------------------------------------------
   @override
   Future<CookbookList> getCookbooks(int personId) async {
-    // TODO update this to properly check data source before going to api
-    // check to see if cookbooks are present in database, then fetch from database
-    // else make a network call to get all cookbooks, store them into database for
-    // later use
-
     //creating filter
     List<Filter> filters = [];
 
     //check to see if dataLogsType is not null
-    Filter dataLogTypeFilter = Filter.equals(DBConstants.FIELD_ID, personId);
+    Filter dataLogTypeFilter =
+        Filter.equals(DBConstants.CREATOR_PERSON_ID, personId);
     filters.add(dataLogTypeFilter);
 
     var cookbooksFromDb = await _cookbookDataSource
@@ -46,12 +42,8 @@ class CookbookRepositoryImpl extends CookbookRepository {
     for (var cookbook in cookbooksFromApi.cookbooks) {
       await _cookbookDataSource.insert(cookbook);
     }
+
     return cookbooksFromApi;
-    // return await _cookbookApi.getCookbooks(personId).then((cookbooks) async {
-    //   cookbooks.cookbooks.forEach((cookbook) {
-    //     _cookbookDataSource.insert(cookbook);
-    //   });
-    //   return cookbooks;
   }
 
   @override
@@ -60,7 +52,7 @@ class CookbookRepositoryImpl extends CookbookRepository {
     List<Filter> filters = [];
 
     //check to see if dataLogsType is not null
-    Filter dataLogTypeFilter = Filter.equals(DBConstants.FIELD_ID, id);
+    Filter dataLogTypeFilter = Filter.equals(DBConstants.CREATOR_PERSON_ID, id);
     filters.add(dataLogTypeFilter);
 
     //making db call
