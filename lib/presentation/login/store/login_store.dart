@@ -65,7 +65,7 @@ abstract class _UserStore with Store {
   @computed
   bool get isLoading => loginFuture.status == FutureStatus.pending;
 
-  int? personId;
+  late int personId;
 
   // actions:-------------------------------------------------------------------
   @action
@@ -80,7 +80,7 @@ abstract class _UserStore with Store {
         await _saveLoginStatusUseCase.call(params: true);
         this.isLoggedIn = true;
         this.success = true;
-        this.personId = value.personId;
+        this.personId = value.personId ?? 0;
       }
     }).catchError((e) {
       print(e);

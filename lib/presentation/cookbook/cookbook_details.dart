@@ -7,7 +7,7 @@ class CookbookDetailsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Implement the UI to display cookbook details using cookbookId
+    // TODO Implement the UI to display cookbook details using cookbookId
     // You can retrieve additional data from the API using cookbookId
     return Scaffold(
       appBar: AppBar(

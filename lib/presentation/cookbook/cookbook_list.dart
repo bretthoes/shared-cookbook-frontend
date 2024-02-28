@@ -24,8 +24,7 @@ class _CookbookListScreenState extends State<CookbookListScreen> {
 
     // check to see if already called api
     if (!_cookbookStore.loading) {
-      // TODO Should redirect to error if personId <= 0
-      _cookbookStore.getCookbooks(_loginStore.personId ?? 0);
+      _cookbookStore.getCookbooks(_loginStore.personId);
     }
   }
 
@@ -74,7 +73,6 @@ class _CookbookListScreenState extends State<CookbookListScreen> {
   }
 
   Widget _buildListItem(int position) {
-    // TODO selecting a cookbook should GET in new page
     return ListTile(
       dense: true,
       leading: Icon(Icons.cloud_circle),

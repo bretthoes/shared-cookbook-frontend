@@ -23,8 +23,7 @@ class _FeedScreenState extends State<FeedScreen> {
 
     // check to see if already called api
     if (!_cookbookStore.loading) {
-      // TODO Should redirect to error if personId <= 0
-      _cookbookStore.getCookbooks(_loginStore.personId ?? 0);
+      _cookbookStore.getCookbooks(_loginStore.personId);
     }
   }
 
