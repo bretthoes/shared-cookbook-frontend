@@ -44,10 +44,9 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   // nav bar methods:-----------------------------------------------------------
-  // TODO define styles from config
   Widget _buildNavBar() {
     return Container(
-      color: Colors.black,
+      color: _themeStore.darkMode ? Colors.black : Colors.white,
       child: Padding(
         padding: const EdgeInsets.symmetric(
           horizontal: 15.0,
@@ -60,10 +59,11 @@ class _HomeScreenState extends State<HomeScreen> {
               _page = index;
             });
           },
-          backgroundColor: Colors.black,
-          color: Colors.white,
-          activeColor: Colors.white,
-          tabBackgroundColor: Colors.grey.shade800,
+          backgroundColor: _themeStore.darkMode ? Colors.black : Colors.white,
+          color: _themeStore.darkMode ? Colors.white : Colors.black,
+          activeColor: _themeStore.darkMode ? Colors.black : Colors.white,
+          tabBackgroundColor:
+              _themeStore.darkMode ? Colors.white : Colors.black,
           padding: EdgeInsets.all(8),
           gap: 8,
           tabs: [
