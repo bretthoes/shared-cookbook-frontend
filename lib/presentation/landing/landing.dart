@@ -1,3 +1,4 @@
+import 'package:boilerplate/core/widgets/square_button_widget.dart';
 import 'package:boilerplate/presentation/login/login.dart';
 import 'package:boilerplate/presentation/register/register.dart';
 import 'package:flutter/material.dart';
@@ -11,12 +12,10 @@ class LandingScreen extends StatelessWidget {
       body: Stack(
         fit: StackFit.expand,
         children: [
-          // Background image
           Image.asset(
             'assets/images/background_image.png',
             fit: BoxFit.cover,
           ),
-
           Positioned(
             top: 64.0,
             left: 16.0,
@@ -24,46 +23,27 @@ class LandingScreen extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                ElevatedButton(
+                SquareButtonWidget(
+                  buttonColor: Colors.red,
+                  buttonText: "Login",
                   onPressed: () {
                     Navigator.push(
                       context,
                       MaterialPageRoute(builder: (context) => LoginScreen()),
                     );
                   },
-                  style: ElevatedButton.styleFrom(
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(8.0),
-                    ),
-                    backgroundColor: Colors.red,
-                  ),
-                  child: Text(
-                    "Login",
-                    style: TextStyle(
-                      color: Colors.white,
-                    ),
-                  ),
                 ),
                 SizedBox(height: 16.0),
-                ElevatedButton(
+                SquareButtonWidget(
+                  buttonColor: Colors.white,
+                  textColor: Colors.black,
+                  buttonText: "Register",
                   onPressed: () {
                     Navigator.push(
                       context,
                       MaterialPageRoute(builder: (context) => RegisterScreen()),
                     );
                   },
-                  style: ElevatedButton.styleFrom(
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(8.0),
-                    ),
-                    backgroundColor: Colors.white,
-                  ),
-                  child: Text(
-                    "Register",
-                    style: TextStyle(
-                      color: Colors.black,
-                    ),
-                  ),
                 ),
                 SizedBox(height: 16.0),
                 Text(
