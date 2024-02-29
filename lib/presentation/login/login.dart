@@ -2,7 +2,7 @@ import 'package:another_flushbar/flushbar_helper.dart';
 import 'package:boilerplate/constants/assets.dart';
 import 'package:boilerplate/core/stores/form/form_store.dart';
 import 'package:boilerplate/core/widgets/app_icon_widget.dart';
-import 'package:boilerplate/core/widgets/empty_app_bar_widget.dart';
+import 'package:boilerplate/core/widgets/back_button_app_bar_widget.dart';
 import 'package:boilerplate/core/widgets/progress_indicator_widget.dart';
 import 'package:boilerplate/core/widgets/rounded_button_widget.dart';
 import 'package:boilerplate/core/widgets/textfield_widget.dart';
@@ -46,7 +46,7 @@ class _LoginScreenState extends State<LoginScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       primary: true,
-      appBar: EmptyAppBar(),
+      appBar: BackButtonAppBar(),
       body: _buildBody(),
     );
   }
