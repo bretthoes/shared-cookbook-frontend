@@ -1,6 +1,5 @@
 import 'package:boilerplate/core/widgets/back_button_app_bar_widget.dart';
 import 'package:boilerplate/core/widgets/square_button_widget.dart';
-import 'package:boilerplate/presentation/login/login.dart';
 import 'package:boilerplate/presentation/register/set_password.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
