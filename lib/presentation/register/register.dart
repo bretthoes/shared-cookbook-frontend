@@ -17,6 +17,7 @@ import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../di/service_locator.dart';
+import 'package:flutter/material.dart';
 
 class RegisterScreen extends StatefulWidget {
   @override
@@ -24,216 +25,109 @@ class RegisterScreen extends StatefulWidget {
 }
 
 class _RegisterScreenState extends State<RegisterScreen> {
-  //text controllers:-----------------------------------------------------------
-  TextEditingController _userEmailController = TextEditingController();
+  PageController _pageController = PageController();
+  TextEditingController _emailController = TextEditingController();
+  TextEditingController _verificationCodeController = TextEditingController();
   TextEditingController _passwordController = TextEditingController();
 
-  //stores:---------------------------------------------------------------------
-  final ThemeStore _themeStore = getIt<ThemeStore>();
-  final FormStore _formStore = getIt<FormStore>();
-  final UserStore _userStore = getIt<UserStore>();
-
-  //focus node:-----------------------------------------------------------------
-  late FocusNode _passwordFocusNode;
-
-  @override
-  void initState() {
-    super.initState();
-    _passwordFocusNode = FocusNode();
-  }
+  int _currentPage = 0;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      primary: true,
-      appBar: BackButtonAppBar(),
-      body: _buildBody(),
-    );
-  }
-
-  // body methods:--------------------------------------------------------------
-  Widget _buildBody() {
-    return Material(
-      child: Stack(
-        children: <Widget>[
-          MediaQuery.of(context).orientation == Orientation.landscape
-              ? Row(
-                  children: <Widget>[
-                    Expanded(
-                      flex: 1,
-                      child: _buildLeftSide(),
-                    ),
-                    Expanded(
-                      flex: 1,
-                      child: _buildRightSide(),
-                    ),
-                  ],
-                )
-              : Center(child: _buildRightSide()),
-          Observer(
-            builder: (context) {
-              return _userStore.success
-                  ? navigate(context)
-                  : _showErrorMessage(_formStore.errorStore.errorMessage);
-            },
-          ),
-          Observer(
-            builder: (context) {
-              return Visibility(
-                visible: _userStore.isLoading,
-                child: CustomProgressIndicatorWidget(),
-              );
-            },
-          )
+      appBar: AppBar(
+        title: Text("Register"),
+      ),
+      body: PageView(
+        controller: _pageController,
+        onPageChanged: (index) {
+          setState(() {
+            _currentPage = index;
+          });
+        },
+        children: [
+          _buildEmailPage(),
+          _buildVerificationCodePage(),
+          _buildPasswordPage(),
         ],
       ),
     );
   }
 
-  Widget _buildLeftSide() {
-    return SizedBox.expand(
-      child: Image.asset(
-        Assets.carBackground,
-        fit: BoxFit.cover,
-      ),
-    );
-  }
-
-  Widget _buildRightSide() {
-    return SingleChildScrollView(
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 24.0),
-        child: Column(
-          mainAxisSize: MainAxisSize.max,
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            AppIconWidget(image: 'assets/icons/ic_appicon.png'),
-            SizedBox(height: 24.0),
-            _buildUserIdField(),
-            _buildPasswordField(),
-            _buildForgotPasswordButton(),
-            _buildSignInButton()
-          ],
+  Widget _buildEmailPage() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        SizedBox(height: 16.0),
+        Container(
+          width: MediaQuery.of(context).size.width * 0.9, // 90% of screen width
+          child: TextField(
+            controller: _emailController,
+            decoration: InputDecoration(labelText: "Enter your email"),
+          ),
         ),
-      ),
-    );
-  }
-
-  Widget _buildUserIdField() {
-    return Observer(
-      builder: (context) {
-        return TextFieldWidget(
-          hint: AppLocalizations.of(context).translate('login_et_user_email'),
-          inputType: TextInputType.emailAddress,
-          icon: Icons.person,
-          iconColor: _themeStore.darkMode ? Colors.white70 : Colors.black54,
-          textController: _userEmailController,
-          inputAction: TextInputAction.next,
-          autoFocus: false,
-          onChanged: (value) {
-            _formStore.setUserId(_userEmailController.text);
+        ElevatedButton(
+          onPressed: () {
+            // Add logic to send verification code to email
+            // Move to the next page
+            _pageController.nextPage(
+              duration: Duration(milliseconds: 300),
+              curve: Curves.easeInOut,
+            );
           },
-          onFieldSubmitted: (value) {
-            FocusScope.of(context).requestFocus(_passwordFocusNode);
-          },
-          errorText: _formStore.formErrorStore.userEmail,
-        );
-      },
-    );
-  }
-
-  Widget _buildPasswordField() {
-    return Observer(
-      builder: (context) {
-        return TextFieldWidget(
-          hint:
-              AppLocalizations.of(context).translate('login_et_user_password'),
-          isObscure: true,
-          padding: EdgeInsets.only(top: 16.0),
-          icon: Icons.lock,
-          iconColor: _themeStore.darkMode ? Colors.white70 : Colors.black54,
-          textController: _passwordController,
-          focusNode: _passwordFocusNode,
-          errorText: _formStore.formErrorStore.password,
-          onChanged: (value) {
-            _formStore.setPassword(_passwordController.text);
-          },
-        );
-      },
-    );
-  }
-
-  Widget _buildForgotPasswordButton() {
-    return Align(
-      alignment: FractionalOffset.centerRight,
-      child: MaterialButton(
-        padding: EdgeInsets.all(0.0),
-        child: Text(
-          AppLocalizations.of(context).translate('login_btn_forgot_password'),
-          style: Theme.of(context)
-              .textTheme
-              .bodySmall
-              ?.copyWith(color: Colors.black54),
+          child: Text("Next"),
         ),
-        onPressed: () {},
-      ),
+      ],
     );
   }
 
-  Widget _buildSignInButton() {
-    return RoundedButtonWidget(
-      buttonText: AppLocalizations.of(context).translate('login_btn_sign_in'),
-      buttonColor: Colors.pink.shade200,
-      textColor: Colors.white,
-      onPressed: () async {
-        if (_formStore.canLogin) {
-          DeviceUtils.hideKeyboard(context);
-          _userStore.login(_userEmailController.text, _passwordController.text);
-        } else {
-          _showErrorMessage('Please fill in all fields');
-        }
-      },
+  Widget _buildVerificationCodePage() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        SizedBox(height: 16.0),
+        Text("Check your email for the verification code"),
+        Container(
+          width: MediaQuery.of(context).size.width * 0.9, // 90% of screen width
+          child: TextField(
+            controller: _verificationCodeController,
+            decoration: InputDecoration(labelText: "Enter verification code"),
+          ),
+        ),
+        Spacer(), // Add Spacer to push the button to the bottom
+        ElevatedButton(
+          onPressed: () {
+            // Add logic to verify the code
+            // Move to the next page
+            _pageController.nextPage(
+              duration: Duration(milliseconds: 300),
+              curve: Curves.easeInOut,
+            );
+          },
+          child: Text("Continue"),
+        ),
+      ],
     );
   }
 
-  Widget navigate(BuildContext context) {
-    SharedPreferences.getInstance().then((prefs) {
-      prefs.setBool(Preferences.is_logged_in, true);
-    });
-
-    Future.delayed(Duration(milliseconds: 0), () {
-      Navigator.of(context).pushNamedAndRemoveUntil(
-          Routes.home, (Route<dynamic> route) => false);
-    });
-
-    return Container();
-  }
-
-  // General Methods:-----------------------------------------------------------
-  _showErrorMessage(String message) {
-    if (message.isNotEmpty) {
-      Future.delayed(Duration(milliseconds: 0), () {
-        if (message.isNotEmpty) {
-          FlushbarHelper.createError(
-            message: message,
-            title: AppLocalizations.of(context).translate('home_tv_error'),
-            duration: Duration(seconds: 3),
-          )..show(context);
-        }
-      });
-    }
-
-    return SizedBox.shrink();
-  }
-
-  // dispose:-------------------------------------------------------------------
-  @override
-  void dispose() {
-    // Clean up the controller when the Widget is removed from the Widget tree
-    _userEmailController.dispose();
-    _passwordController.dispose();
-    _passwordFocusNode.dispose();
-    super.dispose();
+  Widget _buildPasswordPage() {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        TextField(
+          controller: _passwordController,
+          decoration: InputDecoration(labelText: "Set your password"),
+          obscureText: true,
+        ),
+        ElevatedButton(
+          onPressed: () {
+            // Add logic to complete registration with the password
+            // For simplicity, navigate to home page after registration
+            Navigator.of(context).popUntil((route) => route.isFirst);
+          },
+          child: Text("Register"),
+        ),
+      ],
+    );
   }
 }
