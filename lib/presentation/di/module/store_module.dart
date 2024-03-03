@@ -3,8 +3,10 @@ import 'package:boilerplate/core/stores/error/error_store.dart';
 import 'package:boilerplate/core/stores/form/form_store.dart';
 import 'package:boilerplate/domain/repository/setting/setting_repository.dart';
 import 'package:boilerplate/domain/usecase/cookbook/get_cookbook_usecase.dart';
+import 'package:boilerplate/domain/usecase/person/find_person_by_email_usecase.dart';
 import 'package:boilerplate/domain/usecase/person/is_logged_in_usecase.dart';
 import 'package:boilerplate/domain/usecase/person/login_usecase.dart';
+import 'package:boilerplate/domain/usecase/person/register_usecase.dart';
 import 'package:boilerplate/domain/usecase/person/save_login_in_status_usecase.dart';
 import 'package:boilerplate/presentation/cookbook/store/cookbook_store.dart';
 import 'package:boilerplate/presentation/home/store/language/language_store.dart';
@@ -27,6 +29,8 @@ mixin StoreModule {
         getIt<IsLoggedInUseCase>(),
         getIt<SaveLoginStatusUseCase>(),
         getIt<LoginUseCase>(),
+        getIt<RegisterUseCase>(),
+        getIt<FindPersonByEmailUseCase>(),
         getIt<FormErrorStore>(),
         getIt<ErrorStore>(),
       ),

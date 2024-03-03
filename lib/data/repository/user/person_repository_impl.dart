@@ -4,6 +4,7 @@ import 'package:boilerplate/data/local/datasources/person/person_datasource.dart
 import 'package:boilerplate/data/network/apis/people/person_api.dart';
 import 'package:boilerplate/domain/repository/person/person_repository.dart';
 import 'package:boilerplate/data/sharedpref/shared_preference_helper.dart';
+import 'package:boilerplate/domain/usecase/person/register_usecase.dart';
 import 'package:sembast/sembast.dart';
 import '../../../domain/entity/person/person.dart';
 import '../../../domain/usecase/person/login_usecase.dart';
@@ -32,6 +33,11 @@ class PersonRepositoryImpl extends PersonRepository {
   }
 
   @override
+  Future<Person?> register(RegisterParams params) async {
+    return await _personApi.register(params.email, params.password);
+  }
+
+  @override
   Future<void> saveIsLoggedIn(bool value) =>
       _sharedPrefsHelper.saveIsLoggedIn(value);
 
@@ -55,6 +61,31 @@ class PersonRepositoryImpl extends PersonRepository {
 
       var personFromApi = await _personApi.findPersonById(id);
       await _personDataSource.insert(personFromApi);
+      return personFromApi;
+    } catch (e) {
+      throw e;
+    }
+  }
+
+  @override
+  Future<Person?> findPersonByEmail(String email) async {
+    try {
+      // caching commented out for checking if
+      // user email exists in register workflow
+      // List<Filter> filters = [];
+
+      // //check to see if dataLogsType is not null
+      // Filter dataLogTypeFilter = Filter.equals(DBConstants.FIELD_EMAIL, email);
+      // filters.add(dataLogTypeFilter);
+
+      // var personFromDb =
+      //     await _personDataSource.getPersonByEmail(filters: filters);
+      // if (personFromDb != null) {
+      //   return personFromDb;
+      // }
+
+      var personFromApi = await _personApi.findPersonByEmail(email);
+      //await _personDataSource.insert(personFromApi);
       return personFromApi;
     } catch (e) {
       throw e;

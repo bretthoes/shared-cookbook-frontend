@@ -55,6 +55,14 @@ mixin _$UserStore on _UserStore, Store {
     return _$loginAsyncAction.run(() => super.login(email, password));
   }
 
+  late final _$registerAsyncAction =
+      AsyncAction('_UserStore.register', context: context);
+
+  @override
+  Future<dynamic> register(String email, String password) {
+    return _$registerAsyncAction.run(() => super.register(email, password));
+  }
+
   @override
   String toString() {
     return '''

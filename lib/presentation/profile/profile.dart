@@ -20,9 +20,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
     super.didChangeDependencies();
 
     // check to see if already called api
-    if (!_userStore.isLoading) {
-      // TODO Should redirect to error if personId <= 0
-    }
+    if (!_userStore.isLoading) {}
   }
 
   @override
