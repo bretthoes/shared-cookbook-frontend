@@ -49,10 +49,31 @@ class PersonDataSource {
   }
 
   Future<Person?> getPersonById({List<Filter>? filters}) async {
-    //creating finder
+    // creating finder
     final finder = Finder(
         filter: filters != null ? Filter.and(filters) : null,
         sortOrders: [SortOrder(DBConstants.FIELD_ID)]);
+
+    // check for person in db
+    final recordSnapshot = await _personStore.findFirst(
+      _sembastClient.database,
+      finder: finder,
+    );
+
+    if (recordSnapshot != null) {
+      final person = Person.fromMap(recordSnapshot.value);
+      person.personId = recordSnapshot.key;
+      return person;
+    }
+
+    return null;
+  }
+
+  Future<Person?> getPersonByEmail({List<Filter>? filters}) async {
+    // creating finder
+    final finder = Finder(
+        filter: filters != null ? Filter.and(filters) : null,
+        sortOrders: [SortOrder(DBConstants.FIELD_EMAIL)]);
 
     // check for person in db
     final recordSnapshot = await _personStore.findFirst(

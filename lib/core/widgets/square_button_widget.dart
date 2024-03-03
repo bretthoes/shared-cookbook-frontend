@@ -26,37 +26,43 @@ class SquareButtonWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ElevatedButton(
-      key: this.key,
-      style: ButtonStyle(
-        backgroundColor: MaterialStateProperty.all<Color>(this.buttonColor),
-        shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-          RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(8.0),
-          ),
-        ),
-      ),
-      onPressed: onPressed,
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: <Widget>[
-          imagePath != null
-              ? Image.asset(
-                  imagePath!,
-                  height: 15.0,
-                )
-              : SizedBox.shrink(),
-          SizedBox(width: 5.0),
-          Text(
-            buttonText!,
-            overflow: TextOverflow.clip,
-            style: TextStyle(
-              color: textColor,
-              fontWeight: FontWeight.normal,
-              fontSize: buttonTextSize,
+    double screenWidth = MediaQuery.of(context).size.width;
+    double buttonWidthPercentage = 0.9;
+
+    return Container(
+      width: screenWidth * buttonWidthPercentage,
+      child: ElevatedButton(
+        key: this.key,
+        style: ButtonStyle(
+          backgroundColor: MaterialStateProperty.all<Color>(this.buttonColor),
+          shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+            RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(8.0),
             ),
           ),
-        ],
+        ),
+        onPressed: onPressed,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            imagePath != null
+                ? Image.asset(
+                    imagePath!,
+                    height: 15.0,
+                  )
+                : SizedBox.shrink(),
+            SizedBox(width: 5.0),
+            Text(
+              buttonText!,
+              overflow: TextOverflow.clip,
+              style: TextStyle(
+                color: textColor,
+                fontWeight: FontWeight.normal,
+                fontSize: buttonTextSize,
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

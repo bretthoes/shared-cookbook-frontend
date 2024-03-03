@@ -3,7 +3,6 @@ class Endpoints {
 
   // base url
   static const String baseUrl = "http://10.0.2.2:5238/api";
-  //"http://jsonplaceholder.typicode.com"; //"http://10.0.2.2:7251/api";
 
   // receiveTimeout
   static const int receiveTimeout = 15000;
@@ -20,5 +19,8 @@ class Endpoints {
 
   // person endpoints
   static String getPerson(int personId) => '$baseUrl/People/$personId';
+  static String getPersonByEmail(String email) =>
+      '$baseUrl/People/by-email/$email';
   static const String postLogin = '$baseUrl/People/login';
+  static const String addPerson = '$baseUrl/People';
 }

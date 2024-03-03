@@ -10,4 +10,5 @@ class DBConstants {
   // Fields
   static const FIELD_ID = 'creatorPersonId';
   static const CREATOR_PERSON_ID = 'creatorPersonId';
+  static const FIELD_EMAIL = 'email';
 }
