@@ -138,7 +138,7 @@ class _LoginScreenState extends State<LoginScreen> {
           onFieldSubmitted: (value) {
             FocusScope.of(context).requestFocus(_passwordFocusNode);
           },
-          errorText: _formStore.formErrorStore.userEmail,
+          errorText: _formStore.formErrorStore.email,
         );
       },
     );

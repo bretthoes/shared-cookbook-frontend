@@ -210,15 +210,15 @@ mixin _$FormErrorStore on _FormErrorStore, Store {
       Atom(name: '_FormErrorStore.userEmail', context: context);
 
   @override
-  String? get userEmail {
+  String? get email {
     _$userEmailAtom.reportRead();
-    return super.userEmail;
+    return super.email;
   }
 
   @override
   set userEmail(String? value) {
-    _$userEmailAtom.reportWrite(value, super.userEmail, () {
-      super.userEmail = value;
+    _$userEmailAtom.reportWrite(value, super.email, () {
+      super.email = value;
     });
   }
 
@@ -257,7 +257,7 @@ mixin _$FormErrorStore on _FormErrorStore, Store {
   @override
   String toString() {
     return '''
-userEmail: ${userEmail},
+email: ${email},
 password: ${password},
 confirmPassword: ${confirmPassword},
 hasErrorsInLogin: ${hasErrorsInLogin},
