@@ -47,6 +47,37 @@ mixin _$UserStore on _UserStore, Store {
     });
   }
 
+  late final _$fetchPersonFutureAtom =
+      Atom(name: '_UserStore.fetchPersonFuture', context: context);
+
+  @override
+  ObservableFuture<Person?> get fetchPersonFuture {
+    _$fetchPersonFutureAtom.reportRead();
+    return super.fetchPersonFuture;
+  }
+
+  @override
+  set fetchPersonFuture(ObservableFuture<Person?> value) {
+    _$fetchPersonFutureAtom.reportWrite(value, super.fetchPersonFuture, () {
+      super.fetchPersonFuture = value;
+    });
+  }
+
+  late final _$personAtom = Atom(name: '_UserStore.person', context: context);
+
+  @override
+  Person? get person {
+    _$personAtom.reportRead();
+    return super.person;
+  }
+
+  @override
+  set person(Person? value) {
+    _$personAtom.reportWrite(value, super.person, () {
+      super.person = value;
+    });
+  }
+
   late final _$loginAsyncAction =
       AsyncAction('_UserStore.login', context: context);
 
@@ -63,11 +94,22 @@ mixin _$UserStore on _UserStore, Store {
     return _$registerAsyncAction.run(() => super.register(email, password));
   }
 
+  late final _$getPersonByEmailAsyncAction =
+      AsyncAction('_UserStore.getPersonByEmail', context: context);
+
+  @override
+  Future<dynamic> getPersonByEmail(String email) {
+    return _$getPersonByEmailAsyncAction
+        .run(() => super.getPersonByEmail(email));
+  }
+
   @override
   String toString() {
     return '''
 success: ${success},
 loginFuture: ${loginFuture},
+fetchPersonFuture: ${fetchPersonFuture},
+person: ${person},
 isLoading: ${isLoading}
     ''';
   }

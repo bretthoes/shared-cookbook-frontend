@@ -130,7 +130,7 @@ abstract class _UserStore with Store {
     final future = _findPersonByEmailUseCase.call(params: email);
     fetchPersonFuture = ObservableFuture(future);
 
-    future.then((person) {
+    await future.then((person) async {
       this.person = person;
     }).catchError((error) {
       errorStore.errorMessage = DioErrorUtil.handleError(error);
