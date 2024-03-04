@@ -8,7 +8,7 @@ class FindPersonByEmailUseCase extends UseCase<Person?, String> {
   FindPersonByEmailUseCase(this._personRepository);
 
   @override
-  Future<Person?> call({required String params}) {
-    return _personRepository.findPersonByEmail(params);
+  Future<Person?> call({required String params}) async {
+    return await _personRepository.findPersonByEmail(params);
   }
 }

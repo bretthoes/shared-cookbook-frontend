@@ -8,6 +8,10 @@
   "login_error_fill_fields": "Por favor complete todos los campos e",
   "login_end": "------------------------------------------------------------------------------------",
 
+  "register_next": "proximo",
+  "register_email_taken": "Email already taken",
+  "register_end": "---------------------------------------------------------------------------------",
+
   "home_start": "Below are list of strings for home",
   "home_tv_home":"Hogar",
   "home_tv_profile":"Perfil",
