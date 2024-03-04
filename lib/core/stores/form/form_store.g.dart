@@ -40,15 +40,15 @@ mixin _$FormStore on _FormStore, Store {
       Atom(name: '_FormStore.userEmail', context: context);
 
   @override
-  String get userEmail {
+  String get email {
     _$userEmailAtom.reportRead();
-    return super.userEmail;
+    return super.email;
   }
 
   @override
   set userEmail(String value) {
-    _$userEmailAtom.reportWrite(value, super.userEmail, () {
-      super.userEmail = value;
+    _$userEmailAtom.reportWrite(value, super.email, () {
+      super.email = value;
     });
   }
 
@@ -103,11 +103,11 @@ mixin _$FormStore on _FormStore, Store {
       ActionController(name: '_FormStore', context: context);
 
   @override
-  void setUserId(String value) {
+  void setEmail(String value) {
     final _$actionInfo =
         _$_FormStoreActionController.startAction(name: '_FormStore.setUserId');
     try {
-      return super.setUserId(value);
+      return super.setEmail(value);
     } finally {
       _$_FormStoreActionController.endAction(_$actionInfo);
     }
@@ -140,7 +140,7 @@ mixin _$FormStore on _FormStore, Store {
     final _$actionInfo = _$_FormStoreActionController.startAction(
         name: '_FormStore.validateUserEmail');
     try {
-      return super.validateUserEmail(value);
+      return super.validateEmail(value);
     } finally {
       _$_FormStoreActionController.endAction(_$actionInfo);
     }
@@ -171,7 +171,7 @@ mixin _$FormStore on _FormStore, Store {
   @override
   String toString() {
     return '''
-userEmail: ${userEmail},
+email: ${email},
 password: ${password},
 confirmPassword: ${confirmPassword},
 success: ${success},

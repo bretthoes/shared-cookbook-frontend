@@ -22,7 +22,7 @@ abstract class _FormStore with Store {
 
   void _setupValidations() {
     _disposers = [
-      reaction((_) => userEmail, validateUserEmail),
+      reaction((_) => email, validateEmail),
       reaction((_) => password, validatePassword),
       reaction((_) => confirmPassword, validateConfirmPassword)
     ];
@@ -30,7 +30,7 @@ abstract class _FormStore with Store {
 
   // store variables:-----------------------------------------------------------
   @observable
-  String userEmail = '';
+  String email = '';
 
   @observable
   String password = '';
@@ -44,27 +44,27 @@ abstract class _FormStore with Store {
   @computed
   bool get canLogin =>
       !formErrorStore.hasErrorsInLogin &&
-      userEmail.isNotEmpty &&
+      email.isNotEmpty &&
       password.isNotEmpty;
 
   @computed
-  bool get emailValid => !userEmail.isEmpty && isEmail(userEmail);
+  bool get emailValid => !email.isEmpty && isEmail(email);
 
   @computed
   bool get canRegister =>
       !formErrorStore.hasErrorsInRegister &&
-      userEmail.isNotEmpty &&
+      email.isNotEmpty &&
       password.isNotEmpty &&
       confirmPassword.isNotEmpty;
 
   @computed
   bool get canForgetPassword =>
-      !formErrorStore.hasErrorInForgotPassword && userEmail.isNotEmpty;
+      !formErrorStore.hasErrorInForgotPassword && email.isNotEmpty;
 
   // actions:-------------------------------------------------------------------
   @action
-  void setUserId(String value) {
-    userEmail = value;
+  void setEmail(String value) {
+    email = value;
   }
 
   @action
@@ -78,7 +78,7 @@ abstract class _FormStore with Store {
   }
 
   @action
-  void validateUserEmail(String value) {
+  void validateEmail(String value) {
     if (value.isEmpty) {
       formErrorStore.userEmail = "Email can't be empty";
     } else if (!isEmail(value)) {
@@ -119,7 +119,7 @@ abstract class _FormStore with Store {
 
   void validateAll() {
     validatePassword(password);
-    validateUserEmail(userEmail);
+    validateEmail(email);
   }
 }
 

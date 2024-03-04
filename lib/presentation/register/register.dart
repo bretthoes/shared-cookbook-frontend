@@ -7,6 +7,7 @@ import 'package:boilerplate/di/service_locator.dart';
 import 'package:boilerplate/presentation/home/store/theme/theme_store.dart';
 import 'package:boilerplate/presentation/login/store/login_store.dart';
 import 'package:boilerplate/presentation/register/email_verification.dart';
+import 'package:boilerplate/presentation/register/set_password.dart';
 import 'package:boilerplate/utils/device/device_utils.dart';
 import 'package:boilerplate/utils/locale/app_localization.dart';
 import 'package:flutter/material.dart';
@@ -79,7 +80,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
             inputAction: TextInputAction.next,
             autoFocus: false,
             onChanged: (value) {
-              _formStore.setUserId(_userEmailController.text);
+              _formStore.setEmail(_userEmailController.text);
             },
             onFieldSubmitted: (value) {
               FocusScope.of(context).requestFocus(_emailFocusNode);
@@ -104,33 +105,15 @@ class _RegisterScreenState extends State<RegisterScreen> {
           if (emailAvail) {
             Navigator.push(
               context,
-              MaterialPageRoute(
-                  builder: (context) => EmailVerificationScreen()),
+              MaterialPageRoute(builder: (context) => SetPasswordScreen()),
             );
           } else {
-            // TODO
             _formStore.formErrorStore.userEmail =
                 AppLocalizations.of(context).translate('register_email_taken');
           }
         }
       },
     );
-  }
-
-  // General Methods:-----------------------------------------------------------
-  _showErrorMessage(String message) {
-    if (message.isNotEmpty) {
-      Future.delayed(Duration(milliseconds: 0), () {
-        if (message.isNotEmpty) {
-          FlushbarHelper.createError(
-            message: message,
-            title: AppLocalizations.of(context).translate('home_tv_error'),
-            duration: Duration(seconds: 3),
-          )..show(context);
-        }
-      });
-    }
-    return SizedBox.shrink();
   }
 
   // dispose:-------------------------------------------------------------------
