@@ -63,7 +63,7 @@ class _EmailVerificationScreenState extends State<EmailVerificationScreen> {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => SetPasswordScreen()),
+                          builder: (context) => SetPasswordScreen(email: "")),
                     );
                   },
                 ),

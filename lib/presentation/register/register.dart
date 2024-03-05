@@ -1,4 +1,3 @@
-import 'package:another_flushbar/flushbar_helper.dart';
 import 'package:boilerplate/core/stores/form/form_store.dart';
 import 'package:boilerplate/core/widgets/back_button_app_bar_widget.dart';
 import 'package:boilerplate/core/widgets/square_button_widget.dart';
@@ -6,7 +5,6 @@ import 'package:boilerplate/core/widgets/textfield_widget.dart';
 import 'package:boilerplate/di/service_locator.dart';
 import 'package:boilerplate/presentation/home/store/theme/theme_store.dart';
 import 'package:boilerplate/presentation/login/store/login_store.dart';
-import 'package:boilerplate/presentation/register/email_verification.dart';
 import 'package:boilerplate/presentation/register/set_password.dart';
 import 'package:boilerplate/utils/device/device_utils.dart';
 import 'package:boilerplate/utils/locale/app_localization.dart';
@@ -101,11 +99,12 @@ class _RegisterScreenState extends State<RegisterScreen> {
         DeviceUtils.hideKeyboard(context);
 
         if (_formStore.emailValid) {
-          var emailAvail = await emailIsAvailable();
-          if (emailAvail) {
+          if (await emailIsAvailable()) {
             Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => SetPasswordScreen()),
+              MaterialPageRoute(
+                  builder: (context) =>
+                      SetPasswordScreen(email: _formStore.email)),
             );
           } else {
             _formStore.formErrorStore.email =
@@ -116,20 +115,20 @@ class _RegisterScreenState extends State<RegisterScreen> {
     );
   }
 
-  // dispose:-------------------------------------------------------------------
-  @override
-  void dispose() {
-    // Clean up the controller when the Widget is removed from the Widget tree
-    _userEmailController.dispose();
-    _emailFocusNode.dispose();
-    super.dispose();
-  }
-
+  // helper:--------------------------------------------------------------------
   Future<bool> emailIsAvailable() async {
     await _userStore.getPersonByEmail(_userEmailController.text);
     // TODO need a better way to check for 404 response specifically.
     // we're looking for 404 not found to indicate email wasn't found
     //  and there wasn't a server error or other unknown issue.
     return _userStore.errorStore.errorMessage.contains("404");
+  }
+
+  // dispose:-------------------------------------------------------------------
+  @override
+  void dispose() {
+    _userEmailController.dispose();
+    _emailFocusNode.dispose();
+    super.dispose();
   }
 }
