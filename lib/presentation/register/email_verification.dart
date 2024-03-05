@@ -4,6 +4,8 @@ import 'package:boilerplate/presentation/register/set_password.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
+// OBSOLETE this is an intermittent class for register workflow that is not
+//currently functional. to be rewritten when sending emails is viable
 class EmailVerificationScreen extends StatefulWidget {
   @override
   _EmailVerificationScreenState createState() =>
@@ -59,7 +61,7 @@ class _EmailVerificationScreenState extends State<EmailVerificationScreen> {
                   buttonColor: Colors.red,
                   buttonText: "Next",
                   onPressed: () {
-                    // TODO validate code sent via email
+                    //  validate code sent via email
                     Navigator.push(
                       context,
                       MaterialPageRoute(
