@@ -85,7 +85,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
             onFieldSubmitted: (value) {
               FocusScope.of(context).requestFocus(_emailFocusNode);
             },
-            errorText: _formStore.formErrorStore.userEmail,
+            errorText: _formStore.formErrorStore.email,
           ),
         );
       },
@@ -108,7 +108,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
               MaterialPageRoute(builder: (context) => SetPasswordScreen()),
             );
           } else {
-            _formStore.formErrorStore.userEmail =
+            _formStore.formErrorStore.email =
                 AppLocalizations.of(context).translate('register_email_taken');
           }
         }

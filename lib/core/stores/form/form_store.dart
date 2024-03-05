@@ -80,11 +80,11 @@ abstract class _FormStore with Store {
   @action
   void validateEmail(String value) {
     if (value.isEmpty) {
-      formErrorStore.userEmail = "Email can't be empty";
+      formErrorStore.email = "Email can't be empty";
     } else if (!isEmail(value)) {
-      formErrorStore.userEmail = 'Please enter a valid email address';
+      formErrorStore.email = 'Please enter a valid email address';
     } else {
-      formErrorStore.userEmail = null;
+      formErrorStore.email = null;
     }
   }
 
@@ -127,7 +127,7 @@ class FormErrorStore = _FormErrorStore with _$FormErrorStore;
 
 abstract class _FormErrorStore with Store {
   @observable
-  String? userEmail;
+  String? email;
 
   @observable
   String? password;
@@ -136,12 +136,12 @@ abstract class _FormErrorStore with Store {
   String? confirmPassword;
 
   @computed
-  bool get hasErrorsInLogin => userEmail != null || password != null;
+  bool get hasErrorsInLogin => email != null || password != null;
 
   @computed
   bool get hasErrorsInRegister =>
-      userEmail != null || password != null || confirmPassword != null;
+      email != null || password != null || confirmPassword != null;
 
   @computed
-  bool get hasErrorInForgotPassword => userEmail != null;
+  bool get hasErrorInForgotPassword => email != null;
 }

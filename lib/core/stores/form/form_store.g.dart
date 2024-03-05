@@ -36,18 +36,17 @@ mixin _$FormStore on _FormStore, Store {
           name: '_FormStore.canForgetPassword'))
       .value;
 
-  late final _$userEmailAtom =
-      Atom(name: '_FormStore.userEmail', context: context);
+  late final _$emailAtom = Atom(name: '_FormStore.email', context: context);
 
   @override
   String get email {
-    _$userEmailAtom.reportRead();
+    _$emailAtom.reportRead();
     return super.email;
   }
 
   @override
-  set userEmail(String value) {
-    _$userEmailAtom.reportWrite(value, super.email, () {
+  set email(String value) {
+    _$emailAtom.reportWrite(value, super.email, () {
       super.email = value;
     });
   }
@@ -105,7 +104,7 @@ mixin _$FormStore on _FormStore, Store {
   @override
   void setEmail(String value) {
     final _$actionInfo =
-        _$_FormStoreActionController.startAction(name: '_FormStore.setUserId');
+        _$_FormStoreActionController.startAction(name: '_FormStore.setEmail');
     try {
       return super.setEmail(value);
     } finally {
@@ -136,9 +135,9 @@ mixin _$FormStore on _FormStore, Store {
   }
 
   @override
-  void validateUserEmail(String value) {
+  void validateEmail(String value) {
     final _$actionInfo = _$_FormStoreActionController.startAction(
-        name: '_FormStore.validateUserEmail');
+        name: '_FormStore.validateEmail');
     try {
       return super.validateEmail(value);
     } finally {
@@ -206,18 +205,18 @@ mixin _$FormErrorStore on _FormErrorStore, Store {
               name: '_FormErrorStore.hasErrorInForgotPassword'))
       .value;
 
-  late final _$userEmailAtom =
-      Atom(name: '_FormErrorStore.userEmail', context: context);
+  late final _$emailAtom =
+      Atom(name: '_FormErrorStore.email', context: context);
 
   @override
   String? get email {
-    _$userEmailAtom.reportRead();
+    _$emailAtom.reportRead();
     return super.email;
   }
 
   @override
-  set userEmail(String? value) {
-    _$userEmailAtom.reportWrite(value, super.email, () {
+  set email(String? value) {
+    _$emailAtom.reportWrite(value, super.email, () {
       super.email = value;
     });
   }
