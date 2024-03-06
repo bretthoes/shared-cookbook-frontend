@@ -15,10 +15,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-// TODO validate password: 6-20 chars with letters and numbers
 // TODO localize all strings in this file
 // TODO tell user if their email is already taken
-// TODO tell user if password invalid
 // TODO handle 404 bad request on register if call to get cookbooks fails
 // TODO handle auto sign in bug if user state remembered between session
 class SetPasswordScreen extends StatefulWidget {
@@ -80,7 +78,7 @@ class _SetPasswordScreenState extends State<SetPasswordScreen> {
                       _userStore.register(
                           _formStore.email, _passwordController.text);
                     } else {
-                      _showErrorMessage('Please fill in all fields');
+                      _showErrorMessage('Password is invalid');
                     }
                   },
                 ),
