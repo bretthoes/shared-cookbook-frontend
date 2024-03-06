@@ -27,7 +27,7 @@ abstract class _ErrorStore with Store {
 
   @action
   void reset(String value) {
-    errorMessage = '';
+    setErrorMessage('');
   }
 
   // dispose:-------------------------------------------------------------------

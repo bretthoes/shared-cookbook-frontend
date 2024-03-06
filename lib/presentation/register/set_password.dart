@@ -16,8 +16,6 @@ import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 // TODO localize all strings in this file
-// TODO tell user if their email is already taken
-// TODO handle 404 bad request on register if call to get cookbooks fails
 // TODO handle auto sign in bug if user state remembered between session
 class SetPasswordScreen extends StatefulWidget {
   final String email;
@@ -73,13 +71,7 @@ class _SetPasswordScreenState extends State<SetPasswordScreen> {
                   buttonColor: Colors.red,
                   buttonText: "Done",
                   onPressed: () async {
-                    if (_formStore.canLogin) {
-                      DeviceUtils.hideKeyboard(context);
-                      _userStore.register(
-                          _formStore.email, _passwordController.text);
-                    } else {
-                      _showErrorMessage('Password is invalid');
-                    }
+                    await _tryRegister();
                   },
                 ),
                 SizedBox(height: 8.0),
@@ -162,6 +154,27 @@ class _SetPasswordScreenState extends State<SetPasswordScreen> {
     }
 
     return SizedBox.shrink();
+  }
+
+  Future<void> _tryRegister() async {
+    _formStore.validateAll();
+    if (_formStore.canLogin) {
+      DeviceUtils.hideKeyboard(context);
+      await _userStore.register(_formStore.email, _passwordController.text);
+      if (_userStore.errorStore.errorMessage.isNotEmpty) {
+        _updateErrorMessage();
+      }
+    } else {
+      _formStore.formErrorStore.password = 'Password is invalid';
+    }
+  }
+
+  void _updateErrorMessage() {
+    if (_userStore.errorStore.errorMessage.contains("409")) {
+      _formStore.formErrorStore.password = 'Email already taken';
+    } else {
+      _formStore.formErrorStore.password = 'Error occurred';
+    }
   }
 
   // dispose:-------------------------------------------------------------------

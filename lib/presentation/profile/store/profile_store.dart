@@ -45,7 +45,7 @@ abstract class _ProfileStore with Store {
     future.then((person) {
       this.person = person;
     }).catchError((error) {
-      errorStore.errorMessage = DioErrorUtil.handleError(error);
+      errorStore.setErrorMessage(DioErrorUtil.handleError(error));
     });
   }
 }

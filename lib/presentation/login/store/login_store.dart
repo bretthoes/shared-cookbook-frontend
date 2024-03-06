@@ -117,11 +117,11 @@ abstract class _UserStore with Store {
         this.success = true;
         this.personId = value.personId ?? 0;
       }
-    }).catchError((e) {
-      print(e);
+    }).catchError((error) {
+      print(error);
       this.isLoggedIn = false;
       this.success = false;
-      throw e;
+      errorStore.setErrorMessage(DioErrorUtil.handleError(error));
     });
   }
 
@@ -133,7 +133,7 @@ abstract class _UserStore with Store {
     await future.then((person) async {
       this.person = person;
     }).catchError((error) {
-      errorStore.errorMessage = DioErrorUtil.handleError(error);
+      errorStore.setErrorMessage(DioErrorUtil.handleError(error));
     });
   }
 
