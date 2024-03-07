@@ -12,12 +12,12 @@ import 'package:boilerplate/utils/locale/app_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 
-class RegisterScreen extends StatefulWidget {
+class SetEmailScreen extends StatefulWidget {
   @override
   _RegisterScreenState createState() => _RegisterScreenState();
 }
 
-class _RegisterScreenState extends State<RegisterScreen> {
+class _RegisterScreenState extends State<SetEmailScreen> {
   //text controllers:-----------------------------------------------------------
   TextEditingController _userEmailController = TextEditingController();
 

@@ -1,6 +1,6 @@
 import 'package:boilerplate/core/widgets/square_button_widget.dart';
 import 'package:boilerplate/presentation/login/login.dart';
-import 'package:boilerplate/presentation/register/register.dart';
+import 'package:boilerplate/presentation/register/set_email.dart';
 import 'package:flutter/material.dart';
 
 class LandingScreen extends StatelessWidget {
@@ -41,7 +41,7 @@ class LandingScreen extends StatelessWidget {
                   onPressed: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => RegisterScreen()),
+                      MaterialPageRoute(builder: (context) => SetEmailScreen()),
                     );
                   },
                 ),
