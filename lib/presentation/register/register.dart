@@ -93,32 +93,38 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
   Widget _buildNextButton() {
     return SquareButtonWidget(
-      buttonText: AppLocalizations.of(context).translate('register_next'),
-      buttonColor: Colors.red,
-      textColor: Colors.white,
-      onPressed: () async {
-        DeviceUtils.hideKeyboard(context);
-        _formStore.validateEmail(_formStore.email);
-        if (_formStore.emailValid && await emailIsAvailable()) {
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-                builder: (context) =>
-                    SetPasswordScreen(email: _formStore.email)),
-          );
-        } else {
-          _formStore.formErrorStore.email =
-              AppLocalizations.of(context).translate('register_email_taken');
-        }
-      },
-    );
+        buttonText: AppLocalizations.of(context).translate('register_next'),
+        buttonColor: Colors.red,
+        textColor: Colors.white,
+        onPressed: () async {
+          DeviceUtils.hideKeyboard(context);
+          _formStore.validateEmail(_formStore.email);
+          if (!_formStore.emailValid) {
+            return;
+          }
+          if (!await _emailIsAvailable()) {
+            _formStore.formErrorStore.email =
+                AppLocalizations.of(context).translate('register_email_taken');
+            return;
+          }
+          _navigateNext();
+        });
   }
 
-  // helper:--------------------------------------------------------------------
-  Future<bool> emailIsAvailable() async {
+  // Private:-------------------------------------------------------------------
+  Future<bool> _emailIsAvailable() async {
     await _userStore.getPersonByEmail(_userEmailController.text);
     // a response of 'not found' indicates email is available
     return _userStore.errorStore.errorCode == HttpCode.notFound.value;
+  }
+
+  void _navigateNext() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => SetPasswordScreen(email: _formStore.email),
+      ),
+    );
   }
 
   // dispose:-------------------------------------------------------------------
