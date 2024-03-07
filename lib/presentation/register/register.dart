@@ -98,19 +98,17 @@ class _RegisterScreenState extends State<RegisterScreen> {
       textColor: Colors.white,
       onPressed: () async {
         DeviceUtils.hideKeyboard(context);
-
-        if (_formStore.emailValid) {
-          if (await emailIsAvailable()) {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) =>
-                      SetPasswordScreen(email: _formStore.email)),
-            );
-          } else {
-            _formStore.formErrorStore.email =
-                AppLocalizations.of(context).translate('register_email_taken');
-          }
+        _formStore.validateEmail(_formStore.email);
+        if (_formStore.emailValid && await emailIsAvailable()) {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) =>
+                    SetPasswordScreen(email: _formStore.email)),
+          );
+        } else {
+          _formStore.formErrorStore.email =
+              AppLocalizations.of(context).translate('register_email_taken');
         }
       },
     );

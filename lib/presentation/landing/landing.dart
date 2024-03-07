@@ -25,7 +25,7 @@ class LandingScreen extends StatelessWidget {
               children: [
                 SquareButtonWidget(
                   buttonColor: Colors.red,
-                  buttonText: "Login",
+                  buttonText: "Sign in",
                   onPressed: () {
                     Navigator.push(
                       context,
@@ -37,7 +37,7 @@ class LandingScreen extends StatelessWidget {
                 SquareButtonWidget(
                   buttonColor: Colors.white,
                   textColor: Colors.black,
-                  buttonText: "Register",
+                  buttonText: "Create an account",
                   onPressed: () {
                     Navigator.push(
                       context,
@@ -47,7 +47,7 @@ class LandingScreen extends StatelessWidget {
                 ),
                 SizedBox(height: 16.0),
                 Text(
-                  "Continue as guest",
+                  "Skip",
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     color: Colors.white70,

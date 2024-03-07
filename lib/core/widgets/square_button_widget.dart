@@ -20,7 +20,7 @@ class SquareButtonWidget extends StatelessWidget {
     this.imagePath,
     this.borderColor,
     this.shape = const StadiumBorder(),
-    this.buttonTextSize = 14.0,
+    this.buttonTextSize = 16.0,
     this.height,
   }) : super(key: key);
 
@@ -31,13 +31,14 @@ class SquareButtonWidget extends StatelessWidget {
 
     return Container(
       width: screenWidth * buttonWidthPercentage,
+      height: 56.0,
       child: ElevatedButton(
         key: this.key,
         style: ButtonStyle(
           backgroundColor: MaterialStateProperty.all<Color>(this.buttonColor),
           shape: MaterialStateProperty.all<RoundedRectangleBorder>(
             RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(8.0),
+              borderRadius: BorderRadius.circular(6.0),
             ),
           ),
         ),
