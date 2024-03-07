@@ -1,4 +1,3 @@
-import 'package:another_flushbar/flushbar_helper.dart';
 import 'package:boilerplate/core/stores/form/form_store.dart';
 import 'package:boilerplate/core/widgets/back_button_app_bar_widget.dart';
 import 'package:boilerplate/core/widgets/progress_indicator_widget.dart';
@@ -6,6 +5,7 @@ import 'package:boilerplate/core/widgets/square_button_widget.dart';
 import 'package:boilerplate/core/widgets/textfield_widget.dart';
 import 'package:boilerplate/data/sharedpref/constants/preferences.dart';
 import 'package:boilerplate/di/service_locator.dart';
+import 'package:boilerplate/enums/http_code.dart';
 import 'package:boilerplate/presentation/home/store/theme/theme_store.dart';
 import 'package:boilerplate/presentation/login/store/login_store.dart';
 import 'package:boilerplate/utils/device/device_utils.dart';
@@ -88,9 +88,7 @@ class _SetPasswordScreenState extends State<SetPasswordScreen> {
           ),
           Observer(
             builder: (context) {
-              return _userStore.success
-                  ? navigate(context)
-                  : _showErrorMessage(_formStore.errorStore.errorMessage);
+              return _userStore.success ? navigate(context) : Container();
             },
           ),
           Observer(
@@ -140,22 +138,6 @@ class _SetPasswordScreenState extends State<SetPasswordScreen> {
   }
 
   // General Methods:-----------------------------------------------------------
-  _showErrorMessage(String message) {
-    if (message.isNotEmpty) {
-      Future.delayed(Duration(milliseconds: 0), () {
-        if (message.isNotEmpty) {
-          FlushbarHelper.createError(
-            message: message,
-            title: AppLocalizations.of(context).translate('home_tv_error'),
-            duration: Duration(seconds: 3),
-          )..show(context);
-        }
-      });
-    }
-
-    return SizedBox.shrink();
-  }
-
   Future<void> _tryRegister() async {
     _formStore.validateAll();
     if (_formStore.canLogin) {
@@ -170,7 +152,7 @@ class _SetPasswordScreenState extends State<SetPasswordScreen> {
   }
 
   void _updateErrorMessage() {
-    if (_userStore.errorStore.errorMessage.contains("409")) {
+    if (_userStore.errorStore.errorCode == HttpCode.conflict.value) {
       _formStore.formErrorStore.password = 'Email already taken';
     } else {
       _formStore.formErrorStore.password = 'Error occurred';

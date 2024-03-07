@@ -19,6 +19,9 @@ abstract class _ErrorStore with Store {
   @observable
   String errorMessage = '';
 
+  @observable
+  int errorCode = 0;
+
   // actions:-------------------------------------------------------------------
   @action
   void setErrorMessage(String message) {
@@ -26,8 +29,14 @@ abstract class _ErrorStore with Store {
   }
 
   @action
+  void setErrorCode(int code) {
+    this.errorCode = code;
+  }
+
+  @action
   void reset(String value) {
     setErrorMessage('');
+    setErrorCode(0);
   }
 
   // dispose:-------------------------------------------------------------------

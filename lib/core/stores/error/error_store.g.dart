@@ -25,6 +25,22 @@ mixin _$ErrorStore on _ErrorStore, Store {
     });
   }
 
+  late final _$errorCodeAtom =
+      Atom(name: '_ErrorStore.errorCode', context: context);
+
+  @override
+  int get errorCode {
+    _$errorCodeAtom.reportRead();
+    return super.errorCode;
+  }
+
+  @override
+  set errorCode(int value) {
+    _$errorCodeAtom.reportWrite(value, super.errorCode, () {
+      super.errorCode = value;
+    });
+  }
+
   late final _$_ErrorStoreActionController =
       ActionController(name: '_ErrorStore', context: context);
 
@@ -34,6 +50,17 @@ mixin _$ErrorStore on _ErrorStore, Store {
         name: '_ErrorStore.setErrorMessage');
     try {
       return super.setErrorMessage(message);
+    } finally {
+      _$_ErrorStoreActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  void setErrorCode(int code) {
+    final _$actionInfo = _$_ErrorStoreActionController.startAction(
+        name: '_ErrorStore.setErrorCode');
+    try {
+      return super.setErrorCode(code);
     } finally {
       _$_ErrorStoreActionController.endAction(_$actionInfo);
     }
@@ -64,7 +91,8 @@ mixin _$ErrorStore on _ErrorStore, Store {
   @override
   String toString() {
     return '''
-errorMessage: ${errorMessage}
+errorMessage: ${errorMessage},
+errorCode: ${errorCode}
     ''';
   }
 }

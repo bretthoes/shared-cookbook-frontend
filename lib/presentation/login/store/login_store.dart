@@ -122,6 +122,7 @@ abstract class _UserStore with Store {
       this.isLoggedIn = false;
       this.success = false;
       errorStore.setErrorMessage(DioErrorUtil.handleError(error));
+      errorStore.setErrorCode(error.response?.statusCode);
     });
   }
 
@@ -134,6 +135,7 @@ abstract class _UserStore with Store {
       this.person = person;
     }).catchError((error) {
       errorStore.setErrorMessage(DioErrorUtil.handleError(error));
+      errorStore.setErrorCode(error.response?.statusCode ?? 0);
     });
   }
 

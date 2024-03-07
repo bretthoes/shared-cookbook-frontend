@@ -3,6 +3,7 @@ import 'package:boilerplate/core/widgets/back_button_app_bar_widget.dart';
 import 'package:boilerplate/core/widgets/square_button_widget.dart';
 import 'package:boilerplate/core/widgets/textfield_widget.dart';
 import 'package:boilerplate/di/service_locator.dart';
+import 'package:boilerplate/enums/http_code.dart';
 import 'package:boilerplate/presentation/home/store/theme/theme_store.dart';
 import 'package:boilerplate/presentation/login/store/login_store.dart';
 import 'package:boilerplate/presentation/register/set_password.dart';
@@ -118,10 +119,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
   // helper:--------------------------------------------------------------------
   Future<bool> emailIsAvailable() async {
     await _userStore.getPersonByEmail(_userEmailController.text);
-    // TODO need a better way to check for 404 response specifically.
-    // we're looking for 404 not found to indicate email wasn't found
-    //  and there wasn't a server error or other unknown issue.
-    return _userStore.errorStore.errorMessage.contains("404");
+    // a response of 'not found' indicates email is available
+    return _userStore.errorStore.errorCode == HttpCode.notFound.value;
   }
 
   // dispose:-------------------------------------------------------------------

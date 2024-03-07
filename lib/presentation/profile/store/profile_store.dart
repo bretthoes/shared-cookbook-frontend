@@ -46,6 +46,7 @@ abstract class _ProfileStore with Store {
       this.person = person;
     }).catchError((error) {
       errorStore.setErrorMessage(DioErrorUtil.handleError(error));
+      errorStore.setErrorCode(error.response?.statusCode);
     });
   }
 }
