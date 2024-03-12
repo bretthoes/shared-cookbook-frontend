@@ -2,7 +2,6 @@ import 'package:another_flushbar/flushbar_helper.dart';
 import 'package:boilerplate/core/widgets/progress_indicator_widget.dart';
 import 'package:boilerplate/di/service_locator.dart';
 import 'package:boilerplate/presentation/cookbook/store/cookbook_store.dart';
-import 'package:boilerplate/presentation/login/store/login_store.dart';
 import 'package:boilerplate/utils/locale/app_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
@@ -15,16 +14,10 @@ class FeedScreen extends StatefulWidget {
 class _FeedScreenState extends State<FeedScreen> {
   //stores:-----------------------------------------------  ----------------------
   final CookbookStore _cookbookStore = getIt<CookbookStore>();
-  final UserStore _loginStore = getIt<UserStore>();
 
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-
-    // check to see if already called api
-    if (!_cookbookStore.loading) {
-      _cookbookStore.getCookbooks(_loginStore.personId);
-    }
   }
 
   @override

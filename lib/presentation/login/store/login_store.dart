@@ -73,12 +73,10 @@ abstract class _UserStore with Store {
   ObservableFuture<Person?> fetchPersonFuture = ObservableFuture.value(null);
 
   @observable
-  Person? person;
+  late Person? person;
 
   @computed
   bool get isLoading => loginFuture.status == FutureStatus.pending;
-
-  late int personId;
 
   // actions:-------------------------------------------------------------------
   @action
@@ -93,7 +91,7 @@ abstract class _UserStore with Store {
         await _saveLoginStatusUseCase.call(params: true);
         this.isLoggedIn = true;
         this.success = true;
-        this.personId = value.personId ?? 0;
+        this.person = value;
       }
     }).catchError((e) {
       print(e);
@@ -115,7 +113,7 @@ abstract class _UserStore with Store {
         await _saveLoginStatusUseCase.call(params: true);
         this.isLoggedIn = true;
         this.success = true;
-        this.personId = value.personId ?? 0;
+        this.person = value;
       }
     }).catchError((error) {
       print(error);

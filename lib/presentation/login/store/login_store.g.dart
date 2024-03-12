@@ -71,10 +71,14 @@ mixin _$UserStore on _UserStore, Store {
     return super.person;
   }
 
+  bool _personIsInitialized = false;
+
   @override
   set person(Person? value) {
-    _$personAtom.reportWrite(value, super.person, () {
+    _$personAtom.reportWrite(value, _personIsInitialized ? super.person : null,
+        () {
       super.person = value;
+      _personIsInitialized = true;
     });
   }
 

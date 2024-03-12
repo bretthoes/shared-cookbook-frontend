@@ -1,5 +1,6 @@
 import 'package:another_flushbar/flushbar_helper.dart';
 import 'package:boilerplate/core/widgets/progress_indicator_widget.dart';
+import 'package:boilerplate/core/widgets/square_button_widget.dart';
 import 'package:boilerplate/data/sharedpref/constants/preferences.dart';
 import 'package:boilerplate/di/service_locator.dart';
 import 'package:boilerplate/presentation/home/store/language/language_store.dart';
@@ -73,8 +74,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
               height: 120,
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(100),
-                child: const Image(
-                  image: AssetImage('assets/images/blank-profile-picture.png'),
+                child: Image(
+                  image: _loginStore.person?.imagePath !=
+                          null // TODO null or whitespace check
+                      ? AssetImage('person_image_path') // TODO load from url
+                      : AssetImage('assets/images/blank-profile-picture.png'),
                 ),
               ),
             ),
@@ -96,6 +100,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
               style: Theme.of(context).textTheme.bodyMedium,
             ),
             const SizedBox(height: 10),
+            SquareButtonWidget(
+              buttonColor: Colors.black,
+              onPressed: () {},
+            ),
             const Divider(),
             CustomSettingsGroup(title: 'General', children: <Widget>[
               _buildLanguage(),

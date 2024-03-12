@@ -24,7 +24,10 @@ class _CookbookListScreenState extends State<CookbookListScreen> {
 
     // check to see if already called api
     if (!_cookbookStore.loading) {
-      _cookbookStore.getCookbooks(_loginStore.personId);
+      var personId = _loginStore.person?.personId ?? 0;
+      if (personId > 0) {
+        _cookbookStore.getCookbooks(personId);
+      }
     }
   }
 
