@@ -15,7 +15,7 @@ class Endpoints {
 
   // cookbook endpoints
   static String getCookbooks(int personId) =>
-      '$baseUrl/Cookbooks/person/$personId';
+      '$baseUrl/Cookbooks/by-person/$personId';
 
   // person endpoints
   static String getPerson(int personId) => '$baseUrl/People/$personId';
