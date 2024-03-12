@@ -7,6 +7,7 @@ import 'package:boilerplate/presentation/home/store/language/language_store.dart
 import 'package:boilerplate/presentation/home/store/theme/theme_store.dart';
 import 'package:boilerplate/presentation/login/store/login_store.dart';
 import 'package:boilerplate/presentation/profile/custom_settings_group.dart';
+import 'package:boilerplate/presentation/profile/edit_profile.dart';
 import 'package:boilerplate/utils/locale/app_localization.dart';
 import 'package:boilerplate/utils/routes/routes.dart';
 import 'package:flutter/material.dart';
@@ -102,7 +103,18 @@ class _ProfileScreenState extends State<ProfileScreen> {
             const SizedBox(height: 10),
             SquareButtonWidget(
               buttonColor: Colors.black,
-              onPressed: () {},
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => EditProfileScreen(),
+                  ),
+                );
+              },
+              buttonText: "Edit Profile",
+              buttonTextSize: 12,
+              width: 30,
+              height: 30,
             ),
             const Divider(),
             CustomSettingsGroup(title: 'General', children: <Widget>[

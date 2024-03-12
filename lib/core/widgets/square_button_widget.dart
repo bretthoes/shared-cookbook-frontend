@@ -4,34 +4,39 @@ class SquareButtonWidget extends StatelessWidget {
   final String? buttonText;
   final Color buttonColor;
   final Color textColor;
+  final FontWeight fontWeight;
   final Color? borderColor;
   final String? imagePath;
   final double buttonTextSize;
   final double? height;
   final VoidCallback? onPressed;
   final ShapeBorder shape;
+  final double width;
 
+  // TODO add default styles that are darkmode compatible
   const SquareButtonWidget({
     Key? key,
     this.buttonText,
     required this.buttonColor,
     this.textColor = Colors.white,
+    this.fontWeight = FontWeight.normal,
     this.onPressed,
     this.imagePath,
     this.borderColor,
     this.shape = const StadiumBorder(),
     this.buttonTextSize = 16.0,
-    this.height,
+    this.height = 56,
+    this.width = 90,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
-    double buttonWidthPercentage = 0.9;
+    double buttonWidthPercentage = width / 10;
 
     return Container(
       width: screenWidth * buttonWidthPercentage,
-      height: 56.0,
+      height: height,
       child: ElevatedButton(
         key: this.key,
         style: ButtonStyle(
@@ -58,7 +63,7 @@ class SquareButtonWidget extends StatelessWidget {
               overflow: TextOverflow.clip,
               style: TextStyle(
                 color: textColor,
-                fontWeight: FontWeight.normal,
+                fontWeight: fontWeight,
                 fontSize: buttonTextSize,
               ),
             ),
