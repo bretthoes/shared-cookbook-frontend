@@ -22,6 +22,7 @@ abstract class _FormStore with Store {
 
   void _setupValidations() {
     _disposers = [
+      reaction((_) => name, validateName),
       reaction((_) => email, validateEmail),
       reaction((_) => password, validatePassword),
       reaction((_) => confirmPassword, validateConfirmPassword)
@@ -29,6 +30,9 @@ abstract class _FormStore with Store {
   }
 
   // store variables:-----------------------------------------------------------
+  @observable
+  String name = '';
+
   @observable
   String email = '';
 
@@ -63,6 +67,11 @@ abstract class _FormStore with Store {
 
   // actions:-------------------------------------------------------------------
   @action
+  void setName(String value) {
+    name = value;
+  }
+
+  @action
   void setEmail(String value) {
     email = value;
   }
@@ -75,6 +84,19 @@ abstract class _FormStore with Store {
   @action
   void setConfirmPassword(String value) {
     confirmPassword = value;
+  }
+
+  @action
+  void validateName(String value) {
+    if (value.isEmpty) {
+      formErrorStore.name = "Name can't be empty";
+    } else if (!RegExp(r'^[a-zA-Z0-9_]+$').hasMatch(value)) {
+      formErrorStore.name = 'Name is invalid';
+    } else if (value.length < 3 || value.length > 16) {
+      formErrorStore.name = 'Name should be 3-16 characters';
+    } else {
+      formErrorStore.name = null;
+    }
   }
 
   @action
@@ -91,11 +113,11 @@ abstract class _FormStore with Store {
   @action
   void validatePassword(String value) {
     if (value.isEmpty) {
-      formErrorStore.password = "Password can't be empty";
+      formErrorStore.password = "can't be empty";
     } else if (value.length < 6) {
-      formErrorStore.password = "Password must be at least 6 characters long";
+      formErrorStore.password = "at least 6 characters please";
     } else if (!value.contains(RegExp(r'[0-9]'))) {
-      formErrorStore.password = "Password must contain at least one number";
+      formErrorStore.password = "please add a number";
     } else {
       formErrorStore.password = null;
     }
@@ -128,6 +150,9 @@ abstract class _FormStore with Store {
 class FormErrorStore = _FormErrorStore with _$FormErrorStore;
 
 abstract class _FormErrorStore with Store {
+  @observable
+  String? name;
+
   @observable
   String? email;
 

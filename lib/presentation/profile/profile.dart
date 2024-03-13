@@ -46,11 +46,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   // body methods:--------------------------------------------------------------
   Widget _buildBody() {
-    return Stack(
-      children: <Widget>[
-        _handleErrorMessage(),
-        _buildMainContent(),
-      ],
+    return Material(
+      child: Stack(
+        children: <Widget>[
+          _handleErrorMessage(),
+          _buildMainContent(),
+        ],
+      ),
     );
   }
 
@@ -103,6 +105,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
             const SizedBox(height: 10),
             SquareButtonWidget(
               buttonColor: Colors.black,
+              buttonText: "Edit Profile",
+              buttonTextSize: 12,
+              height: 30,
               onPressed: () {
                 Navigator.push(
                   context,
@@ -111,10 +116,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   ),
                 );
               },
-              buttonText: "Edit Profile",
-              buttonTextSize: 12,
-              width: 30,
-              height: 30,
             ),
             const Divider(),
             CustomSettingsGroup(title: 'General', children: <Widget>[

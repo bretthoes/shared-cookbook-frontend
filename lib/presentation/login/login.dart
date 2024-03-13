@@ -121,6 +121,7 @@ class _LoginScreenState extends State<LoginScreen> {
     );
   }
 
+  // TODO change name to email field
   Widget _buildUserIdField() {
     return Observer(
       builder: (context) {
