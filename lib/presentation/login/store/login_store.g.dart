@@ -107,6 +107,16 @@ mixin _$UserStore on _UserStore, Store {
         .run(() => super.getPersonByEmail(email));
   }
 
+  late final _$updatePersonAsyncAction =
+      AsyncAction('_UserStore.updatePerson', context: context);
+
+  @override
+  Future<dynamic> updatePerson(
+      int personId, String? displayName, String? imagePath, String? password) {
+    return _$updatePersonAsyncAction.run(
+        () => super.updatePerson(personId, displayName, imagePath, password));
+  }
+
   @override
   String toString() {
     return '''

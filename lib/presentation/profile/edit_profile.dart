@@ -1,12 +1,11 @@
 import 'package:another_flushbar/flushbar_helper.dart';
 import 'package:boilerplate/core/stores/form/form_store.dart';
 import 'package:boilerplate/core/widgets/back_button_app_bar_widget.dart';
-import 'package:boilerplate/core/widgets/progress_indicator_widget.dart';
 import 'package:boilerplate/core/widgets/square_button_widget.dart';
 import 'package:boilerplate/core/widgets/textfield_widget.dart';
 import 'package:boilerplate/di/service_locator.dart';
-import 'package:boilerplate/presentation/home/store/language/language_store.dart';
 import 'package:boilerplate/presentation/home/store/theme/theme_store.dart';
+import 'package:boilerplate/presentation/login/store/login_store.dart';
 import 'package:boilerplate/utils/device/device_utils.dart';
 import 'package:boilerplate/utils/locale/app_localization.dart';
 import 'package:flutter/material.dart';
@@ -24,7 +23,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   //stores:---------------------------------------------------------------------
   final ThemeStore _themeStore = getIt<ThemeStore>();
   final FormStore _formStore = getIt<FormStore>();
-  final LanguageStore _languageStore = getIt<LanguageStore>();
+  final UserStore _userStore = getIt<UserStore>();
 
   @override
   void didChangeDependencies() {
@@ -78,6 +77,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
           children: <Widget>[
             //_buildProfileImage(),
             _buildNameField(),
+            SizedBox(height: 16),
             _buildSaveButton()
           ],
         ),
@@ -89,17 +89,17 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
     return Observer(
       builder: (context) {
         return TextFieldWidget(
-          hint: AppLocalizations.of(context).translate('login_et_user_email'),
-          inputType: TextInputType.emailAddress,
+          hint: 'Set your name',
+          inputType: TextInputType.name,
           icon: Icons.person,
           iconColor: _themeStore.darkMode ? Colors.white70 : Colors.black54,
           textController: _nameController,
           inputAction: TextInputAction.next,
           autoFocus: false,
           onChanged: (value) {
-            _formStore.setEmail(_nameController.text);
+            _formStore.setName(_nameController.text);
           },
-          errorText: _formStore.formErrorStore.email,
+          errorText: _formStore.formErrorStore.name,
         );
       },
     );
@@ -118,9 +118,18 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
             return;
           }
           if (true) {
-            //TODO api call to update person
-            // TODO display save successful
-            return;
+            var personId = _userStore.person?.personId ?? 0;
+            if (personId > 0) {
+              await _userStore.updatePerson(
+                personId,
+                _nameController.text,
+                null,
+                null,
+              );
+              //TODO api call to update person
+              // TODO display save successful
+              return;
+            }
           }
         });
   }

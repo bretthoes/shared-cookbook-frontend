@@ -4,6 +4,7 @@ import 'package:boilerplate/domain/usecase/person/find_person_by_email_usecase.d
 import 'package:boilerplate/domain/usecase/person/is_logged_in_usecase.dart';
 import 'package:boilerplate/domain/usecase/person/register_usecase.dart';
 import 'package:boilerplate/domain/usecase/person/save_login_in_status_usecase.dart';
+import 'package:boilerplate/domain/usecase/person/update_person_usecase.dart';
 import 'package:boilerplate/utils/dio/dio_error_util.dart';
 import 'package:mobx/mobx.dart';
 import '../../../domain/entity/person/person.dart';
@@ -21,6 +22,7 @@ abstract class _UserStore with Store {
     this._loginUseCase,
     this._registerUseCase,
     this._findPersonByEmailUseCase,
+    this._updatePersonUseCase,
     this.formErrorStore,
     this.errorStore,
   ) {
@@ -39,6 +41,7 @@ abstract class _UserStore with Store {
   final LoginUseCase _loginUseCase;
   final RegisterUseCase _registerUseCase;
   final FindPersonByEmailUseCase _findPersonByEmailUseCase;
+  final UpdatePersonUseCase _updatePersonUseCase;
 
   // stores:--------------------------------------------------------------------
   // for handling form errors
@@ -134,6 +137,34 @@ abstract class _UserStore with Store {
     }).catchError((error) {
       errorStore.setErrorMessage(DioErrorUtil.handleError(error));
       errorStore.setErrorCode(error.response?.statusCode);
+    });
+  }
+
+  @action
+  Future updatePerson(
+    int personId,
+    String? displayName,
+    String? imagePath,
+    String? password,
+  ) async {
+    var params = UpdatePersonParams(
+      personId: personId,
+      displayName: displayName,
+      imagePath: imagePath,
+      password: password,
+    );
+    final future = _updatePersonUseCase.call(params: params);
+    fetchPersonFuture = ObservableFuture(future);
+
+    await future.then((value) async {
+      if (value != null) {
+        // TODO possibly save status of update
+        this.person = value;
+      }
+    }).catchError((e) {
+      print(e);
+      this.success = false;
+      throw e;
     });
   }
 

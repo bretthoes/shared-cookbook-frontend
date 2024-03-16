@@ -5,6 +5,7 @@ import 'package:boilerplate/data/network/apis/people/person_api.dart';
 import 'package:boilerplate/domain/repository/person/person_repository.dart';
 import 'package:boilerplate/data/sharedpref/shared_preference_helper.dart';
 import 'package:boilerplate/domain/usecase/person/register_usecase.dart';
+import 'package:boilerplate/domain/usecase/person/update_person_usecase.dart';
 import 'package:sembast/sembast.dart';
 import '../../../domain/entity/person/person.dart';
 import '../../../domain/usecase/person/login_usecase.dart';
@@ -35,6 +36,16 @@ class PersonRepositoryImpl extends PersonRepository {
   @override
   Future<Person?> register(RegisterParams params) async {
     return await _personApi.register(params.email, params.password);
+  }
+
+  @override
+  Future<Person?> updatePerson(UpdatePersonParams params) async {
+    return await _personApi.patch(
+      params.personId,
+      params.displayName,
+      params.imagePath,
+      params.password,
+    );
   }
 
   @override

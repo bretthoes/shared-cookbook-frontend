@@ -58,4 +58,26 @@ class PersonApi {
       throw e;
     }
   }
+
+  Future<Person> patch(
+    String displayName,
+    String imagePath,
+    String password,
+  ) async {
+    try {
+      var person = new Person(
+        displayName: displayName,
+        imagePath: imagePath,
+        password: password,
+      );
+      final res = await _dioClient.dio.patch(
+        Endpoints.addPerson,
+        data: person.toMap(),
+      );
+      return Person.fromMap(res.data);
+    } catch (e) {
+      print(e.toString());
+      throw e;
+    }
+  }
 }
