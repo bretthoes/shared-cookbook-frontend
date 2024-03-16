@@ -60,9 +60,10 @@ class PersonApi {
   }
 
   Future<Person> patch(
-    String displayName,
-    String imagePath,
-    String password,
+    int personId,
+    String? displayName,
+    String? imagePath,
+    String? password,
   ) async {
     try {
       var person = new Person(
@@ -71,7 +72,7 @@ class PersonApi {
         password: password,
       );
       final res = await _dioClient.dio.patch(
-        Endpoints.addPerson,
+        Endpoints.patchPerson(personId),
         data: person.toMap(),
       );
       return Person.fromMap(res.data);
