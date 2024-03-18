@@ -50,11 +50,22 @@ class _RegisterScreenState extends State<SetEmailScreen> {
   // body methods:--------------------------------------------------------------
   Widget _buildBody() {
     return Material(
-      child: Column(
+      child: Stack(
+        fit: StackFit.expand,
         children: <Widget>[
-          _buildEmailField(),
-          SizedBox(height: 16.0),
-          _buildNextButton(),
+          Positioned(
+            top: 32,
+            left: 16,
+            right: 16,
+            child: Column(
+              children: [
+                _buildEmailField(),
+                SizedBox(height: 16.0),
+                _buildNextButton(),
+              ],
+              mainAxisAlignment: MainAxisAlignment.center,
+            ),
+          ),
         ],
       ),
     );
