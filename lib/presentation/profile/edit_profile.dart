@@ -26,6 +26,12 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   final UserStore _userStore = getIt<UserStore>();
 
   @override
+  void initState() {
+    super.initState();
+    _nameController.text = _userStore.person?.displayName ?? "";
+  }
+
+  @override
   void didChangeDependencies() {
     super.didChangeDependencies();
   }

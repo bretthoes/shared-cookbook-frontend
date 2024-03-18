@@ -1,4 +1,3 @@
-// TODO remove id, make params final, test
 class Person {
   int? personId;
   String? displayName;

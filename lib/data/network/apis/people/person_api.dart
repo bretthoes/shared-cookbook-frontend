@@ -66,19 +66,51 @@ class PersonApi {
     String? password,
   ) async {
     try {
-      var person = new Person(
-        displayName: displayName,
-        imagePath: imagePath,
-        password: password,
-      );
+      var patchDocument = _buildPatchDocument(displayName, imagePath, password);
+
       final res = await _dioClient.dio.patch(
         Endpoints.patchPerson(personId),
-        data: person.toMap(),
+        data: patchDocument,
       );
+
       return Person.fromMap(res.data);
     } catch (e) {
       print(e.toString());
       throw e;
     }
+  }
+
+  List<Map<String, dynamic>> _buildPatchDocument(
+    String? displayName,
+    String? imagePath,
+    String? password,
+  ) {
+    var patchDocument = <Map<String, dynamic>>[];
+
+    if (displayName != null && displayName.trim().isNotEmpty) {
+      patchDocument.add({
+        "op": "replace",
+        "path": "/displayName",
+        "value": displayName,
+      });
+    }
+
+    if (imagePath != null && imagePath.trim().isNotEmpty) {
+      patchDocument.add({
+        "op": "replace",
+        "path": "/imagePath",
+        "value": imagePath,
+      });
+    }
+
+    if (password != null && password.trim().isNotEmpty) {
+      patchDocument.add({
+        "op": "replace",
+        "path": "/password",
+        "value": password,
+      });
+    }
+
+    return patchDocument;
   }
 }

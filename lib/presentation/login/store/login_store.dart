@@ -158,12 +158,10 @@ abstract class _UserStore with Store {
 
     await future.then((value) async {
       if (value != null) {
-        // TODO possibly save status of update
         this.person = value;
       }
     }).catchError((e) {
       print(e);
-      this.success = false;
       throw e;
     });
   }

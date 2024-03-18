@@ -13,6 +13,7 @@ import 'package:boilerplate/domain/usecase/person/is_logged_in_usecase.dart';
 import 'package:boilerplate/domain/usecase/person/login_usecase.dart';
 import 'package:boilerplate/domain/usecase/person/register_usecase.dart';
 import 'package:boilerplate/domain/usecase/person/save_login_in_status_usecase.dart';
+import 'package:boilerplate/domain/usecase/person/update_person_usecase.dart';
 
 import '../../../di/service_locator.dart';
 
@@ -36,6 +37,9 @@ mixin UseCaseModule {
     );
     getIt.registerSingleton<FindPersonByEmailUseCase>(
       FindPersonByEmailUseCase(getIt<PersonRepository>()),
+    );
+    getIt.registerSingleton<UpdatePersonUseCase>(
+      UpdatePersonUseCase(getIt<PersonRepository>()),
     );
 
     // cookbook:----------------------------------------------------------------
