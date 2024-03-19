@@ -11,7 +11,6 @@ import 'package:boilerplate/presentation/profile/edit_profile.dart';
 import 'package:boilerplate/utils/locale/app_localization.dart';
 import 'package:boilerplate/utils/routes/routes.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_settings_screen_ex/flutter_settings_screen_ex.dart';
 import 'package:material_dialog/material_dialog.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -54,8 +53,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   // body methods:--------------------------------------------------------------
   Widget _buildBody() {
     return Material(
-      child: Stack(
-        fit: StackFit.expand,
+      child: ListView(
         children: <Widget>[
           Positioned(
             top: 32,
@@ -96,47 +94,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   _buildReportBug(),
                   _buildFeedback(),
                 ]),
-                // _handleErrorMessage(),
-                // _buildMainContent(),
               ],
               mainAxisAlignment: MainAxisAlignment.center,
             ),
           ),
         ],
       ),
-    );
-  }
-
-  Widget _buildMainContent() {
-    return Observer(
-      builder: (context) {
-        return _loginStore.isLoading
-            ? CustomProgressIndicatorWidget()
-            : Material(child: _buildListView());
-      },
-    );
-  }
-
-  Widget _buildListView() {
-    return Scaffold(
-      body: SafeArea(
-        child: ListView(
-          padding: EdgeInsets.all(24),
-          children: [],
-        ),
-      ),
-    );
-  }
-
-  Widget _handleErrorMessage() {
-    return Observer(
-      builder: (context) {
-        if (_loginStore.errorStore.errorMessage.isNotEmpty) {
-          return _showErrorMessage(_loginStore.errorStore.errorMessage);
-        }
-
-        return SizedBox.shrink();
-      },
     );
   }
 
@@ -171,21 +134,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
             ),
       ),
     );
-  }
-
-  // General Methods:-----------------------------------------------------------
-  _showErrorMessage(String message) {
-    Future.delayed(Duration(milliseconds: 0), () {
-      if (message.isNotEmpty) {
-        FlushbarHelper.createError(
-          message: message,
-          title: AppLocalizations.of(context).translate('home_tv_error'),
-          duration: Duration(seconds: 3),
-        )..show(context);
-      }
-    });
-
-    return SizedBox.shrink();
   }
 
   _buildLanguage() {
