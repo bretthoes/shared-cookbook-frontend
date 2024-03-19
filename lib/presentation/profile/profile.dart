@@ -34,7 +34,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return _buildBody();
+    return Scaffold(
+      //appBar: BackButtonAppBar(),
+      body: PageView(
+        children: [
+          _buildBody(),
+        ],
+      ),
+    );
   }
 
   // dispose:-------------------------------------------------------------------
@@ -48,9 +55,53 @@ class _ProfileScreenState extends State<ProfileScreen> {
   Widget _buildBody() {
     return Material(
       child: Stack(
+        fit: StackFit.expand,
         children: <Widget>[
-          _handleErrorMessage(),
-          _buildMainContent(),
+          Positioned(
+            top: 32,
+            left: 16,
+            right: 16,
+            child: Column(
+              children: [
+                _buildProfileImage(),
+                const SizedBox(height: 10),
+                Text(
+                  _loginStore.person?.displayName ?? "No name yet!",
+                  textAlign: TextAlign.center,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  softWrap: false,
+                  style: Theme.of(context).textTheme.headlineMedium,
+                ),
+                Text(
+                  _loginStore.person?.email ?? "email",
+                  textAlign: TextAlign.center,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  softWrap: false,
+                  style: Theme.of(context).textTheme.bodyMedium,
+                ),
+                const SizedBox(height: 10),
+                _buildEditButton(),
+                const Divider(),
+                CustomSettingsGroup(title: 'General', children: <Widget>[
+                  _buildLanguage(),
+                  _buildDarkMode(),
+                ]),
+                CustomSettingsGroup(title: 'Account', children: <Widget>[
+                  _buildLogout(),
+                  _buildDeleteAccount(),
+                ]),
+                CustomSettingsGroup(title: 'Feedback', children: <Widget>[
+                  _buildReportBug(),
+                  _buildFeedback(),
+                ]),
+                // _handleErrorMessage(),
+                // _buildMainContent(),
+              ],
+              mainAxisAlignment: MainAxisAlignment.center,
+            ),
+          ),
         ],
       ),
     );
@@ -71,66 +122,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
       body: SafeArea(
         child: ListView(
           padding: EdgeInsets.all(24),
-          children: [
-            SizedBox(
-              width: 120,
-              height: 120,
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(100),
-                child: Image(
-                  image: _loginStore.person?.imagePath !=
-                          null // TODO null or whitespace check
-                      ? AssetImage('person_image_path') // TODO load from url
-                      : AssetImage('assets/images/blank-profile-picture.png'),
-                ),
-              ),
-            ),
-            const SizedBox(height: 10),
-            Text(
-              _loginStore.person?.displayName ?? "No name yet!",
-              textAlign: TextAlign.center,
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
-              softWrap: false,
-              style: Theme.of(context).textTheme.headlineMedium,
-            ),
-            Text(
-              _loginStore.person?.email ?? "email",
-              textAlign: TextAlign.center,
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
-              softWrap: false,
-              style: Theme.of(context).textTheme.bodyMedium,
-            ),
-            const SizedBox(height: 10),
-            SquareButtonWidget(
-              buttonColor: Colors.black,
-              buttonText: "Edit Profile",
-              buttonTextSize: 12,
-              height: 30,
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => EditProfileScreen(),
-                  ),
-                );
-              },
-            ),
-            const Divider(),
-            CustomSettingsGroup(title: 'General', children: <Widget>[
-              _buildLanguage(),
-              _buildDarkMode(),
-            ]),
-            CustomSettingsGroup(title: 'Account', children: <Widget>[
-              _buildLogout(),
-              _buildDeleteAccount(),
-            ]),
-            CustomSettingsGroup(title: 'Feedback', children: <Widget>[
-              _buildReportBug(),
-              _buildFeedback(),
-            ]),
-          ],
+          children: [],
         ),
       ),
     );
@@ -145,6 +137,39 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
         return SizedBox.shrink();
       },
+    );
+  }
+
+  Widget _buildEditButton() {
+    return SquareButtonWidget(
+      buttonColor: Colors.black,
+      buttonText: "Edit Profile",
+      buttonTextSize: 12,
+      height: 30,
+      width: 124,
+      onPressed: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => EditProfileScreen(),
+          ),
+        );
+      },
+    );
+  }
+
+  Widget _buildProfileImage() {
+    return SizedBox(
+      width: 120,
+      height: 120,
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(100),
+        child: Image(
+            image: isNullOrWhitespace(_loginStore.person?.imagePath)
+                ? AssetImage('assets/images/blank-profile-picture.png')
+                : AssetImage(_loginStore.person!.imagePath!) // TODO load url
+            ),
+      ),
     );
   }
 
@@ -247,10 +272,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
       title: 'Logout',
       leading: Icon(Icons.logout),
       onTap: () {
-        SharedPreferences.getInstance().then((preference) {
-          preference.setBool(Preferences.is_logged_in, false);
-          Navigator.of(context).pushReplacementNamed(Routes.login);
-        });
+        SharedPreferences.getInstance().then(
+          (preference) {
+            preference.setBool(Preferences.is_logged_in, false);
+            Navigator.of(context).pushReplacementNamed(Routes.login);
+          },
+        );
       },
     );
   }
@@ -283,5 +310,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
       leading: Icon(Icons.thumb_up),
       onTap: () {},
     );
+  }
+
+  bool isNullOrWhitespace(String? input) {
+    return input == null || input.trim().isEmpty;
   }
 }

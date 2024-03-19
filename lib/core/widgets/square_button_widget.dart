@@ -26,16 +26,13 @@ class SquareButtonWidget extends StatelessWidget {
     this.shape = const StadiumBorder(),
     this.buttonTextSize = 16.0,
     this.height = 56,
-    this.width = 90,
+    this.width = 600,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    double screenWidth = MediaQuery.of(context).size.width;
-    double buttonWidthPercentage = width / 10;
-
     return Container(
-      width: screenWidth * buttonWidthPercentage,
+      width: width,
       height: height,
       child: ElevatedButton(
         key: this.key,
