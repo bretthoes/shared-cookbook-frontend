@@ -80,11 +80,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 const SizedBox(height: 10),
                 _buildEditButton(),
                 const Divider(),
-                CustomSettingsGroup(title: 'General', children: <Widget>[
+                CustomSettingsGroup(title: 'Preferences', children: <Widget>[
                   _buildLanguage(),
                   _buildDarkMode(),
                 ]),
-                CustomSettingsGroup(title: 'Account', children: <Widget>[
+                CustomSettingsGroup(title: 'Profile', children: <Widget>[
+                  _buildFavorites(),
+                  _buildPrint(),
+                  _buildEdit(),
                   _buildLogout(),
                   _buildDeleteAccount(),
                 ]),
@@ -209,6 +212,37 @@ class _ProfileScreenState extends State<ProfileScreen> {
       ),
       onTap: () {
         _themeStore.changeBrightnessToDark(!_themeStore.darkMode);
+      },
+    );
+  }
+
+  _buildFavorites() {
+    return SimpleSettingsTile(
+      title: 'Favorites',
+      leading: Icon(Icons.favorite),
+      onTap: () {},
+    );
+  }
+
+  _buildPrint() {
+    return SimpleSettingsTile(
+      title: 'Print',
+      leading: Icon(Icons.print),
+      onTap: () {},
+    );
+  }
+
+  _buildEdit() {
+    return SimpleSettingsTile(
+      title: 'Edit profile',
+      leading: Icon(Icons.edit),
+      onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => EditProfileScreen(),
+          ),
+        );
       },
     );
   }
