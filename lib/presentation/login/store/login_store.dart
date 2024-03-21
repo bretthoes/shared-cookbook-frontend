@@ -96,11 +96,12 @@ abstract class _UserStore with Store {
         this.success = true;
         this.person = value;
       }
-    }).catchError((e) {
-      print(e);
+    }).catchError((error) {
+      print(error);
       this.isLoggedIn = false;
       this.success = false;
-      throw e;
+      errorStore.setErrorMessage(DioErrorUtil.handleError(error));
+      errorStore.setErrorCode(error.response?.statusCode);
     });
   }
 

@@ -5,6 +5,7 @@ import 'package:boilerplate/core/widgets/progress_indicator_widget.dart';
 import 'package:boilerplate/core/widgets/square_button_widget.dart';
 import 'package:boilerplate/core/widgets/textfield_widget.dart';
 import 'package:boilerplate/data/sharedpref/constants/preferences.dart';
+import 'package:boilerplate/enums/http_code.dart';
 import 'package:boilerplate/presentation/home/store/theme/theme_store.dart';
 import 'package:boilerplate/presentation/landing/landing.dart';
 import 'package:boilerplate/presentation/login/store/login_store.dart';
@@ -164,14 +165,31 @@ class _LoginScreenState extends State<LoginScreen> {
       buttonColor: Colors.red,
       textColor: Colors.white,
       onPressed: () async {
-        if (_formStore.canLogin) {
-          DeviceUtils.hideKeyboard(context);
-          _userStore.login(_userEmailController.text, _passwordController.text);
-        } else {
-          _showErrorMessage('Please fill in all fields');
-        }
+        await _trySignIn();
       },
     );
+  }
+
+  Future<void> _trySignIn() async {
+    _formStore.validateAll();
+    if (_formStore.canLogin) {
+      DeviceUtils.hideKeyboard(context);
+      await _userStore.login(
+          _userEmailController.text, _passwordController.text);
+      if (_userStore.errorStore.errorMessage.isNotEmpty) {
+        _updateErrorMessage();
+      }
+    }
+  }
+
+  void _updateErrorMessage() {
+    if (_userStore.errorStore.errorCode == HttpCode.notFound.value) {
+      _formStore.formErrorStore.password = 'this email wasn\'t found';
+    } else if (_userStore.errorStore.errorCode == HttpCode.unauthorized.value) {
+      _formStore.formErrorStore.password = 'this password isn\'t right';
+    } else {
+      _formStore.formErrorStore.password = 'Error occurred';
+    }
   }
 
   Widget navigate(BuildContext context) {
