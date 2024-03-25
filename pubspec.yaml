@@ -36,7 +36,6 @@ dependencies:
   # H
   http: ^1.2.0
   # I
-  intl: ^0.18.0
   # J
   json_serializable: ^6.6.1
   # K

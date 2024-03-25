@@ -76,7 +76,7 @@ abstract class _UserStore with Store {
   ObservableFuture<Person?> fetchPersonFuture = ObservableFuture.value(null);
 
   @observable
-  late Person? person;
+  Person? person;
 
   @computed
   bool get isLoading => loginFuture.status == FutureStatus.pending;
