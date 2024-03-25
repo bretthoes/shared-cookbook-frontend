@@ -56,7 +56,7 @@ mixin _$ErrorStore on _ErrorStore, Store {
   }
 
   @override
-  void setErrorCode(int code) {
+  void setErrorCode(int? code) {
     final _$actionInfo = _$_ErrorStoreActionController.startAction(
         name: '_ErrorStore.setErrorCode');
     try {

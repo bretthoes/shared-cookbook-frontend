@@ -29,8 +29,8 @@ abstract class _ErrorStore with Store {
   }
 
   @action
-  void setErrorCode(int code) {
-    this.errorCode = code;
+  void setErrorCode(int? code) {
+    this.errorCode = code ?? 0;
   }
 
   @action
