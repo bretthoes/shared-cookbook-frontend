@@ -69,8 +69,7 @@ class _CookbookListScreenState extends State<CookbookListScreen> {
           )
         : Center(
             child: Text(
-              AppLocalizations.of(context)
-                  .translate('home_tv_no_cookbook_found'),
+              AppLocalizations.of(context).translate('no_cookbooks_yet'),
             ),
           );
   }
@@ -122,7 +121,7 @@ class _CookbookListScreenState extends State<CookbookListScreen> {
       if (message.isNotEmpty) {
         FlushbarHelper.createError(
           message: message,
-          title: AppLocalizations.of(context).translate('home_tv_error'),
+          title: AppLocalizations.of(context).translate('error'),
           duration: Duration(seconds: 3),
         )..show(context);
       }

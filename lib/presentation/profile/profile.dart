@@ -58,7 +58,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
               _buildProfileImage(),
               const SizedBox(height: 10),
               Text(
-                _loginStore.person?.displayName ?? "No name yet!",
+                _loginStore.person?.displayName ??
+                    AppLocalizations.of(context).translate('no_name_yet'),
                 textAlign: TextAlign.center,
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
@@ -66,7 +67,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 style: Theme.of(context).textTheme.headlineMedium,
               ),
               Text(
-                _loginStore.person?.email ?? "email",
+                _loginStore.person?.email ??
+                    AppLocalizations.of(context).translate('email'),
                 textAlign: TextAlign.center,
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
@@ -76,23 +78,31 @@ class _ProfileScreenState extends State<ProfileScreen> {
               const SizedBox(height: 10),
               _buildEditButton(),
               const Divider(),
-              CustomSettingsGroup(title: 'Preferences', children: <Widget>[
-                _buildLanguage(),
-                _buildDarkMode(),
-              ]),
-              CustomSettingsGroup(title: 'Content', children: <Widget>[
-                _buildFavorites(),
-                _buildPrint(),
-              ]),
-              CustomSettingsGroup(title: 'Profile', children: <Widget>[
-                _buildEdit(),
-                _buildLogout(),
-                _buildDeleteAccount(),
-              ]),
-              CustomSettingsGroup(title: 'Feedback', children: <Widget>[
-                _buildReportBug(),
-                _buildFeedback(),
-              ]),
+              CustomSettingsGroup(
+                  title: AppLocalizations.of(context).translate('preferences'),
+                  children: <Widget>[
+                    _buildLanguage(),
+                    _buildDarkMode(),
+                  ]),
+              CustomSettingsGroup(
+                  title: AppLocalizations.of(context).translate('content'),
+                  children: <Widget>[
+                    _buildFavorites(),
+                    _buildPrint(),
+                  ]),
+              CustomSettingsGroup(
+                  title: AppLocalizations.of(context).translate('profile'),
+                  children: <Widget>[
+                    _buildEdit(),
+                    _buildLogout(),
+                    _buildDeleteAccount(),
+                  ]),
+              CustomSettingsGroup(
+                  title: AppLocalizations.of(context).translate('feedback'),
+                  children: <Widget>[
+                    _buildReportBug(),
+                    _buildFeedback(),
+                  ]),
             ],
             mainAxisAlignment: MainAxisAlignment.center,
           ),
@@ -104,7 +114,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   Widget _buildEditButton() {
     return SquareButtonWidget(
       buttonColor: Colors.black,
-      buttonText: "Edit Profile",
+      buttonText: AppLocalizations.of(context).translate('edit_profile'),
       buttonTextSize: 12,
       height: 30,
       width: 124,
@@ -136,7 +146,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   _buildLanguage() {
     return SimpleSettingsTile(
-      title: 'Language',
+      title: AppLocalizations.of(context).translate('language'),
       leading: Icon(Icons.language),
       onTap: () {
         _buildLanguageDialog();
@@ -151,7 +161,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
         borderRadius: 5.0,
         enableFullWidth: true,
         title: Text(
-          AppLocalizations.of(context).translate('home_tv_choose_language'),
+          AppLocalizations.of(context).translate('choose_language'),
           style: TextStyle(
             color: Colors.white,
             fontSize: 16.0,
@@ -203,7 +213,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   _buildDarkMode() {
     return SimpleSettingsTile(
-      title: 'Dark Mode',
+      title: AppLocalizations.of(context).translate('dark_mode'),
       leading: Icon(
         _themeStore.darkMode ? Icons.brightness_5 : Icons.brightness_3,
       ),
@@ -215,7 +225,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   _buildFavorites() {
     return SimpleSettingsTile(
-      title: 'Favorites',
+      title: AppLocalizations.of(context).translate('favorites'),
       leading: Icon(Icons.favorite),
       onTap: () {},
     );
@@ -223,7 +233,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   _buildPrint() {
     return SimpleSettingsTile(
-      title: 'Print',
+      title: AppLocalizations.of(context).translate('print'),
       leading: Icon(Icons.print),
       onTap: () {},
     );
@@ -231,7 +241,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   _buildEdit() {
     return SimpleSettingsTile(
-      title: 'Edit profile',
+      title: AppLocalizations.of(context).translate('edit_profile'),
       leading: Icon(Icons.edit),
       onTap: () {
         Navigator.push(
@@ -246,7 +256,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   _buildLogout() {
     return SimpleSettingsTile(
-      title: 'Logout',
+      title: AppLocalizations.of(context).translate('sign_out'),
       leading: Icon(Icons.logout),
       onTap: () {
         SharedPreferences.getInstance().then(
@@ -262,7 +272,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   _buildDeleteAccount() {
     // TODO implement deactivating account; currently just logs out
     return SimpleSettingsTile(
-      title: 'Delete Account',
+      title: AppLocalizations.of(context).translate('delete_account'),
       leading: Icon(Icons.delete_forever),
       onTap: () {
         SharedPreferences.getInstance().then((preference) {
@@ -275,7 +285,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   _buildReportBug() {
     return SimpleSettingsTile(
-      title: 'Report Bug',
+      title: AppLocalizations.of(context).translate('report_bug'),
       leading: Icon(Icons.bug_report),
       onTap: () {},
     );
@@ -283,7 +293,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   _buildFeedback() {
     return SimpleSettingsTile(
-      title: 'Send Feedback',
+      title: AppLocalizations.of(context).translate('send_feedback'),
       leading: Icon(Icons.thumb_up),
       onTap: () {},
     );

@@ -1,6 +1,7 @@
 import 'package:boilerplate/core/widgets/square_button_widget.dart';
 import 'package:boilerplate/presentation/login/login.dart';
 import 'package:boilerplate/presentation/register/set_email.dart';
+import 'package:boilerplate/utils/locale/app_localization.dart';
 import 'package:flutter/material.dart';
 
 class LandingScreen extends StatelessWidget {
@@ -25,7 +26,7 @@ class LandingScreen extends StatelessWidget {
               children: [
                 SquareButtonWidget(
                   buttonColor: Colors.red,
-                  buttonText: "Sign in",
+                  buttonText: AppLocalizations.of(context).translate('sign_in'),
                   onPressed: () {
                     Navigator.push(
                       context,
@@ -37,7 +38,8 @@ class LandingScreen extends StatelessWidget {
                 SquareButtonWidget(
                   buttonColor: Colors.white,
                   textColor: Colors.black,
-                  buttonText: "Create an account",
+                  buttonText: AppLocalizations.of(context)
+                      .translate('create_an_account'),
                   onPressed: () {
                     Navigator.push(
                       context,
@@ -47,7 +49,7 @@ class LandingScreen extends StatelessWidget {
                 ),
                 SizedBox(height: 16.0),
                 Text(
-                  "Skip",
+                  AppLocalizations.of(context).translate('skip'),
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     color: Colors.white70,

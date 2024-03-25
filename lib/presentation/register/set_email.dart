@@ -80,7 +80,7 @@ class _RegisterScreenState extends State<SetEmailScreen> {
         return Container(
           width: screenWidth * buttonWidthPercentage,
           child: TextFieldWidget(
-            hint: AppLocalizations.of(context).translate('login_et_user_email'),
+            hint: AppLocalizations.of(context).translate('enter_email'),
             padding: EdgeInsets.only(top: 16.0),
             inputType: TextInputType.emailAddress,
             icon: Icons.email,
@@ -104,7 +104,7 @@ class _RegisterScreenState extends State<SetEmailScreen> {
 
   Widget _buildNextButton() {
     return SquareButtonWidget(
-        buttonText: AppLocalizations.of(context).translate('register_next'),
+        buttonText: AppLocalizations.of(context).translate('next'),
         buttonColor: Colors.red,
         textColor: Colors.white,
         onPressed: () async {
@@ -115,7 +115,7 @@ class _RegisterScreenState extends State<SetEmailScreen> {
           }
           if (!await _emailIsAvailable()) {
             _formStore.formErrorStore.email =
-                AppLocalizations.of(context).translate('register_email_taken');
+                AppLocalizations.of(context).translate('email_already_taken');
             return;
           }
           _navigateNext();

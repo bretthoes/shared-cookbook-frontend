@@ -1,3 +1,4 @@
+// TODO localize all strings in this file
 import 'package:boilerplate/core/stores/error/error_store.dart';
 import 'package:mobx/mobx.dart';
 import 'package:validators/validators.dart';
@@ -113,11 +114,11 @@ abstract class _FormStore with Store {
   @action
   void validatePassword(String value) {
     if (value.isEmpty) {
-      formErrorStore.password = "can't be empty";
+      formErrorStore.password = "Password can't be empty";
     } else if (value.length < 6) {
-      formErrorStore.password = "at least 6 characters please";
+      formErrorStore.password = "Should be at least 6 characters";
     } else if (!value.contains(RegExp(r'[0-9]'))) {
-      formErrorStore.password = "please add a number";
+      formErrorStore.password = "Should have a number";
     } else {
       formErrorStore.password = null;
     }

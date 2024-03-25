@@ -28,7 +28,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   @override
   void initState() {
     super.initState();
-    _nameController.text = _userStore.person?.displayName ?? "";
+    _nameController.text = _userStore.person?.displayName ?? '';
   }
 
   @override
@@ -91,7 +91,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
     return Observer(
       builder: (context) {
         return TextFieldWidget(
-          hint: 'Set your name',
+          hint: AppLocalizations.of(context).translate('set_your_name'),
           inputType: TextInputType.name,
           icon: Icons.person,
           iconColor: _themeStore.darkMode ? Colors.white70 : Colors.black54,
@@ -109,7 +109,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
 
   Widget _buildSaveButton() {
     return SquareButtonWidget(
-        buttonText: 'Save',
+        buttonText: AppLocalizations.of(context).translate('save'),
         buttonColor: Colors.red,
         textColor: Colors.white,
         onPressed: () async {
@@ -154,7 +154,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
       if (message.isNotEmpty) {
         FlushbarHelper.createError(
           message: message,
-          title: AppLocalizations.of(context).translate('home_tv_error'),
+          title: AppLocalizations.of(context).translate('error'),
           duration: Duration(seconds: 3),
         )..show(context);
       }

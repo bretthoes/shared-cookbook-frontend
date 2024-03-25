@@ -62,15 +62,15 @@ class _HomeScreenState extends State<HomeScreen> {
           tabs: [
             GButton(
               icon: Icons.home,
-              text: AppLocalizations.of(context).translate('home_tv_home'),
+              text: AppLocalizations.of(context).translate('home'),
             ),
             GButton(
               icon: Icons.cookie,
-              text: AppLocalizations.of(context).translate('home_tv_cookbooks'),
+              text: AppLocalizations.of(context).translate('cookbooks'),
             ),
             GButton(
               icon: Icons.person,
-              text: AppLocalizations.of(context).translate('home_tv_profile'),
+              text: AppLocalizations.of(context).translate('profile'),
             )
           ],
         ),
@@ -81,7 +81,7 @@ class _HomeScreenState extends State<HomeScreen> {
   // app bar methods:-----------------------------------------------------------
   PreferredSizeWidget _buildAppBar() {
     return AppBar(
-      title: Text('Shared Cookbook'),
+      title: Text(AppLocalizations.of(context).translate('shared_cookbook')),
       actions: _buildActions(context),
     );
   }

@@ -25,7 +25,7 @@ class LoginScreen extends StatefulWidget {
 
 class _LoginScreenState extends State<LoginScreen> {
   //text controllers:-----------------------------------------------------------
-  TextEditingController _userEmailController = TextEditingController();
+  TextEditingController _emailController = TextEditingController();
   TextEditingController _passwordController = TextEditingController();
 
   //stores:---------------------------------------------------------------------
@@ -87,7 +87,7 @@ class _LoginScreenState extends State<LoginScreen> {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            _buildUserIdField(),
+            _buildEmailField(),
             _buildPasswordField(),
             _buildForgotPasswordButton(),
             _buildSignInButton()
@@ -98,19 +98,19 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   // TODO change name to email field
-  Widget _buildUserIdField() {
+  Widget _buildEmailField() {
     return Observer(
       builder: (context) {
         return TextFieldWidget(
-          hint: AppLocalizations.of(context).translate('login_et_user_email'),
+          hint: AppLocalizations.of(context).translate('enter_email'),
           inputType: TextInputType.emailAddress,
           icon: Icons.person,
           iconColor: _themeStore.darkMode ? Colors.white70 : Colors.black54,
-          textController: _userEmailController,
+          textController: _emailController,
           inputAction: TextInputAction.next,
           autoFocus: false,
           onChanged: (value) {
-            _formStore.setEmail(_userEmailController.text);
+            _formStore.setEmail(_emailController.text);
           },
           onFieldSubmitted: (value) {
             FocusScope.of(context).requestFocus(_passwordFocusNode);
@@ -125,8 +125,7 @@ class _LoginScreenState extends State<LoginScreen> {
     return Observer(
       builder: (context) {
         return TextFieldWidget(
-          hint:
-              AppLocalizations.of(context).translate('login_et_user_password'),
+          hint: AppLocalizations.of(context).translate('enter_password'),
           isObscure: true,
           padding: EdgeInsets.only(top: 16.0),
           icon: Icons.lock,
@@ -148,7 +147,7 @@ class _LoginScreenState extends State<LoginScreen> {
       child: MaterialButton(
         padding: EdgeInsets.all(0.0),
         child: Text(
-          AppLocalizations.of(context).translate('login_btn_forgot_password'),
+          AppLocalizations.of(context).translate('forgot_password'),
           style: Theme.of(context)
               .textTheme
               .bodySmall
@@ -161,7 +160,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
   Widget _buildSignInButton() {
     return SquareButtonWidget(
-      buttonText: AppLocalizations.of(context).translate('login_btn_sign_in'),
+      buttonText: AppLocalizations.of(context).translate('sign_in'),
       buttonColor: Colors.red,
       textColor: Colors.white,
       onPressed: () async {
@@ -174,8 +173,7 @@ class _LoginScreenState extends State<LoginScreen> {
     _formStore.validateAll();
     if (_formStore.canLogin) {
       DeviceUtils.hideKeyboard(context);
-      await _userStore.login(
-          _userEmailController.text, _passwordController.text);
+      await _userStore.login(_emailController.text, _passwordController.text);
       if (_userStore.errorStore.errorMessage.isNotEmpty) {
         _updateErrorMessage();
       }
@@ -184,11 +182,14 @@ class _LoginScreenState extends State<LoginScreen> {
 
   void _updateErrorMessage() {
     if (_userStore.errorStore.errorCode == HttpCode.notFound.value) {
-      _formStore.formErrorStore.password = 'this email wasn\'t found';
+      _formStore.formErrorStore.password =
+          AppLocalizations.of(context).translate('this_email_wasnt_found');
     } else if (_userStore.errorStore.errorCode == HttpCode.unauthorized.value) {
-      _formStore.formErrorStore.password = 'this password isn\'t right';
+      _formStore.formErrorStore.password =
+          AppLocalizations.of(context).translate('this_password_isnt_right');
     } else {
-      _formStore.formErrorStore.password = 'Error occurred';
+      _formStore.formErrorStore.password =
+          AppLocalizations.of(context).translate('error_occurred');
     }
   }
 
@@ -212,7 +213,7 @@ class _LoginScreenState extends State<LoginScreen> {
         if (message.isNotEmpty) {
           FlushbarHelper.createError(
             message: message,
-            title: AppLocalizations.of(context).translate('home_tv_error'),
+            title: AppLocalizations.of(context).translate('error'),
             duration: Duration(seconds: 3),
           )..show(context);
         }
@@ -226,7 +227,7 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   void dispose() {
     // Clean up the controller when the Widget is removed from the Widget tree
-    _userEmailController.dispose();
+    _emailController.dispose();
     _passwordController.dispose();
     _passwordFocusNode.dispose();
     super.dispose();

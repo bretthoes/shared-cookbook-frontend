@@ -63,7 +63,7 @@ class _FeedScreenState extends State<FeedScreen> {
       if (message.isNotEmpty) {
         FlushbarHelper.createError(
           message: message,
-          title: AppLocalizations.of(context).translate('home_tv_error'),
+          title: AppLocalizations.of(context).translate('error'),
           duration: Duration(seconds: 3),
         )..show(context);
       }
