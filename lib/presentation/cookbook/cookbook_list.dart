@@ -57,7 +57,7 @@ class _CookbookListScreenState extends State<CookbookListScreen> {
   }
 
   Widget _buildListView() {
-    return _cookbookStore.cookbookList != null
+    return _cookbookStore.cookbookList?.cookbooks != null
         ? ListView.separated(
             itemCount: _cookbookStore.cookbookList!.cookbooks.length,
             separatorBuilder: (context, position) {
