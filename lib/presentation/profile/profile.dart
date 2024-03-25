@@ -53,51 +53,46 @@ class _ProfileScreenState extends State<ProfileScreen> {
     return Material(
       child: ListView(
         children: <Widget>[
-          Positioned(
-            top: 32,
-            left: 16,
-            right: 16,
-            child: Column(
-              children: [
-                _buildProfileImage(),
-                const SizedBox(height: 10),
-                Text(
-                  _loginStore.person?.displayName ?? "No name yet!",
-                  textAlign: TextAlign.center,
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                  softWrap: false,
-                  style: Theme.of(context).textTheme.headlineMedium,
-                ),
-                Text(
-                  _loginStore.person?.email ?? "email",
-                  textAlign: TextAlign.center,
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                  softWrap: false,
-                  style: Theme.of(context).textTheme.bodyMedium,
-                ),
-                const SizedBox(height: 10),
-                _buildEditButton(),
-                const Divider(),
-                CustomSettingsGroup(title: 'Preferences', children: <Widget>[
-                  _buildLanguage(),
-                  _buildDarkMode(),
-                ]),
-                CustomSettingsGroup(title: 'Profile', children: <Widget>[
-                  _buildFavorites(),
-                  _buildPrint(),
-                  _buildEdit(),
-                  _buildLogout(),
-                  _buildDeleteAccount(),
-                ]),
-                CustomSettingsGroup(title: 'Feedback', children: <Widget>[
-                  _buildReportBug(),
-                  _buildFeedback(),
-                ]),
-              ],
-              mainAxisAlignment: MainAxisAlignment.center,
-            ),
+          Column(
+            children: [
+              _buildProfileImage(),
+              const SizedBox(height: 10),
+              Text(
+                _loginStore.person?.displayName ?? "No name yet!",
+                textAlign: TextAlign.center,
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+                softWrap: false,
+                style: Theme.of(context).textTheme.headlineMedium,
+              ),
+              Text(
+                _loginStore.person?.email ?? "email",
+                textAlign: TextAlign.center,
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+                softWrap: false,
+                style: Theme.of(context).textTheme.bodyMedium,
+              ),
+              const SizedBox(height: 10),
+              _buildEditButton(),
+              const Divider(),
+              CustomSettingsGroup(title: 'Preferences', children: <Widget>[
+                _buildLanguage(),
+                _buildDarkMode(),
+              ]),
+              CustomSettingsGroup(title: 'Profile', children: <Widget>[
+                _buildFavorites(),
+                _buildPrint(),
+                _buildEdit(),
+                _buildLogout(),
+                _buildDeleteAccount(),
+              ]),
+              CustomSettingsGroup(title: 'Feedback', children: <Widget>[
+                _buildReportBug(),
+                _buildFeedback(),
+              ]),
+            ],
+            mainAxisAlignment: MainAxisAlignment.center,
           ),
         ],
       ),
