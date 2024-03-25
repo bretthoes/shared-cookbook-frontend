@@ -80,9 +80,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 _buildLanguage(),
                 _buildDarkMode(),
               ]),
-              CustomSettingsGroup(title: 'Profile', children: <Widget>[
+              CustomSettingsGroup(title: 'Content', children: <Widget>[
                 _buildFavorites(),
                 _buildPrint(),
+              ]),
+              CustomSettingsGroup(title: 'Profile', children: <Widget>[
                 _buildEdit(),
                 _buildLogout(),
                 _buildDeleteAccount(),

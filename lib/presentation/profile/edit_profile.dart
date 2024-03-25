@@ -65,11 +65,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   }
 
   Widget _buildMainContent() {
-    return Observer(
-      builder: (context) {
-        return Material(child: _buildListView());
-      },
-    );
+    return Material(child: _buildListView());
   }
 
   Widget _buildListView() {
