@@ -1,6 +1,7 @@
 import 'package:another_flushbar/flushbar_helper.dart';
 import 'package:boilerplate/core/widgets/progress_indicator_widget.dart';
 import 'package:boilerplate/di/service_locator.dart';
+import 'package:boilerplate/presentation/cookbook/add_cookbook.dart';
 import 'package:boilerplate/presentation/cookbook/cookbook_details.dart';
 import 'package:boilerplate/presentation/cookbook/store/cookbook_store.dart';
 import 'package:boilerplate/presentation/login/store/login_store.dart';
@@ -42,6 +43,7 @@ class _CookbookListScreenState extends State<CookbookListScreen> {
       children: <Widget>[
         _handleErrorMessage(),
         _buildMainContent(),
+        _buildAddCookbookButton(),
       ],
     );
   }
@@ -89,7 +91,7 @@ class _CookbookListScreenState extends State<CookbookListScreen> {
         Navigator.push(
             context,
             MaterialPageRoute(
-                builder: (context) => CookbookDetailsPage(
+                builder: (context) => CookbookDetailsScreen(
                     cookbookId: _cookbookStore
                             .cookbookList?.cookbooks[position].cookbookId ??
                         0)));
@@ -112,6 +114,30 @@ class _CookbookListScreenState extends State<CookbookListScreen> {
 
         return SizedBox.shrink();
       },
+    );
+  }
+
+  Widget _buildAddCookbookButton() {
+    return Padding(
+      padding: EdgeInsets.only(
+          bottom: 16.0, right: 16.0), // Adjust padding as needed
+      child: Align(
+        alignment: Alignment.bottomRight,
+        child: FloatingActionButton(
+          onPressed: () {
+            // Handle onPressed action here
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => AddCookbookScreen()),
+            );
+          },
+          child: Icon(Icons.add, color: Colors.white), // Make the icon white
+          backgroundColor: Colors.red, // Make the button red
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(30.0), // Make it circular
+          ),
+        ),
+      ),
     );
   }
 

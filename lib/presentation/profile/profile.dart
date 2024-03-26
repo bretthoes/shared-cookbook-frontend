@@ -68,7 +68,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
               ),
               Text(
                 _loginStore.person?.email ??
-                    AppLocalizations.of(context).translate('email'),
+                    AppLocalizations.of(context).translate('not_signed_in'),
                 textAlign: TextAlign.center,
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,

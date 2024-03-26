@@ -20,6 +20,7 @@
   "next": "Next",
   "no_cookbooks_yet": "No cookbooks yet",
   "no_name_yet": "No name yet",
+  "not_signed_in": "Not signed in",
   "placeholder": "Placeholder",
   "preferences": "Preferences",
   "print": "Print",
@@ -32,7 +33,7 @@
   "sign_out": "Sign out",
   "sign_up": "Sign up",
   "report_bug": "Report bug",
-  "this_email_wasnt_found":"this email wasn\\'t found",
-  "this_password_isnt_right":"this password isn\\'t right",
+  "this_email_wasnt_found":"this email wasn't found",
+  "this_password_isnt_right":"this password isn't right",
   "shared_cookbook":"Shared Cookbook"
 }

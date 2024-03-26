@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
-class CookbookDetailsPage extends StatelessWidget {
+class CookbookDetailsScreen extends StatelessWidget {
   final int cookbookId;
 
-  CookbookDetailsPage({required this.cookbookId});
+  CookbookDetailsScreen({required this.cookbookId});
 
   @override
   Widget build(BuildContext context) {
