@@ -14,6 +14,7 @@ import 'package:boilerplate/utils/routes/routes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:boilerplate/core/extensions/string_extension.dart';
 
 // TODO localize all strings in this file
 // TODO handle auto sign in bug if user state remembered between session
@@ -69,14 +70,14 @@ class _SetPasswordScreenState extends State<SetPasswordScreen> {
                 SizedBox(height: 16.0),
                 SquareButtonWidget(
                   buttonColor: Colors.red,
-                  buttonText: "Done",
+                  buttonText: AppLocalizations.of(context).translate('done'),
                   onPressed: () async {
                     await _tryRegister();
                   },
                 ),
                 SizedBox(height: 8.0),
                 Text(
-                  "Use 6-20 characters with a mix of letters and numbers",
+                  AppLocalizations.of(context).translate('use_6_20_chars_with_a_mix_of_letters_and_numbers'),
                   style: TextStyle(
                     color: Colors.black54,
                     fontSize: 12.0,
@@ -114,7 +115,7 @@ class _SetPasswordScreenState extends State<SetPasswordScreen> {
           icon: Icons.lock,
           iconColor: _themeStore.darkMode ? Colors.white70 : Colors.black54,
           textController: _passwordController,
-          errorText: _formStore.formErrorStore.password,
+          errorText: _getTranslatedErrorText(_formStore.formErrorStore.password),
           onChanged: (value) {
             _formStore.setPassword(_passwordController.text);
           },
@@ -145,17 +146,21 @@ class _SetPasswordScreenState extends State<SetPasswordScreen> {
       if (_userStore.errorStore.errorMessage.isNotEmpty) {
         _updateErrorMessage();
       }
-    } else {
-      _formStore.formErrorStore.password = 'Password is invalid';
-    }
+    } 
   }
 
   void _updateErrorMessage() {
     if (_userStore.errorStore.errorCode == HttpCode.conflict.value) {
-      _formStore.formErrorStore.password = 'Email already taken';
+      _formStore.formErrorStore.password = 'email_already_taken';
     } else {
-      _formStore.formErrorStore.password = 'Error occurred';
+      _formStore.formErrorStore.password = 'error_occurred';
     }
+  }
+
+  _getTranslatedErrorText(String? errorKey) {
+    return errorKey.isNullOrWhitespace
+      ? ''
+      : AppLocalizations.of(context).translate(errorKey!);
   }
 
   // dispose:-------------------------------------------------------------------

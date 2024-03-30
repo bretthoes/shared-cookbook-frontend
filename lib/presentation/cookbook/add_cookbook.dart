@@ -1,3 +1,4 @@
+import 'package:boilerplate/utils/locale/app_localization.dart';
 import 'package:flutter/material.dart';
 
 class AddCookbookScreen extends StatelessWidget {
@@ -5,7 +6,7 @@ class AddCookbookScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Add Cookbook'),
+        title: Text(AppLocalizations.of(context).translate('add_cookbook')),
       ),
       body: Center(),
     );

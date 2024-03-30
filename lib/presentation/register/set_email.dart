@@ -2,6 +2,7 @@ import 'package:boilerplate/core/stores/form/form_store.dart';
 import 'package:boilerplate/core/widgets/back_button_app_bar_widget.dart';
 import 'package:boilerplate/core/widgets/square_button_widget.dart';
 import 'package:boilerplate/core/widgets/textfield_widget.dart';
+import 'package:boilerplate/core/extensions/string_extension.dart';
 import 'package:boilerplate/di/service_locator.dart';
 import 'package:boilerplate/enums/http_code.dart';
 import 'package:boilerplate/presentation/home/store/theme/theme_store.dart';
@@ -95,7 +96,7 @@ class _RegisterScreenState extends State<SetEmailScreen> {
             onFieldSubmitted: (value) {
               FocusScope.of(context).requestFocus(_emailFocusNode);
             },
-            errorText: _formStore.formErrorStore.email,
+            errorText: _getTranslatedErrorText(_formStore.formErrorStore.email),
           ),
         );
       },
@@ -114,8 +115,7 @@ class _RegisterScreenState extends State<SetEmailScreen> {
             return;
           }
           if (!await _emailIsAvailable()) {
-            _formStore.formErrorStore.email =
-                AppLocalizations.of(context).translate('email_already_taken');
+            _formStore.formErrorStore.email = 'email_already_taken';
             return;
           }
           _navigateNext();
@@ -136,6 +136,12 @@ class _RegisterScreenState extends State<SetEmailScreen> {
         builder: (context) => SetPasswordScreen(email: _formStore.email),
       ),
     );
+  }
+
+  _getTranslatedErrorText(String? errorKey) {
+    return errorKey.isNullOrWhitespace
+      ? ''
+      : AppLocalizations.of(context).translate(errorKey!);
   }
 
   // dispose:-------------------------------------------------------------------

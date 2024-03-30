@@ -1,4 +1,3 @@
-// TODO localize all strings in this file in UI
 import 'package:boilerplate/core/stores/error/error_store.dart';
 import 'package:mobx/mobx.dart';
 import 'package:validators/validators.dart';
@@ -90,11 +89,11 @@ abstract class _FormStore with Store {
   @action
   void validateName(String value) {
     if (value.isEmpty) {
-      formErrorStore.name = "Name can't be empty";
+      formErrorStore.name = 'name_cant_be_empty';
     } else if (!RegExp(r'^[a-zA-Z0-9_]+$').hasMatch(value)) {
-      formErrorStore.name = 'Name is invalid';
+      formErrorStore.name = 'name_is_invalid';
     } else if (value.length < 3 || value.length > 16) {
-      formErrorStore.name = 'Name should be 3-16 characters';
+      formErrorStore.name = 'name_should_be_3_16_characters';
     } else {
       formErrorStore.name = null;
     }
@@ -103,9 +102,9 @@ abstract class _FormStore with Store {
   @action
   void validateEmail(String value) {
     if (value.isEmpty) {
-      formErrorStore.email = "Email can't be empty";
+      formErrorStore.email = 'email_cant_be_empty';
     } else if (!isEmail(value)) {
-      formErrorStore.email = 'Please enter a valid email address';
+      formErrorStore.email = 'email_is_invalid';
     } else {
       formErrorStore.email = null;
     }
@@ -114,11 +113,11 @@ abstract class _FormStore with Store {
   @action
   void validatePassword(String value) {
     if (value.isEmpty) {
-      formErrorStore.password = "Password can't be empty";
+      formErrorStore.password = 'password_is_empty';
     } else if (value.length < 6) {
-      formErrorStore.password = "Should be at least 6 characters";
+      formErrorStore.password = 'enter_at_least_6_characters';
     } else if (!value.contains(RegExp(r'[0-9]'))) {
-      formErrorStore.password = "Should have a number";
+      formErrorStore.password = 'password_needs_a_number';
     } else {
       formErrorStore.password = null;
     }
@@ -127,9 +126,9 @@ abstract class _FormStore with Store {
   @action
   void validateConfirmPassword(String value) {
     if (value.isEmpty) {
-      formErrorStore.confirmPassword = "Confirm password can't be empty";
+      formErrorStore.confirmPassword = 'password_is_empty';
     } else if (value != password) {
-      formErrorStore.confirmPassword = "Password doesn't match";
+      formErrorStore.confirmPassword = 'password_doesnt_match';
     } else {
       formErrorStore.confirmPassword = null;
     }

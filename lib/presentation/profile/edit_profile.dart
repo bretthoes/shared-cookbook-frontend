@@ -1,4 +1,5 @@
 import 'package:another_flushbar/flushbar_helper.dart';
+import 'package:boilerplate/core/extensions/string_extension.dart';
 import 'package:boilerplate/core/stores/form/form_store.dart';
 import 'package:boilerplate/core/widgets/back_button_app_bar_widget.dart';
 import 'package:boilerplate/core/widgets/square_button_widget.dart';
@@ -101,7 +102,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
           onChanged: (value) {
             _formStore.setName(_nameController.text);
           },
-          errorText: _formStore.formErrorStore.name,
+          errorText: _getTranslatedErrorText(_formStore.formErrorStore.name),
         );
       },
     );
@@ -162,4 +163,11 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
 
     return SizedBox.shrink();
   }
+
+  _getTranslatedErrorText(String? errorKey) {
+    return errorKey.isNullOrWhitespace
+      ? ''
+      : AppLocalizations.of(context).translate(errorKey!);
+  }
 }
+ 

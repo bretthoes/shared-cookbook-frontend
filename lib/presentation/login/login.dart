@@ -1,4 +1,5 @@
 import 'package:another_flushbar/flushbar_helper.dart';
+import 'package:boilerplate/core/extensions/string_extension.dart';
 import 'package:boilerplate/core/stores/form/form_store.dart';
 import 'package:boilerplate/core/widgets/back_button_app_bar_widget%20copy.dart';
 import 'package:boilerplate/core/widgets/progress_indicator_widget.dart';
@@ -115,7 +116,7 @@ class _LoginScreenState extends State<LoginScreen> {
           onFieldSubmitted: (value) {
             FocusScope.of(context).requestFocus(_passwordFocusNode);
           },
-          errorText: _formStore.formErrorStore.email,
+          errorText: _getTranslatedErrorText(_formStore.formErrorStore.email),
         );
       },
     );
@@ -132,7 +133,7 @@ class _LoginScreenState extends State<LoginScreen> {
           iconColor: _themeStore.darkMode ? Colors.white70 : Colors.black54,
           textController: _passwordController,
           focusNode: _passwordFocusNode,
-          errorText: _formStore.formErrorStore.password,
+          errorText: _getTranslatedErrorText(_formStore.formErrorStore.password),
           onChanged: (value) {
             _formStore.setPassword(_passwordController.text);
           },
@@ -182,14 +183,11 @@ class _LoginScreenState extends State<LoginScreen> {
 
   void _updateErrorMessage() {
     if (_userStore.errorStore.errorCode == HttpCode.notFound.value) {
-      _formStore.formErrorStore.password =
-          AppLocalizations.of(context).translate('this_email_wasnt_found');
+      _formStore.formErrorStore.password = 'this_email_wasnt_found';
     } else if (_userStore.errorStore.errorCode == HttpCode.unauthorized.value) {
-      _formStore.formErrorStore.password =
-          AppLocalizations.of(context).translate('this_password_isnt_right');
+      _formStore.formErrorStore.password = 'this_password_isnt_right';
     } else {
-      _formStore.formErrorStore.password =
-          AppLocalizations.of(context).translate('error_occurred');
+      _formStore.formErrorStore.password = 'error_occurred';
     }
   }
 
@@ -221,6 +219,12 @@ class _LoginScreenState extends State<LoginScreen> {
     }
 
     return SizedBox.shrink();
+  }
+
+  _getTranslatedErrorText(String? errorKey) {
+    return errorKey.isNullOrWhitespace
+      ? ''
+      : AppLocalizations.of(context).translate(errorKey!);
   }
 
   // dispose:-------------------------------------------------------------------
