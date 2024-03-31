@@ -1,6 +1,5 @@
 import 'package:boilerplate/core/stores/form/form_store.dart';
 import 'package:boilerplate/core/widgets/back_button_app_bar_widget.dart';
-import 'package:boilerplate/core/widgets/square_button_widget.dart';
 import 'package:boilerplate/core/widgets/textfield_widget.dart';
 import 'package:boilerplate/core/extensions/string_extension.dart';
 import 'package:boilerplate/di/service_locator.dart';
@@ -75,11 +74,7 @@ class _RegisterScreenState extends State<SetEmailScreen> {
   Widget _buildEmailField() {
     return Observer(
       builder: (context) {
-        double screenWidth = MediaQuery.of(context).size.width;
-        double buttonWidthPercentage = 0.9;
-
         return Container(
-          width: screenWidth * buttonWidthPercentage,
           child: TextFieldWidget(
             hint: AppLocalizations.of(context).translate('enter_email'),
             padding: EdgeInsets.only(top: 16.0),
@@ -104,22 +99,23 @@ class _RegisterScreenState extends State<SetEmailScreen> {
   }
 
   Widget _buildNextButton() {
-    return SquareButtonWidget(
-        buttonText: AppLocalizations.of(context).translate('next'),
-        buttonColor: Colors.red,
-        textColor: Colors.white,
-        onPressed: () async {
-          DeviceUtils.hideKeyboard(context);
-          _formStore.validateEmail(_formStore.email);
-          if (!_formStore.emailValid) {
-            return;
-          }
-          if (!await _emailIsAvailable()) {
-            _formStore.formErrorStore.email = 'email_already_taken';
-            return;
-          }
-          _navigateNext();
-        });
+    return ElevatedButton(
+      onPressed: () async {
+        DeviceUtils.hideKeyboard(context);
+        _formStore.validateEmail(_formStore.email);
+        if (!_formStore.emailValid) {
+          return;
+        }
+        if (!await _emailIsAvailable()) {
+          _formStore.formErrorStore.email = 'email_already_taken';
+          return;
+        }
+        _navigateNext();
+      },
+      child: Text(
+        AppLocalizations.of(context).translate('next'),
+      ),
+    );
   }
 
   // Private:-------------------------------------------------------------------
@@ -140,8 +136,8 @@ class _RegisterScreenState extends State<SetEmailScreen> {
 
   _getTranslatedErrorText(String? errorKey) {
     return errorKey.isNullOrWhitespace
-      ? ''
-      : AppLocalizations.of(context).translate(errorKey!);
+        ? ''
+        : AppLocalizations.of(context).translate(errorKey!);
   }
 
   // dispose:-------------------------------------------------------------------

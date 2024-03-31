@@ -1,4 +1,3 @@
-import 'package:boilerplate/core/widgets/square_button_widget.dart';
 import 'package:boilerplate/data/sharedpref/constants/preferences.dart';
 import 'package:boilerplate/di/service_locator.dart';
 import 'package:boilerplate/presentation/home/store/language/language_store.dart';
@@ -76,7 +75,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 style: Theme.of(context).textTheme.bodyMedium,
               ),
               const SizedBox(height: 10),
-              _buildEditButton(),
               const Divider(),
               CustomSettingsGroup(
                   title: AppLocalizations.of(context).translate('preferences'),
@@ -108,24 +106,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
           ),
         ],
       ),
-    );
-  }
-
-  Widget _buildEditButton() {
-    return SquareButtonWidget(
-      buttonColor: Colors.black,
-      buttonText: AppLocalizations.of(context).translate('edit_profile'),
-      buttonTextSize: 12,
-      height: 30,
-      width: 124,
-      onPressed: () {
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => EditProfileScreen(),
-          ),
-        );
-      },
     );
   }
 

@@ -55,6 +55,14 @@ class AppThemeData {
         ),
         contentTextStyle: _textTheme.titleMedium!.apply(color: _darkFillColor),
       ),
+      elevatedButtonTheme: ElevatedButtonThemeData(
+        style: ElevatedButton.styleFrom(
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(2.0)),
+          minimumSize: Size(double.infinity, 60),
+          textStyle: _textTheme.labelLarge,
+        ),
+      ),
     );
   }
 
@@ -97,18 +105,20 @@ class AppThemeData {
   static const _bold = FontWeight.w700;
 
   static final TextTheme _textTheme = TextTheme(
+    headlineSmall: GoogleFonts.montserrat(fontWeight: _bold, fontSize: 18.0),
     headlineMedium: GoogleFonts.montserrat(fontWeight: _bold, fontSize: 20.0),
-    bodySmall: GoogleFonts.sriracha(fontWeight: _semiBold, fontSize: 16.0),
-    headlineSmall: GoogleFonts.oswald(fontWeight: _medium, fontSize: 16.0),
-    titleMedium: GoogleFonts.montserrat(fontWeight: _medium, fontSize: 16.0),
-    labelSmall: GoogleFonts.montserrat(fontWeight: _medium, fontSize: 12.0),
-    bodyLarge: GoogleFonts.montserrat(fontWeight: _regular, fontSize: 14.0),
-    titleSmall: GoogleFonts.montserrat(fontWeight: _medium, fontSize: 14.0),
+    headlineLarge: GoogleFonts.montserrat(fontWeight: _bold, fontSize: 22.0),
+    titleSmall: GoogleFonts.montserrat(fontWeight: _semiBold, fontSize: 16.0),
+    titleMedium: GoogleFonts.montserrat(fontWeight: _semiBold, fontSize: 18.0),
+    titleLarge: GoogleFonts.montserrat(fontWeight: _semiBold, fontSize: 20.0),
+    bodySmall: GoogleFonts.montserrat(fontWeight: _regular, fontSize: 14.0),
     bodyMedium: GoogleFonts.montserrat(fontWeight: _regular, fontSize: 16.0),
-    titleLarge: GoogleFonts.montserrat(fontWeight: _bold, fontSize: 16.0),
-    labelLarge: GoogleFonts.montserrat(fontWeight: _semiBold, fontSize: 14.0),
-    displaySmall: GoogleFonts.sriracha(fontWeight: _medium, fontSize: 16.0),
-    displayMedium: GoogleFonts.sriracha(fontWeight: _medium, fontSize: 16.0),
-    displayLarge: GoogleFonts.sriracha(fontWeight: _medium, fontSize: 16.0),
+    bodyLarge: GoogleFonts.montserrat(fontWeight: _regular, fontSize: 18.0),
+    labelSmall: GoogleFonts.sriracha(fontWeight: _medium, fontSize: 16.0),
+    labelMedium: GoogleFonts.sriracha(fontWeight: _medium, fontSize: 18.0),
+    labelLarge: GoogleFonts.sriracha(fontWeight: _medium, fontSize: 20.0),
+    displaySmall: GoogleFonts.sriracha(fontWeight: _semiBold, fontSize: 16.0),
+    displayMedium: GoogleFonts.sriracha(fontWeight: _semiBold, fontSize: 18.0),
+    displayLarge: GoogleFonts.sriracha(fontWeight: _semiBold, fontSize: 20.0),
   );
 }

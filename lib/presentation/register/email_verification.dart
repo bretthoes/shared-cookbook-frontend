@@ -1,6 +1,6 @@
 import 'package:boilerplate/core/widgets/back_button_app_bar_widget.dart';
-import 'package:boilerplate/core/widgets/square_button_widget.dart';
 import 'package:boilerplate/presentation/register/set_password.dart';
+import 'package:boilerplate/utils/locale/app_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -57,9 +57,7 @@ class _EmailVerificationScreenState extends State<EmailVerificationScreen> {
                   ),
                 ),
                 SizedBox(height: 16.0),
-                SquareButtonWidget(
-                  buttonColor: Colors.red,
-                  buttonText: "Next",
+                ElevatedButton(
                   onPressed: () {
                     //  validate code sent via email
                     Navigator.push(
@@ -68,6 +66,7 @@ class _EmailVerificationScreenState extends State<EmailVerificationScreen> {
                           builder: (context) => SetPasswordScreen(email: "")),
                     );
                   },
+                  child: Text(AppLocalizations.of(context).translate('next')),
                 ),
                 SizedBox(height: 16.0),
               ],

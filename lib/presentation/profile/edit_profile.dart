@@ -2,7 +2,6 @@ import 'package:another_flushbar/flushbar_helper.dart';
 import 'package:boilerplate/core/extensions/string_extension.dart';
 import 'package:boilerplate/core/stores/form/form_store.dart';
 import 'package:boilerplate/core/widgets/back_button_app_bar_widget.dart';
-import 'package:boilerplate/core/widgets/square_button_widget.dart';
 import 'package:boilerplate/core/widgets/textfield_widget.dart';
 import 'package:boilerplate/di/service_locator.dart';
 import 'package:boilerplate/presentation/home/store/theme/theme_store.dart';
@@ -109,32 +108,33 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   }
 
   Widget _buildSaveButton() {
-    return SquareButtonWidget(
-        buttonText: AppLocalizations.of(context).translate('save'),
-        buttonColor: Colors.red,
-        textColor: Colors.white,
-        onPressed: () async {
-          DeviceUtils.hideKeyboard(context);
-          _formStore.validateName(_nameController.text);
-          if (_formStore.formErrorStore.name != null) {
-            // TODO update error message
+    return ElevatedButton(
+      onPressed: () async {
+        DeviceUtils.hideKeyboard(context);
+        _formStore.validateName(_nameController.text);
+        if (_formStore.formErrorStore.name != null) {
+          // TODO update error message
+          return;
+        }
+        if (true) {
+          var personId = _userStore.person?.personId ?? 0;
+          if (personId > 0) {
+            await _userStore.updatePerson(
+              personId,
+              _nameController.text,
+              null,
+              null,
+            );
+            //TODO api call to update person
+            // TODO display save successful
             return;
           }
-          if (true) {
-            var personId = _userStore.person?.personId ?? 0;
-            if (personId > 0) {
-              await _userStore.updatePerson(
-                personId,
-                _nameController.text,
-                null,
-                null,
-              );
-              //TODO api call to update person
-              // TODO display save successful
-              return;
-            }
-          }
-        });
+        }
+      },
+      child: Text(
+        AppLocalizations.of(context).translate('save'),
+      ),
+    );
   }
 
   Widget _handleErrorMessage() {
@@ -166,8 +166,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
 
   _getTranslatedErrorText(String? errorKey) {
     return errorKey.isNullOrWhitespace
-      ? ''
-      : AppLocalizations.of(context).translate(errorKey!);
+        ? ''
+        : AppLocalizations.of(context).translate(errorKey!);
   }
 }
- 

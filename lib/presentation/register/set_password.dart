@@ -1,7 +1,6 @@
 import 'package:boilerplate/core/stores/form/form_store.dart';
 import 'package:boilerplate/core/widgets/back_button_app_bar_widget.dart';
 import 'package:boilerplate/core/widgets/progress_indicator_widget.dart';
-import 'package:boilerplate/core/widgets/square_button_widget.dart';
 import 'package:boilerplate/core/widgets/textfield_widget.dart';
 import 'package:boilerplate/data/sharedpref/constants/preferences.dart';
 import 'package:boilerplate/di/service_locator.dart';
@@ -68,16 +67,18 @@ class _SetPasswordScreenState extends State<SetPasswordScreen> {
               children: [
                 _buildPasswordField(),
                 SizedBox(height: 16.0),
-                SquareButtonWidget(
-                  buttonColor: Colors.red,
-                  buttonText: AppLocalizations.of(context).translate('done'),
+                ElevatedButton(
                   onPressed: () async {
                     await _tryRegister();
                   },
+                  child: Text(
+                    AppLocalizations.of(context).translate('done'),
+                  ),
                 ),
                 SizedBox(height: 8.0),
                 Text(
-                  AppLocalizations.of(context).translate('use_6_20_chars_with_a_mix_of_letters_and_numbers'),
+                  AppLocalizations.of(context).translate(
+                      'use_6_20_chars_with_a_mix_of_letters_and_numbers'),
                   style: TextStyle(
                     color: Colors.black54,
                     fontSize: 12.0,
@@ -115,7 +116,8 @@ class _SetPasswordScreenState extends State<SetPasswordScreen> {
           icon: Icons.lock,
           iconColor: _themeStore.darkMode ? Colors.white70 : Colors.black54,
           textController: _passwordController,
-          errorText: _getTranslatedErrorText(_formStore.formErrorStore.password),
+          errorText:
+              _getTranslatedErrorText(_formStore.formErrorStore.password),
           onChanged: (value) {
             _formStore.setPassword(_passwordController.text);
           },
@@ -146,7 +148,7 @@ class _SetPasswordScreenState extends State<SetPasswordScreen> {
       if (_userStore.errorStore.errorMessage.isNotEmpty) {
         _updateErrorMessage();
       }
-    } 
+    }
   }
 
   void _updateErrorMessage() {
@@ -159,8 +161,8 @@ class _SetPasswordScreenState extends State<SetPasswordScreen> {
 
   _getTranslatedErrorText(String? errorKey) {
     return errorKey.isNullOrWhitespace
-      ? ''
-      : AppLocalizations.of(context).translate(errorKey!);
+        ? ''
+        : AppLocalizations.of(context).translate(errorKey!);
   }
 
   // dispose:-------------------------------------------------------------------

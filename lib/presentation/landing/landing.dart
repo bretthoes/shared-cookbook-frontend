@@ -1,12 +1,9 @@
-import 'package:boilerplate/core/widgets/square_button_widget.dart';
 import 'package:boilerplate/presentation/login/login.dart';
 import 'package:boilerplate/presentation/register/set_email.dart';
 import 'package:boilerplate/utils/locale/app_localization.dart';
 import 'package:flutter/material.dart';
 
 class LandingScreen extends StatelessWidget {
-  // TODO update page to use all app styles, fonts, colors, and localizations
-  // Possibly
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -24,28 +21,35 @@ class LandingScreen extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                SquareButtonWidget(
-                  buttonColor: Colors.red,
-                  buttonText: AppLocalizations.of(context).translate('sign_in'),
+                ElevatedButton(
                   onPressed: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => LoginScreen()),
+                      MaterialPageRoute(
+                        builder: (context) => LoginScreen(),
+                      ),
                     );
                   },
+                  child: Text(
+                    AppLocalizations.of(context).translate('sign_in'),
+                  ),
                 ),
                 SizedBox(height: 16.0),
-                SquareButtonWidget(
-                  buttonColor: Colors.white,
-                  textColor: Colors.black,
-                  buttonText: AppLocalizations.of(context)
-                      .translate('create_an_account'),
+                ElevatedButton(
                   onPressed: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => SetEmailScreen()),
+                      MaterialPageRoute(
+                        builder: (context) => SetEmailScreen(),
+                      ),
                     );
                   },
+                  child: Text(
+                    AppLocalizations.of(context).translate('create_an_account'),
+                  ),
+                  style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.white,
+                      foregroundColor: Colors.black),
                 ),
                 SizedBox(height: 16.0),
                 Text(

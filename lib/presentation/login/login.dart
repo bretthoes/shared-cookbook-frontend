@@ -3,7 +3,6 @@ import 'package:boilerplate/core/extensions/string_extension.dart';
 import 'package:boilerplate/core/stores/form/form_store.dart';
 import 'package:boilerplate/core/widgets/back_button_app_bar_widget%20copy.dart';
 import 'package:boilerplate/core/widgets/progress_indicator_widget.dart';
-import 'package:boilerplate/core/widgets/square_button_widget.dart';
 import 'package:boilerplate/core/widgets/textfield_widget.dart';
 import 'package:boilerplate/data/sharedpref/constants/preferences.dart';
 import 'package:boilerplate/enums/http_code.dart';
@@ -98,7 +97,6 @@ class _LoginScreenState extends State<LoginScreen> {
     );
   }
 
-  // TODO change name to email field
   Widget _buildEmailField() {
     return Observer(
       builder: (context) {
@@ -133,7 +131,8 @@ class _LoginScreenState extends State<LoginScreen> {
           iconColor: _themeStore.darkMode ? Colors.white70 : Colors.black54,
           textController: _passwordController,
           focusNode: _passwordFocusNode,
-          errorText: _getTranslatedErrorText(_formStore.formErrorStore.password),
+          errorText:
+              _getTranslatedErrorText(_formStore.formErrorStore.password),
           onChanged: (value) {
             _formStore.setPassword(_passwordController.text);
           },
@@ -160,13 +159,13 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   Widget _buildSignInButton() {
-    return SquareButtonWidget(
-      buttonText: AppLocalizations.of(context).translate('sign_in'),
-      buttonColor: Colors.red,
-      textColor: Colors.white,
+    return ElevatedButton(
       onPressed: () async {
         await _trySignIn();
       },
+      child: Text(
+        AppLocalizations.of(context).translate('sign_in'),
+      ),
     );
   }
 
@@ -174,7 +173,10 @@ class _LoginScreenState extends State<LoginScreen> {
     _formStore.validateAll();
     if (_formStore.canLogin) {
       DeviceUtils.hideKeyboard(context);
-      await _userStore.login(_emailController.text, _passwordController.text);
+      await _userStore.login(
+        _emailController.text,
+        _passwordController.text,
+      );
       if (_userStore.errorStore.errorMessage.isNotEmpty) {
         _updateErrorMessage();
       }
@@ -223,8 +225,8 @@ class _LoginScreenState extends State<LoginScreen> {
 
   _getTranslatedErrorText(String? errorKey) {
     return errorKey.isNullOrWhitespace
-      ? ''
-      : AppLocalizations.of(context).translate(errorKey!);
+        ? ''
+        : AppLocalizations.of(context).translate(errorKey!);
   }
 
   // dispose:-------------------------------------------------------------------
