@@ -15,8 +15,6 @@ import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:boilerplate/core/extensions/string_extension.dart';
 
-// TODO localize all strings in this file
-// TODO handle auto sign in bug if user state remembered between session
 class SetPasswordScreen extends StatefulWidget {
   final String email;
 
@@ -67,24 +65,9 @@ class _SetPasswordScreenState extends State<SetPasswordScreen> {
               children: [
                 _buildPasswordField(),
                 SizedBox(height: 16.0),
-                ElevatedButton(
-                  onPressed: () async {
-                    await _tryRegister();
-                  },
-                  child: Text(
-                    AppLocalizations.of(context).translate('done'),
-                  ),
-                ),
+                _buildRegisterButton(),
                 SizedBox(height: 8.0),
-                Text(
-                  AppLocalizations.of(context).translate(
-                      'use_6_20_chars_with_a_mix_of_letters_and_numbers'),
-                  style: TextStyle(
-                    color: Colors.black54,
-                    fontSize: 12.0,
-                  ),
-                  textAlign: TextAlign.center,
-                ),
+                _buildPasswordText(),
               ],
             ),
           ),
@@ -102,6 +85,29 @@ class _SetPasswordScreenState extends State<SetPasswordScreen> {
             },
           )
         ],
+      ),
+    );
+  }
+
+  Text _buildPasswordText() {
+    return Text(
+      AppLocalizations.of(context)
+          .translate('use_6_20_chars_with_a_mix_of_letters_and_numbers'),
+      style: TextStyle(
+        color: Colors.black54,
+        fontSize: 12.0,
+      ),
+      textAlign: TextAlign.center,
+    );
+  }
+
+  ElevatedButton _buildRegisterButton() {
+    return ElevatedButton(
+      onPressed: () async {
+        await _tryRegister();
+      },
+      child: Text(
+        AppLocalizations.of(context).translate('done'),
       ),
     );
   }
@@ -159,7 +165,7 @@ class _SetPasswordScreenState extends State<SetPasswordScreen> {
     }
   }
 
-  _getTranslatedErrorText(String? errorKey) {
+  String _getTranslatedErrorText(String? errorKey) {
     return errorKey.isNullOrWhitespace
         ? ''
         : AppLocalizations.of(context).translate(errorKey!);

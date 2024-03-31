@@ -1,3 +1,4 @@
+import 'package:boilerplate/core/extensions/string_extension.dart';
 import 'package:boilerplate/data/sharedpref/constants/preferences.dart';
 import 'package:boilerplate/di/service_locator.dart';
 import 'package:boilerplate/presentation/home/store/language/language_store.dart';
@@ -116,7 +117,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
       child: ClipRRect(
         borderRadius: BorderRadius.circular(100),
         child: Image(
-            image: isNullOrWhitespace(_loginStore.person?.imagePath)
+            image: _loginStore.person?.imagePath.isNullOrWhitespace ?? true
                 ? AssetImage('assets/images/blank-profile-picture.png')
                 : AssetImage(_loginStore.person!.imagePath!) // TODO load url
             ),
@@ -277,9 +278,5 @@ class _ProfileScreenState extends State<ProfileScreen> {
       leading: Icon(Icons.thumb_up),
       onTap: () {},
     );
-  }
-
-  bool isNullOrWhitespace(String? input) {
-    return input == null || input.trim().isEmpty;
   }
 }
