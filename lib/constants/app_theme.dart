@@ -63,21 +63,27 @@ class AppThemeData {
           textStyle: _textTheme.labelLarge,
         ),
       ),
+      bottomNavigationBarTheme: BottomNavigationBarThemeData(
+        type: BottomNavigationBarType.fixed,
+        backgroundColor: colorScheme.secondary,
+        selectedItemColor: colorScheme.onSecondary,
+        unselectedItemColor: colorScheme.onPrimary,
+      ),
     );
   }
 
   static const ColorScheme lightColorScheme = ColorScheme(
     primary: Color(0xFFFFF2E6),
     primaryContainer: Colors.pink,
-    secondary: Colors.purple,
+    secondary: Color(0xFFe8ecd6),
     secondaryContainer: Colors.blue,
-    background: Color(0xFFFFF4E4),
+    background: Color(0xFFFFF9E6),
     surface: Color(0xFF10382D),
-    onBackground: Colors.red,
+    onBackground: Color(0xFFEBE2DA),
     error: _lightFillColor,
     onError: _lightFillColor,
     onPrimary: _lightFillColor,
-    onSecondary: Colors.cyan,
+    onSecondary: Color(0xFFCE6A6B),
     onSurface: Color(0xFF10382D),
     brightness: Brightness.light,
   );

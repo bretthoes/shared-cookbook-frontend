@@ -36,45 +36,28 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  // nav bar methods:-----------------------------------------------------------
   Widget _buildNavBar() {
-    return Container(
-      color: _themeStore.darkMode ? Colors.black : Colors.white,
-      child: Padding(
-        padding: const EdgeInsets.symmetric(
-          horizontal: 15.0,
-          vertical: 16,
+    return BottomNavigationBar(
+      currentIndex: _page,
+      onTap: (index) {
+        setState(() {
+          _page = index;
+        });
+      },
+      items: [
+        BottomNavigationBarItem(
+          icon: Icon(Icons.home),
+          label: AppLocalizations.of(context).translate('home'),
         ),
-        child: GNav(
-          selectedIndex: _page,
-          onTabChange: (index) {
-            setState(() {
-              _page = index;
-            });
-          },
-          backgroundColor: _themeStore.darkMode ? Colors.black : Colors.white,
-          color: _themeStore.darkMode ? Colors.white : Colors.black,
-          activeColor: _themeStore.darkMode ? Colors.black : Colors.white,
-          tabBackgroundColor:
-              _themeStore.darkMode ? Colors.white : Colors.black,
-          padding: EdgeInsets.all(8),
-          gap: 8,
-          tabs: [
-            GButton(
-              icon: Icons.home,
-              text: AppLocalizations.of(context).translate('home'),
-            ),
-            GButton(
-              icon: Icons.cookie,
-              text: AppLocalizations.of(context).translate('cookbooks'),
-            ),
-            GButton(
-              icon: Icons.person,
-              text: AppLocalizations.of(context).translate('profile'),
-            )
-          ],
+        BottomNavigationBarItem(
+          icon: Icon(Icons.auto_stories),
+          label: AppLocalizations.of(context).translate('cookbooks'),
         ),
-      ),
+        BottomNavigationBarItem(
+          icon: Icon(Icons.person),
+          label: AppLocalizations.of(context).translate('profile'),
+        )
+      ],
     );
   }
 
@@ -102,7 +85,6 @@ class _HomeScreenState extends State<HomeScreen> {
         },
         icon: Icon(
           Icons.notifications,
-          color: Colors.black,
         ),
       ),
     );
