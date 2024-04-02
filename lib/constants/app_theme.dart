@@ -68,14 +68,18 @@ class AppThemeData {
         backgroundColor: colorScheme.secondary,
         selectedItemColor: colorScheme.onSecondary,
         unselectedItemColor: colorScheme.onPrimary,
+        selectedLabelStyle: _textTheme.displaySmall,
+        unselectedLabelStyle: _textTheme.labelSmall,
+        selectedIconTheme: IconThemeData(size: 32),
+        unselectedIconTheme: IconThemeData(size: 32),
       ),
     );
   }
 
   static const ColorScheme lightColorScheme = ColorScheme(
     primary: Color(0xFFFFF2E6),
-    primaryContainer: Colors.pink,
-    secondary: Color(0xFFe8ecd6),
+    primaryContainer: Colors.red,
+    secondary: Color(0xFFE6E4BF),
     secondaryContainer: Colors.blue,
     background: Color(0xFFFFF9E6),
     surface: Color(0xFF10382D),
@@ -83,7 +87,7 @@ class AppThemeData {
     error: _lightFillColor,
     onError: _lightFillColor,
     onPrimary: _lightFillColor,
-    onSecondary: Color(0xFFCE6A6B),
+    onSecondary: Color(0xFFB03D64),
     onSurface: Color(0xFF10382D),
     brightness: Brightness.light,
   );

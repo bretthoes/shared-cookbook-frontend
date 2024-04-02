@@ -132,7 +132,6 @@ class _CookbookListScreenState extends State<CookbookListScreen> {
             );
           },
           child: Icon(Icons.add, color: Colors.white), // Make the icon white
-          backgroundColor: Colors.red, // Make the button red
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(30.0), // Make it circular
           ),
