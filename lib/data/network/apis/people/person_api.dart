@@ -2,6 +2,8 @@ import 'dart:async';
 import 'package:boilerplate/core/data/network/dio/dio_client.dart';
 import 'package:boilerplate/data/network/constants/endpoints.dart';
 import 'package:boilerplate/domain/entity/person/person.dart';
+import 'package:boilerplate/domain/usecase/person/login_usecase.dart';
+import 'package:boilerplate/domain/usecase/person/register_usecase.dart';
 
 class PersonApi {
   // dio instance
@@ -10,13 +12,18 @@ class PersonApi {
   // injecting dio instance
   PersonApi(this._dioClient);
 
-  Future<Person> login(String email, String password) async {
+  Future<Person> login(LoginParams loginParams) async {
     try {
-      var person = new Person(email: email, password: password);
+      var person = new Person(
+        email: loginParams.email,
+        password: loginParams.password,
+      );
+
       final res = await _dioClient.dio.post(
         Endpoints.postLogin,
         data: person.toMap(),
       );
+
       return Person.fromMap(res.data);
     } catch (e) {
       print(e.toString());
@@ -24,9 +31,12 @@ class PersonApi {
     }
   }
 
-  Future<Person> register(String email, String password) async {
+  Future<Person> register(RegisterParams params) async {
     try {
-      var person = new Person(email: email, password: password);
+      var person = new Person(
+        email: params.email,
+        password: params.password,
+      );
       final res = await _dioClient.dio.post(
         Endpoints.addPerson,
         data: person.toMap(),

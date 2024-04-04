@@ -57,7 +57,7 @@ class _LoginScreenState extends State<LoginScreen> {
       child: Stack(
         fit: StackFit.expand,
         children: <Widget>[
-          _buildRightSide(),
+          _buildColumn(),
           Observer(
             builder: (context) {
               return _userStore.success
@@ -78,21 +78,18 @@ class _LoginScreenState extends State<LoginScreen> {
     );
   }
 
-  Widget _buildRightSide() {
-    return SingleChildScrollView(
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 24.0),
-        child: Column(
-          mainAxisSize: MainAxisSize.max,
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            _buildEmailField(),
-            _buildPasswordField(),
-            _buildForgotPasswordButton(),
-            _buildSignInButton()
-          ],
-        ),
+  Widget _buildColumn() {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 24.0),
+      child: Column(
+        mainAxisSize: MainAxisSize.max,
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: <Widget>[
+          _buildEmailField(),
+          _buildPasswordField(),
+          _buildForgotPasswordButton(),
+          _buildSignInButton()
+        ],
       ),
     );
   }

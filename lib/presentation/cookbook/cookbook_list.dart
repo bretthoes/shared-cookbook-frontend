@@ -1,4 +1,4 @@
-import 'package:another_flushbar/flushbar_helper.dart';
+import 'dart:math';
 import 'package:boilerplate/core/widgets/progress_indicator_widget.dart';
 import 'package:boilerplate/di/service_locator.dart';
 import 'package:boilerplate/presentation/cookbook/add_cookbook.dart';
@@ -41,7 +41,6 @@ class _CookbookListScreenState extends State<CookbookListScreen> {
   Widget _buildBody() {
     return Stack(
       children: <Widget>[
-        _handleErrorMessage(),
         _buildMainContent(),
         _buildAddCookbookButton(),
       ],
@@ -60,14 +59,15 @@ class _CookbookListScreenState extends State<CookbookListScreen> {
 
   Widget _buildListView() {
     return _cookbookStore.cookbookList?.cookbooks != null
-        ? ListView.separated(
-            itemCount: _cookbookStore.cookbookList!.cookbooks.length,
-            separatorBuilder: (context, position) {
-              return Divider();
-            },
-            itemBuilder: (context, position) {
-              return _buildListItem(position);
-            },
+        ? SizedBox(
+            height: 400,
+            child: ListView.builder(
+              itemCount: _cookbookStore.cookbookList!.cookbooks.length,
+              scrollDirection: Axis.horizontal,
+              itemBuilder: (context, index) {
+                return _buildListItem(index);
+              },
+            ),
           )
         : Center(
             child: Text(
@@ -76,45 +76,62 @@ class _CookbookListScreenState extends State<CookbookListScreen> {
           );
   }
 
-  Widget _buildListItem(int position) {
-    return ListTile(
-      dense: true,
-      leading: Icon(Icons.cloud_circle),
-      title: Text(
-        '${_cookbookStore.cookbookList?.cookbooks[position].title}',
-        maxLines: 1,
-        overflow: TextOverflow.ellipsis,
-        softWrap: false,
-        style: Theme.of(context).textTheme.titleMedium,
-      ),
+  Widget _buildListItem(int index) {
+    var cookbook = _cookbookStore.cookbookList?.cookbooks[index];
+    var cookbookId = cookbook?.cookbookId ?? 0;
+    return GestureDetector(
       onTap: () {
         Navigator.push(
-            context,
-            MaterialPageRoute(
-                builder: (context) => CookbookDetailsScreen(
-                    cookbookId: _cookbookStore
-                            .cookbookList?.cookbooks[position].cookbookId ??
-                        0)));
+          context,
+          MaterialPageRoute(
+            builder: (context) => CookbookDetailsScreen(cookbookId: cookbookId),
+          ),
+        );
       },
-      // subtitle: Text(
-      //   '${_cookbookStore.cookbookList?.cookbooks?[position].body}',
-      //   maxLines: 1,
-      //   overflow: TextOverflow.ellipsis,
-      //   softWrap: false,
-      // ),
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Image.asset(
+              getRandomFilename(),
+              width: 160,
+              height: 225,
+              fit: BoxFit.cover,
+            ),
+            SizedBox(height: 4),
+            Text(
+              cookbook?.title ?? '',
+              maxLines: 2,
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                fontSize: 14,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ],
+        ),
+      ),
     );
   }
 
-  Widget _handleErrorMessage() {
-    return Observer(
-      builder: (context) {
-        if (_cookbookStore.errorStore.errorMessage.isNotEmpty) {
-          return _showErrorMessage(_cookbookStore.errorStore.errorMessage);
-        }
-
-        return SizedBox.shrink();
-      },
-    );
+  // TODO remove, only used temporarily to simulate displaying covers in list
+  String getRandomFilename() {
+    var filenames = [
+      'assets/images/covers/beige-orange-corners.png',
+      'assets/images/covers/blue-pink-stripes.png',
+      'assets/images/covers/blue-purple-stripes.png',
+      'assets/images/covers/blue-yellow-stripes.png',
+      'assets/images/covers/green-yellow-stripes.png',
+      'assets/images/covers/light-green-purple-stripes.png',
+      'assets/images/covers/light-green-purple-white-stripes.png',
+      'assets/images/covers/orange-white-stripes.png',
+      'assets/images/covers/purple-brown-corners.png',
+      'assets/images/covers/yellow-green-stripes.png',
+    ];
+    Random random = Random();
+    int randomIndex = random.nextInt(filenames.length);
+    return filenames[randomIndex];
   }
 
   Widget _buildAddCookbookButton() {
@@ -138,20 +155,5 @@ class _CookbookListScreenState extends State<CookbookListScreen> {
         ),
       ),
     );
-  }
-
-  // General Methods:-----------------------------------------------------------
-  _showErrorMessage(String message) {
-    Future.delayed(Duration(milliseconds: 0), () {
-      if (message.isNotEmpty) {
-        FlushbarHelper.createError(
-          message: message,
-          title: AppLocalizations.of(context).translate('error'),
-          duration: Duration(seconds: 3),
-        )..show(context);
-      }
-    });
-
-    return SizedBox.shrink();
   }
 }

@@ -30,12 +30,12 @@ class PersonRepositoryImpl extends PersonRepository {
   // Login:---------------------------------------------------------------------
   @override
   Future<Person?> login(LoginParams params) async {
-    return await _personApi.login(params.email, params.password);
+    return await _personApi.login(params);
   }
 
   @override
   Future<Person?> register(RegisterParams params) async {
-    return await _personApi.register(params.email, params.password);
+    return await _personApi.register(params);
   }
 
   @override
