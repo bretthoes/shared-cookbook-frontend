@@ -5,7 +5,7 @@ import 'package:boilerplate/core/extensions/string_extension.dart';
 import 'package:boilerplate/di/service_locator.dart';
 import 'package:boilerplate/enums/http_code.dart';
 import 'package:boilerplate/presentation/home/store/theme/theme_store.dart';
-import 'package:boilerplate/presentation/login/store/login_store.dart';
+import 'package:boilerplate/presentation/login/store/person_store.dart';
 import 'package:boilerplate/presentation/register/set_password.dart';
 import 'package:boilerplate/utils/device/device_utils.dart';
 import 'package:boilerplate/utils/locale/app_localization.dart';
@@ -24,7 +24,7 @@ class _RegisterScreenState extends State<SetEmailScreen> {
   //stores:---------------------------------------------------------------------
   final ThemeStore _themeStore = getIt<ThemeStore>();
   final FormStore _formStore = getIt<FormStore>();
-  final UserStore _userStore = getIt<UserStore>();
+  final PersonStore _personStore = getIt<PersonStore>();
 
   //focus node:-----------------------------------------------------------------
   late FocusNode _emailFocusNode;
@@ -120,9 +120,9 @@ class _RegisterScreenState extends State<SetEmailScreen> {
 
   // Private:-------------------------------------------------------------------
   Future<bool> _emailIsAvailable() async {
-    await _userStore.getPersonByEmail(_userEmailController.text);
+    await _personStore.getPersonByEmail(_userEmailController.text);
     // a response of 'not found' indicates email is available
-    return _userStore.errorStore.errorCode == HttpCode.notFound.value;
+    return _personStore.errorStore.errorCode == HttpCode.notFound.value;
   }
 
   void _navigateNext() {

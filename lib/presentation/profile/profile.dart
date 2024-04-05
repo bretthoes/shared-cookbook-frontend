@@ -3,7 +3,7 @@ import 'package:boilerplate/data/sharedpref/constants/preferences.dart';
 import 'package:boilerplate/di/service_locator.dart';
 import 'package:boilerplate/presentation/home/store/language/language_store.dart';
 import 'package:boilerplate/presentation/home/store/theme/theme_store.dart';
-import 'package:boilerplate/presentation/login/store/login_store.dart';
+import 'package:boilerplate/presentation/login/store/person_store.dart';
 import 'package:boilerplate/presentation/profile/custom_settings_group.dart';
 import 'package:boilerplate/presentation/profile/edit_profile.dart';
 import 'package:boilerplate/utils/locale/app_localization.dart';
@@ -20,7 +20,7 @@ class ProfileScreen extends StatefulWidget {
 
 class _ProfileScreenState extends State<ProfileScreen> {
   //stores:---------------------------------------------------------------------
-  final UserStore _loginStore = getIt<UserStore>();
+  final PersonStore _personStore = getIt<PersonStore>();
   final ThemeStore _themeStore = getIt<ThemeStore>();
   final LanguageStore _languageStore = getIt<LanguageStore>();
 
@@ -58,7 +58,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
               _buildProfileImage(),
               const SizedBox(height: 10),
               Text(
-                _loginStore.person?.displayName ??
+                _personStore.person?.displayName ??
                     AppLocalizations.of(context).translate('no_name_yet'),
                 textAlign: TextAlign.center,
                 maxLines: 1,
@@ -67,7 +67,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 style: Theme.of(context).textTheme.headlineMedium,
               ),
               Text(
-                _loginStore.person?.email ??
+                _personStore.person?.email ??
                     AppLocalizations.of(context).translate('not_signed_in'),
                 textAlign: TextAlign.center,
                 maxLines: 1,
@@ -117,9 +117,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
       child: ClipRRect(
         borderRadius: BorderRadius.circular(100),
         child: Image(
-            image: _loginStore.person?.imagePath.isNullOrWhitespace ?? true
+            image: _personStore.person?.imagePath.isNullOrWhitespace ?? true
                 ? AssetImage('assets/images/blank-profile-picture.png')
-                : AssetImage(_loginStore.person!.imagePath!) // TODO load url
+                : AssetImage(_personStore.person!.imagePath!) // TODO load url
             ),
       ),
     );

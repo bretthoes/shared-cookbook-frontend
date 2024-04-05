@@ -6,7 +6,7 @@ import 'package:boilerplate/data/sharedpref/constants/preferences.dart';
 import 'package:boilerplate/di/service_locator.dart';
 import 'package:boilerplate/enums/http_code.dart';
 import 'package:boilerplate/presentation/home/store/theme/theme_store.dart';
-import 'package:boilerplate/presentation/login/store/login_store.dart';
+import 'package:boilerplate/presentation/login/store/person_store.dart';
 import 'package:boilerplate/utils/device/device_utils.dart';
 import 'package:boilerplate/utils/locale/app_localization.dart';
 import 'package:boilerplate/utils/routes/routes.dart';
@@ -36,7 +36,7 @@ class _SetPasswordScreenState extends State<SetPasswordScreen> {
   //stores:---------------------------------------------------------------------
   final ThemeStore _themeStore = getIt<ThemeStore>();
   final FormStore _formStore = getIt<FormStore>();
-  final UserStore _userStore = getIt<UserStore>();
+  final PersonStore _personStore = getIt<PersonStore>();
 
   @override
   Widget build(BuildContext context) {
@@ -73,13 +73,13 @@ class _SetPasswordScreenState extends State<SetPasswordScreen> {
           ),
           Observer(
             builder: (context) {
-              return _userStore.success ? navigate(context) : Container();
+              return _personStore.success ? navigate(context) : Container();
             },
           ),
           Observer(
             builder: (context) {
               return Visibility(
-                visible: _userStore.isLoading,
+                visible: _personStore.isLoading,
                 child: CustomProgressIndicatorWidget(),
               );
             },
@@ -150,15 +150,15 @@ class _SetPasswordScreenState extends State<SetPasswordScreen> {
     _formStore.validateAll();
     if (_formStore.canLogin) {
       DeviceUtils.hideKeyboard(context);
-      await _userStore.register(_formStore.email, _passwordController.text);
-      if (_userStore.errorStore.errorMessage.isNotEmpty) {
+      await _personStore.register(_formStore.email, _passwordController.text);
+      if (_personStore.errorStore.errorMessage.isNotEmpty) {
         _updateErrorMessage();
       }
     }
   }
 
   void _updateErrorMessage() {
-    if (_userStore.errorStore.errorCode == HttpCode.conflict.value) {
+    if (_personStore.errorStore.errorCode == HttpCode.conflict.value) {
       _formStore.formErrorStore.password = 'email_already_taken';
     } else {
       _formStore.formErrorStore.password = 'error_occurred';

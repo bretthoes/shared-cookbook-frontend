@@ -12,7 +12,7 @@ import 'package:boilerplate/domain/usecase/person/update_person_usecase.dart';
 import 'package:boilerplate/presentation/cookbook/store/cookbook_store.dart';
 import 'package:boilerplate/presentation/home/store/language/language_store.dart';
 import 'package:boilerplate/presentation/home/store/theme/theme_store.dart';
-import 'package:boilerplate/presentation/login/store/login_store.dart';
+import 'package:boilerplate/presentation/login/store/person_store.dart';
 import '../../../di/service_locator.dart';
 
 mixin StoreModule {
@@ -25,8 +25,8 @@ mixin StoreModule {
     );
 
     // stores:------------------------------------------------------------------
-    getIt.registerSingleton<UserStore>(
-      UserStore(
+    getIt.registerSingleton<PersonStore>(
+      PersonStore(
         getIt<IsLoggedInUseCase>(),
         getIt<SaveLoginStatusUseCase>(),
         getIt<LoginUseCase>(),

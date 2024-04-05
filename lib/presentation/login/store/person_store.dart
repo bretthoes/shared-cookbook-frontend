@@ -10,13 +10,13 @@ import 'package:mobx/mobx.dart';
 import '../../../domain/entity/person/person.dart';
 import '../../../domain/usecase/person/login_usecase.dart';
 
-part 'login_store.g.dart';
+part 'person_store.g.dart';
 
-class UserStore = _UserStore with _$UserStore;
+class PersonStore = _PersonStore with _$PersonStore;
 
-abstract class _UserStore with Store {
+abstract class _PersonStore with Store {
   // constructor:---------------------------------------------------------------
-  _UserStore(
+  _PersonStore(
     this._isLoggedInUseCase,
     this._saveLoginStatusUseCase,
     this._loginUseCase,

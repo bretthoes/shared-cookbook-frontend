@@ -5,7 +5,7 @@ import 'package:boilerplate/core/widgets/back_button_app_bar_widget.dart';
 import 'package:boilerplate/core/widgets/textfield_widget.dart';
 import 'package:boilerplate/di/service_locator.dart';
 import 'package:boilerplate/presentation/home/store/theme/theme_store.dart';
-import 'package:boilerplate/presentation/login/store/login_store.dart';
+import 'package:boilerplate/presentation/login/store/person_store.dart';
 import 'package:boilerplate/utils/device/device_utils.dart';
 import 'package:boilerplate/utils/locale/app_localization.dart';
 import 'package:flutter/material.dart';
@@ -23,12 +23,12 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   //stores:---------------------------------------------------------------------
   final ThemeStore _themeStore = getIt<ThemeStore>();
   final FormStore _formStore = getIt<FormStore>();
-  final UserStore _userStore = getIt<UserStore>();
+  final PersonStore _personStore = getIt<PersonStore>();
 
   @override
   void initState() {
     super.initState();
-    _nameController.text = _userStore.person?.displayName ?? '';
+    _nameController.text = _personStore.person?.displayName ?? '';
   }
 
   @override
@@ -117,9 +117,9 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
           return;
         }
         if (true) {
-          var personId = _userStore.person?.personId ?? 0;
+          var personId = _personStore.person?.personId ?? 0;
           if (personId > 0) {
-            await _userStore.updatePerson(
+            await _personStore.updatePerson(
               personId,
               _nameController.text,
               null,

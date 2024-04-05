@@ -8,7 +8,7 @@ import 'package:boilerplate/data/sharedpref/constants/preferences.dart';
 import 'package:boilerplate/enums/http_code.dart';
 import 'package:boilerplate/presentation/home/store/theme/theme_store.dart';
 import 'package:boilerplate/presentation/landing/landing.dart';
-import 'package:boilerplate/presentation/login/store/login_store.dart';
+import 'package:boilerplate/presentation/login/store/person_store.dart';
 import 'package:boilerplate/utils/device/device_utils.dart';
 import 'package:boilerplate/utils/locale/app_localization.dart';
 import 'package:boilerplate/utils/routes/routes.dart';
@@ -31,7 +31,7 @@ class _LoginScreenState extends State<LoginScreen> {
   //stores:---------------------------------------------------------------------
   final ThemeStore _themeStore = getIt<ThemeStore>();
   final FormStore _formStore = getIt<FormStore>();
-  final UserStore _userStore = getIt<UserStore>();
+  final PersonStore _personStore = getIt<PersonStore>();
 
   //focus node:-----------------------------------------------------------------
   late FocusNode _passwordFocusNode;
@@ -60,7 +60,7 @@ class _LoginScreenState extends State<LoginScreen> {
           _buildColumn(),
           Observer(
             builder: (context) {
-              return _userStore.success
+              return _personStore.success
                   ? navigate(context)
                   : _showErrorMessage(_formStore.errorStore.errorMessage);
             },
@@ -68,7 +68,7 @@ class _LoginScreenState extends State<LoginScreen> {
           Observer(
             builder: (context) {
               return Visibility(
-                visible: _userStore.isLoading,
+                visible: _personStore.isLoading,
                 child: CustomProgressIndicatorWidget(),
               );
             },
@@ -170,20 +170,21 @@ class _LoginScreenState extends State<LoginScreen> {
     _formStore.validateAll();
     if (_formStore.canLogin) {
       DeviceUtils.hideKeyboard(context);
-      await _userStore.login(
+      await _personStore.login(
         _emailController.text,
         _passwordController.text,
       );
-      if (_userStore.errorStore.errorMessage.isNotEmpty) {
+      if (_personStore.errorStore.errorMessage.isNotEmpty) {
         _updateErrorMessage();
       }
     }
   }
 
   void _updateErrorMessage() {
-    if (_userStore.errorStore.errorCode == HttpCode.notFound.value) {
+    if (_personStore.errorStore.errorCode == HttpCode.notFound.value) {
       _formStore.formErrorStore.password = 'this_email_wasnt_found';
-    } else if (_userStore.errorStore.errorCode == HttpCode.unauthorized.value) {
+    } else if (_personStore.errorStore.errorCode ==
+        HttpCode.unauthorized.value) {
       _formStore.formErrorStore.password = 'this_password_isnt_right';
     } else {
       _formStore.formErrorStore.password = 'error_occurred';

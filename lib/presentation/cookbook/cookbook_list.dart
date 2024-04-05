@@ -4,7 +4,7 @@ import 'package:boilerplate/di/service_locator.dart';
 import 'package:boilerplate/presentation/cookbook/add_cookbook.dart';
 import 'package:boilerplate/presentation/cookbook/cookbook_details.dart';
 import 'package:boilerplate/presentation/cookbook/store/cookbook_store.dart';
-import 'package:boilerplate/presentation/login/store/login_store.dart';
+import 'package:boilerplate/presentation/login/store/person_store.dart';
 import 'package:boilerplate/utils/locale/app_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
@@ -17,7 +17,7 @@ class CookbookListScreen extends StatefulWidget {
 class _CookbookListScreenState extends State<CookbookListScreen> {
   //stores:---------------------------------------------------------------------
   final CookbookStore _cookbookStore = getIt<CookbookStore>();
-  final UserStore _loginStore = getIt<UserStore>();
+  final PersonStore _personStore = getIt<PersonStore>();
 
   @override
   void didChangeDependencies() {
@@ -25,7 +25,7 @@ class _CookbookListScreenState extends State<CookbookListScreen> {
 
     // check to see if already called api
     if (!_cookbookStore.loading) {
-      var personId = _loginStore.person?.personId ?? 0;
+      var personId = _personStore.person?.personId ?? 0;
       if (personId > 0) {
         _cookbookStore.getCookbooks(personId);
       }
