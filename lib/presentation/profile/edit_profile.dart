@@ -125,7 +125,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
               null,
               null,
             );
-            //TODO api call to update person
+            // TODO api call to update person
             // TODO display save successful
             return;
           }
