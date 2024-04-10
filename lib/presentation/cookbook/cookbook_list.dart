@@ -1,6 +1,7 @@
 import 'dart:math';
 import 'package:boilerplate/core/widgets/progress_indicator_widget.dart';
 import 'package:boilerplate/di/service_locator.dart';
+import 'package:boilerplate/domain/entity/cookbook/cookbook.dart';
 import 'package:boilerplate/presentation/cookbook/add_cookbook.dart';
 import 'package:boilerplate/presentation/cookbook/cookbook_details.dart';
 import 'package:boilerplate/presentation/cookbook/store/cookbook_store.dart';
@@ -8,6 +9,7 @@ import 'package:boilerplate/presentation/login/store/person_store.dart';
 import 'package:boilerplate/utils/locale/app_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:carousel_slider/carousel_slider.dart';
 
 class CookbookListScreen extends StatefulWidget {
   @override
@@ -58,59 +60,63 @@ class _CookbookListScreenState extends State<CookbookListScreen> {
   }
 
   Widget _buildListView() {
-    return _cookbookStore.cookbookList?.cookbooks != null
-        ? SizedBox(
-            height: 400,
-            child: ListView.builder(
-              itemCount: _cookbookStore.cookbookList!.cookbooks.length,
-              scrollDirection: Axis.horizontal,
-              itemBuilder: (context, index) {
-                return _buildListItem(index);
-              },
-            ),
-          )
-        : Center(
-            child: Text(
-              AppLocalizations.of(context).translate('no_cookbooks_yet'),
-            ),
-          );
+    var cookbooks = _cookbookStore.cookbookList?.cookbooks;
+
+    if (cookbooks == null) {
+      return Center(
+        child: Text(
+          AppLocalizations.of(context).translate('no_cookbooks_yet'),
+        ),
+      );
+    }
+
+    final orientation = MediaQuery.of(context).orientation;
+
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        CarouselSlider(
+          options: CarouselOptions(
+            height: orientation == Orientation.portrait ? 300 : 200,
+            enlargeCenterPage: true,
+            enlargeFactor: 0.2,
+            viewportFraction: 0.55,
+          ),
+          items: cookbooks.map((i) {
+            return _buildListItem(i);
+          }).toList(),
+        ),
+      ],
+    );
   }
 
-  Widget _buildListItem(int index) {
-    var cookbook = _cookbookStore.cookbookList?.cookbooks[index];
-    var cookbookId = cookbook?.cookbookId ?? 0;
+  Widget _buildListItem(Cookbook cookbook) {
     return GestureDetector(
       onTap: () {
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => CookbookDetailsScreen(cookbookId: cookbookId),
+            builder: (context) =>
+                CookbookDetailsScreen(cookbookId: cookbook.cookbookId ?? 0),
           ),
         );
       },
-      child: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Image.asset(
-              getRandomFilename(),
-              width: 160,
-              height: 225,
-              fit: BoxFit.cover,
-            ),
-            SizedBox(height: 4),
-            Text(
-              cookbook?.title ?? '',
-              maxLines: 2,
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                fontSize: 14,
-                fontWeight: FontWeight.bold,
+      child: Column(
+        children: [
+          Expanded(
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(10.0),
+              child: Image.asset(
+                getRandomFilename(),
+                fit: BoxFit.cover,
               ),
             ),
-          ],
-        ),
+          ),
+          Text(
+            cookbook.title ?? 'No title',
+            textAlign: TextAlign.center, // TODO change this font, looks ugly
+          ),
+        ],
       ),
     );
   }

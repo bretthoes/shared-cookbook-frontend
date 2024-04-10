@@ -23,6 +23,7 @@ dependencies:
   another_flushbar: ^1.12.29
   # B
   # C
+  carousel_slider: ^4.2.1
   cupertino_icons: ^1.0.5
   # D
   dio: ^5.1.1
