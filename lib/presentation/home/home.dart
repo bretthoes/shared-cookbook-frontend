@@ -1,11 +1,8 @@
-import 'package:boilerplate/di/service_locator.dart';
 import 'package:boilerplate/presentation/feed/feed.dart';
-import 'package:boilerplate/presentation/home/store/theme/theme_store.dart';
 import 'package:boilerplate/presentation/cookbook/cookbook_list.dart';
 import 'package:boilerplate/presentation/profile/profile.dart';
 import 'package:boilerplate/utils/locale/app_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:google_nav_bar/google_nav_bar.dart';
 
 class HomeScreen extends StatefulWidget {
   @override
@@ -14,7 +11,6 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   //stores:---------------------------------------------------------------------
-  final ThemeStore _themeStore = getIt<ThemeStore>();
 
   final screens = [
     FeedScreen(),
