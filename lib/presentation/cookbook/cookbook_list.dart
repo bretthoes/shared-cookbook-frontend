@@ -112,9 +112,11 @@ class _CookbookListScreenState extends State<CookbookListScreen> {
               ),
             ),
           ),
+          SizedBox(height: 8),
           Text(
             cookbook.title ?? 'No title',
-            textAlign: TextAlign.center, // TODO change this font, looks ugly
+            textAlign: TextAlign.center,
+            style: Theme.of(context).textTheme.labelMedium,
           ),
         ],
       ),
