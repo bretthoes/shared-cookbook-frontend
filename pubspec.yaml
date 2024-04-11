@@ -33,6 +33,7 @@ dependencies:
   flutter_mobx: ^2.0.6+5
   # G
   get_it: ^7.2.0
+  google_fonts: ^6.1.0
   # H
   http: ^1.2.0
   # I
@@ -60,7 +61,6 @@ dependencies:
   # W
   # X
   xxtea: ^2.1.0
-  google_nav_bar: ^5.0.6
   flutter_settings_screen_ex: ^0.0.1+5
   # Y
   # Z
