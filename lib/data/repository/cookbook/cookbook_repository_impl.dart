@@ -6,7 +6,7 @@ import 'package:boilerplate/data/network/apis/cookbooks/cookbook_api.dart';
 import 'package:boilerplate/domain/entity/cookbook/cookbook.dart';
 import 'package:boilerplate/domain/entity/cookbook/cookbook_list.dart';
 import 'package:boilerplate/domain/repository/cookbook/cookbook_repository.dart';
-import 'package:boilerplate/domain/usecase/cookbook/insert_cookbook_usecase.dart';
+import 'package:boilerplate/domain/usecase/cookbook/add_cookbook_usecase.dart';
 import 'package:sembast/sembast.dart';
 
 class CookbookRepositoryImpl extends CookbookRepository {
@@ -64,7 +64,7 @@ class CookbookRepositoryImpl extends CookbookRepository {
   }
 
   @override
-  Future<Cookbook?> insert(InsertCookbookParams params) async {
+  Future<Cookbook?> add(AddCookbookParams params) async {
     var newCookbook = await _cookbookApi.addCookbook(params);
 
     _cookbookDataSource

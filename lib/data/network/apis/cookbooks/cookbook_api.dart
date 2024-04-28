@@ -3,7 +3,7 @@ import 'package:boilerplate/core/data/network/dio/dio_client.dart';
 import 'package:boilerplate/data/network/constants/endpoints.dart';
 import 'package:boilerplate/domain/entity/cookbook/cookbook.dart';
 import 'package:boilerplate/domain/entity/cookbook/cookbook_list.dart';
-import 'package:boilerplate/domain/usecase/cookbook/insert_cookbook_usecase.dart';
+import 'package:boilerplate/domain/usecase/cookbook/add_cookbook_usecase.dart';
 
 class CookbookApi {
   // dio instance
@@ -24,7 +24,7 @@ class CookbookApi {
   }
 
   // Adds a cookbook
-  Future<Cookbook> addCookbook(InsertCookbookParams params) async {
+  Future<Cookbook> addCookbook(AddCookbookParams params) async {
     try {
       var cookbook = new Cookbook(
         creatorPersonId: params.creatorPersonId,

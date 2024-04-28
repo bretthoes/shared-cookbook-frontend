@@ -1,4 +1,3 @@
-import 'dart:math';
 import 'package:boilerplate/core/widgets/progress_indicator_widget.dart';
 import 'package:boilerplate/di/service_locator.dart';
 import 'package:boilerplate/domain/entity/cookbook/cookbook.dart';
@@ -111,7 +110,8 @@ class _CookbookListScreenState extends State<CookbookListScreen> {
             child: ClipRRect(
               borderRadius: BorderRadius.circular(10.0),
               child: Image.asset(
-                'assets/images/covers/beige-orange-corners.png', // TODO replace
+                cookbook.imagePath ??
+                    'assets/images/covers/beige-orange-corners.png', // TODO replace with proper default
                 fit: BoxFit.cover,
               ),
             ),

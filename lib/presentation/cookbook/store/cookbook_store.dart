@@ -2,7 +2,7 @@ import 'package:boilerplate/core/extensions/string_extension.dart';
 import 'package:boilerplate/core/stores/error/error_store.dart';
 import 'package:boilerplate/domain/entity/cookbook/cookbook.dart';
 import 'package:boilerplate/domain/entity/cookbook/cookbook_list.dart';
-import 'package:boilerplate/domain/usecase/cookbook/insert_cookbook_usecase.dart';
+import 'package:boilerplate/domain/usecase/cookbook/add_cookbook_usecase.dart';
 import 'package:boilerplate/utils/dio/dio_error_util.dart';
 import 'package:mobx/mobx.dart';
 
@@ -16,13 +16,13 @@ abstract class _CookbookStore with Store {
   // constructor:---------------------------------------------------------------
   _CookbookStore(
     this._getCookbookUseCase,
-    this._insertCookbookUseCase,
+    this._addCookbookUseCase,
     this.errorStore,
   );
 
   // use cases:-----------------------------------------------------------------
   final GetCookbookUseCase _getCookbookUseCase;
-  final InsertCookbookUseCase _insertCookbookUseCase;
+  final AddCookbookUseCase _addCookbookUseCase;
 
   // stores:--------------------------------------------------------------------
   // store for handling errors
@@ -70,9 +70,9 @@ abstract class _CookbookStore with Store {
     String title,
     String cover,
   ) async {
-    final InsertCookbookParams insertCookbookParams = InsertCookbookParams(
+    final addCookbookParams = AddCookbookParams(
         creatorPersonId: creatorPersonId, title: title, imagePath: cover);
-    final future = _insertCookbookUseCase.call(params: insertCookbookParams);
+    final future = _addCookbookUseCase.call(params: addCookbookParams);
 
     future.then((addedCookbook) {
       this.cookbookList?.cookbooks.add(addedCookbook!);

@@ -3,32 +3,32 @@ import 'package:boilerplate/domain/entity/cookbook/cookbook.dart';
 import 'package:boilerplate/domain/repository/cookbook/cookbook_repository.dart';
 import 'package:json_annotation/json_annotation.dart';
 
-part 'insert_cookbook_usecase.g.dart';
+part 'add_cookbook_usecase.g.dart';
 
 @JsonSerializable()
-class InsertCookbookParams {
+class AddCookbookParams {
   final int creatorPersonId;
   final String title;
   final String imagePath;
 
-  InsertCookbookParams(
+  AddCookbookParams(
       {required this.creatorPersonId,
       required this.title,
       required this.imagePath});
 
-  factory InsertCookbookParams.fromJson(Map<String, dynamic> json) =>
-      _$InsertCookbookParamsFromJson(json);
+  factory AddCookbookParams.fromJson(Map<String, dynamic> json) =>
+      _$AddCookbookParamsFromJson(json);
 
-  Map<String, dynamic> toJson() => _$InsertCookbookParamsToJson(this);
+  Map<String, dynamic> toJson() => _$AddCookbookParamsToJson(this);
 }
 
-class InsertCookbookUseCase extends UseCase<Cookbook?, InsertCookbookParams> {
+class AddCookbookUseCase extends UseCase<Cookbook?, AddCookbookParams> {
   final CookbookRepository _cookbookRepository;
 
-  InsertCookbookUseCase(this._cookbookRepository);
+  AddCookbookUseCase(this._cookbookRepository);
 
   @override
   Future<Cookbook?> call({required params}) {
-    return _cookbookRepository.insert(params);
+    return _cookbookRepository.add(params);
   }
 }

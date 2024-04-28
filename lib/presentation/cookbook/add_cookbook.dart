@@ -259,6 +259,7 @@ class _AddCookbookScreenState extends State<AddCookbookScreen> {
   }
 
   Widget _buildSaveButton() {
+    // TODO make button more narrow, offset to right side of screen
     return ElevatedButton(
       onPressed: () async => await _tryAddCookbook(),
       child: Text(
@@ -271,6 +272,7 @@ class _AddCookbookScreenState extends State<AddCookbookScreen> {
   Future<void> _tryAddCookbook() async {
     DeviceUtils.hideKeyboard(context);
     _cookbookStore.validateAddCookbook();
+    // TODO add validation for _personStore.creatorPersonId here as well, check both error messages for isEmpty
     if (_cookbookStore.errorStore.errorMessage.isEmpty) {
       _cookbookStore.addCookbook(
         _personStore.person?.personId ?? 0,

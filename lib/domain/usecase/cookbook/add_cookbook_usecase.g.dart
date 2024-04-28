@@ -1,21 +1,19 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'insert_cookbook_usecase.dart';
+part of 'add_cookbook_usecase.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
 
-InsertCookbookParams _$InsertCookbookParamsFromJson(
-        Map<String, dynamic> json) =>
-    InsertCookbookParams(
+AddCookbookParams _$AddCookbookParamsFromJson(Map<String, dynamic> json) =>
+    AddCookbookParams(
       creatorPersonId: json['creatorPersonId'] as int,
       title: json['title'] as String,
       imagePath: json['imagePath'] as String,
     );
 
-Map<String, dynamic> _$InsertCookbookParamsToJson(
-        InsertCookbookParams instance) =>
+Map<String, dynamic> _$AddCookbookParamsToJson(AddCookbookParams instance) =>
     <String, dynamic>{
       'creatorPersonId': instance.creatorPersonId,
       'title': instance.title,

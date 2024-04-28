@@ -5,7 +5,7 @@ import 'package:boilerplate/domain/repository/person/person_repository.dart';
 import 'package:boilerplate/domain/usecase/cookbook/delete_cookbook_usecase.dart';
 import 'package:boilerplate/domain/usecase/cookbook/find_cookbook_by_id_usecase.dart';
 import 'package:boilerplate/domain/usecase/cookbook/get_cookbook_usecase.dart';
-import 'package:boilerplate/domain/usecase/cookbook/insert_cookbook_usecase.dart';
+import 'package:boilerplate/domain/usecase/cookbook/add_cookbook_usecase.dart';
 import 'package:boilerplate/domain/usecase/cookbook/update_cookbook_usecase.dart';
 import 'package:boilerplate/domain/usecase/person/find_person_by_email_usecase.dart';
 import 'package:boilerplate/domain/usecase/person/find_person_by_id_usecase.dart';
@@ -49,8 +49,8 @@ mixin UseCaseModule {
     getIt.registerSingleton<FindCookbookByIdUseCase>(
       FindCookbookByIdUseCase(getIt<CookbookRepository>()),
     );
-    getIt.registerSingleton<InsertCookbookUseCase>(
-      InsertCookbookUseCase(getIt<CookbookRepository>()),
+    getIt.registerSingleton<AddCookbookUseCase>(
+      AddCookbookUseCase(getIt<CookbookRepository>()),
     );
     getIt.registerSingleton<UpdateCookbookUseCase>(
       UpdateCookbookUseCase(getIt<CookbookRepository>()),
