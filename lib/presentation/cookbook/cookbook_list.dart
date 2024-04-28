@@ -82,6 +82,7 @@ class _CookbookListScreenState extends State<CookbookListScreen> {
                 enlargeCenterPage: true,
                 enlargeFactor: 0.2,
                 viewportFraction: 0.55,
+                enableInfiniteScroll: false,
               ),
               items: cookbooks.map((i) {
                 return _buildListItem(i);
