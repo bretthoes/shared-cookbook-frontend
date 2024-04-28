@@ -1,5 +1,8 @@
+import 'package:boilerplate/core/extensions/string_extension.dart';
 import 'package:boilerplate/core/stores/error/error_store.dart';
+import 'package:boilerplate/domain/entity/cookbook/cookbook.dart';
 import 'package:boilerplate/domain/entity/cookbook/cookbook_list.dart';
+import 'package:boilerplate/domain/usecase/cookbook/insert_cookbook_usecase.dart';
 import 'package:boilerplate/utils/dio/dio_error_util.dart';
 import 'package:mobx/mobx.dart';
 
@@ -11,10 +14,15 @@ class CookbookStore = _CookbookStore with _$CookbookStore;
 
 abstract class _CookbookStore with Store {
   // constructor:---------------------------------------------------------------
-  _CookbookStore(this._getCookbookUseCase, this.errorStore);
+  _CookbookStore(
+    this._getCookbookUseCase,
+    this._insertCookbookUseCase,
+    this.errorStore,
+  );
 
   // use cases:-----------------------------------------------------------------
   final GetCookbookUseCase _getCookbookUseCase;
+  final InsertCookbookUseCase _insertCookbookUseCase;
 
   // stores:--------------------------------------------------------------------
   // store for handling errors
@@ -30,6 +38,12 @@ abstract class _CookbookStore with Store {
 
   @observable
   CookbookList? cookbookList;
+
+  @observable
+  String? newTitle;
+
+  @observable
+  String? newCover;
 
   @observable
   bool success = false;
@@ -48,5 +62,44 @@ abstract class _CookbookStore with Store {
     }).catchError((error) {
       errorStore.errorMessage = DioErrorUtil.handleError(error);
     });
+  }
+
+  @action
+  Future addCookbook(
+    int creatorPersonId,
+    String title,
+    String cover,
+  ) async {
+    final InsertCookbookParams insertCookbookParams = InsertCookbookParams(
+        creatorPersonId: creatorPersonId, title: title, imagePath: cover);
+    final future = _insertCookbookUseCase.call(params: insertCookbookParams);
+
+    future.then((addedCookbook) {
+      this.cookbookList?.cookbooks.add(addedCookbook!);
+    }).catchError((error) {
+      errorStore.errorMessage = DioErrorUtil.handleError(error);
+    });
+  }
+
+  @action
+  void validateAddCookbook() {
+    errorStore.errorMessage = "";
+    if (newTitle.isNullOrWhitespace) {
+      errorStore.errorMessage = "please add a title";
+      return;
+    }
+    if (newCover.isNullOrWhitespace) {
+      errorStore.errorMessage = "please add a cover image";
+      return;
+    }
+    if (newTitle!.length < 2 || newTitle!.length > 18) {
+      errorStore.errorMessage = "must be 2-18 chars";
+      return;
+    }
+  }
+
+  @action
+  void setTitle(String value) {
+    newTitle = value;
   }
 }

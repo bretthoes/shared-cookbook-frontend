@@ -103,9 +103,7 @@ class _SetPasswordScreenState extends State<SetPasswordScreen> {
 
   ElevatedButton _buildRegisterButton() {
     return ElevatedButton(
-      onPressed: () async {
-        await _tryRegister();
-      },
+      onPressed: () async => await _tryRegister(),
       child: Text(
         AppLocalizations.of(context).translate('done'),
       ),

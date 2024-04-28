@@ -60,33 +60,37 @@ class _CookbookListScreenState extends State<CookbookListScreen> {
   }
 
   Widget _buildListView() {
-    var cookbooks = _cookbookStore.cookbookList?.cookbooks;
+    return Observer(
+      builder: (context) {
+        var cookbooks = _cookbookStore.cookbookList?.cookbooks;
 
-    if (cookbooks == null) {
-      return Center(
-        child: Text(
-          AppLocalizations.of(context).translate('no_cookbooks_yet'),
-        ),
-      );
-    }
+        if (cookbooks == null) {
+          return Center(
+            child: Text(
+              AppLocalizations.of(context).translate('no_cookbooks_yet'),
+            ),
+          );
+        }
 
-    final orientation = MediaQuery.of(context).orientation;
+        final orientation = MediaQuery.of(context).orientation;
 
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        CarouselSlider(
-          options: CarouselOptions(
-            height: orientation == Orientation.portrait ? 300 : 200,
-            enlargeCenterPage: true,
-            enlargeFactor: 0.2,
-            viewportFraction: 0.55,
-          ),
-          items: cookbooks.map((i) {
-            return _buildListItem(i);
-          }).toList(),
-        ),
-      ],
+        return Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            CarouselSlider(
+              options: CarouselOptions(
+                height: orientation == Orientation.portrait ? 300 : 200,
+                enlargeCenterPage: true,
+                enlargeFactor: 0.2,
+                viewportFraction: 0.55,
+              ),
+              items: cookbooks.map((i) {
+                return _buildListItem(i);
+              }).toList(),
+            ),
+          ],
+        );
+      },
     );
   }
 
@@ -107,7 +111,7 @@ class _CookbookListScreenState extends State<CookbookListScreen> {
             child: ClipRRect(
               borderRadius: BorderRadius.circular(10.0),
               child: Image.asset(
-                getRandomFilename(),
+                'assets/images/covers/beige-orange-corners.png', // TODO replace
                 fit: BoxFit.cover,
               ),
             ),
@@ -121,25 +125,6 @@ class _CookbookListScreenState extends State<CookbookListScreen> {
         ],
       ),
     );
-  }
-
-  // TODO remove, only used temporarily to simulate displaying covers in list
-  String getRandomFilename() {
-    var filenames = [
-      'assets/images/covers/beige-orange-corners.png',
-      'assets/images/covers/blue-pink-stripes.png',
-      'assets/images/covers/blue-purple-stripes.png',
-      'assets/images/covers/blue-yellow-stripes.png',
-      'assets/images/covers/green-yellow-stripes.png',
-      'assets/images/covers/light-green-purple-stripes.png',
-      'assets/images/covers/light-green-purple-white-stripes.png',
-      'assets/images/covers/orange-white-stripes.png',
-      'assets/images/covers/purple-brown-corners.png',
-      'assets/images/covers/yellow-green-stripes.png',
-    ];
-    Random random = Random();
-    int randomIndex = random.nextInt(filenames.length);
-    return filenames[randomIndex];
   }
 
   Widget _buildAddCookbookButton() {

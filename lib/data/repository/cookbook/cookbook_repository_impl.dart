@@ -6,6 +6,7 @@ import 'package:boilerplate/data/network/apis/cookbooks/cookbook_api.dart';
 import 'package:boilerplate/domain/entity/cookbook/cookbook.dart';
 import 'package:boilerplate/domain/entity/cookbook/cookbook_list.dart';
 import 'package:boilerplate/domain/repository/cookbook/cookbook_repository.dart';
+import 'package:boilerplate/domain/usecase/cookbook/insert_cookbook_usecase.dart';
 import 'package:sembast/sembast.dart';
 
 class CookbookRepositoryImpl extends CookbookRepository {
@@ -63,10 +64,16 @@ class CookbookRepositoryImpl extends CookbookRepository {
   }
 
   @override
-  Future<int> insert(Cookbook cookbook) => _cookbookDataSource
-      .insert(cookbook)
-      .then((id) => id)
-      .catchError((error) => throw error);
+  Future<Cookbook?> insert(InsertCookbookParams params) async {
+    var newCookbook = await _cookbookApi.addCookbook(params);
+
+    _cookbookDataSource
+        .insert(newCookbook)
+        .then((id) => id)
+        .catchError((error) => throw error);
+
+    return newCookbook;
+  }
 
   @override
   Future<int> update(Cookbook cookbook) => _cookbookDataSource
