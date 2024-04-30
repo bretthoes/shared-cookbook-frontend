@@ -61,9 +61,9 @@ class _CookbookListScreenState extends State<CookbookListScreen> {
   Widget _buildListView() {
     return Observer(
       builder: (context) {
-        var cookbooks = _cookbookStore.cookbookList?.cookbooks;
+        var cookbooks = _cookbookStore.cookbookList.cookbooks;
 
-        if (cookbooks == null) {
+        if (cookbooks.isEmpty) {
           return Center(
             child: Text(
               AppLocalizations.of(context).translate('no_cookbooks_yet'),
