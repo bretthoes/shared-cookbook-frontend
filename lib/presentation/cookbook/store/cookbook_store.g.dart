@@ -37,31 +37,15 @@ mixin _$CookbookStore on _CookbookStore, Store {
       Atom(name: '_CookbookStore.cookbookList', context: context);
 
   @override
-  CookbookList? get cookbookList {
+  CookbookList get cookbookList {
     _$cookbookListAtom.reportRead();
     return super.cookbookList;
   }
 
   @override
-  set cookbookList(CookbookList? value) {
+  set cookbookList(CookbookList value) {
     _$cookbookListAtom.reportWrite(value, super.cookbookList, () {
       super.cookbookList = value;
-    });
-  }
-
-  late final _$newTitleAtom =
-      Atom(name: '_CookbookStore.newTitle', context: context);
-
-  @override
-  String? get newTitle {
-    _$newTitleAtom.reportRead();
-    return super.newTitle;
-  }
-
-  @override
-  set newTitle(String? value) {
-    _$newTitleAtom.reportWrite(value, super.newTitle, () {
-      super.newTitle = value;
     });
   }
 
@@ -69,31 +53,15 @@ mixin _$CookbookStore on _CookbookStore, Store {
       Atom(name: '_CookbookStore.newCover', context: context);
 
   @override
-  String? get newCover {
+  String get newCover {
     _$newCoverAtom.reportRead();
     return super.newCover;
   }
 
   @override
-  set newCover(String? value) {
+  set newCover(String value) {
     _$newCoverAtom.reportWrite(value, super.newCover, () {
       super.newCover = value;
-    });
-  }
-
-  late final _$successAtom =
-      Atom(name: '_CookbookStore.success', context: context);
-
-  @override
-  bool get success {
-    _$successAtom.reportRead();
-    return super.success;
-  }
-
-  @override
-  set success(bool value) {
-    _$successAtom.reportWrite(value, super.success, () {
-      super.success = value;
     });
   }
 
@@ -118,22 +86,22 @@ mixin _$CookbookStore on _CookbookStore, Store {
       ActionController(name: '_CookbookStore', context: context);
 
   @override
-  void validateAddCookbook() {
+  String validateAddCookbook(int creatorPersonId, String title, String cover) {
     final _$actionInfo = _$_CookbookStoreActionController.startAction(
         name: '_CookbookStore.validateAddCookbook');
     try {
-      return super.validateAddCookbook();
+      return super.validateAddCookbook(creatorPersonId, title, cover);
     } finally {
       _$_CookbookStoreActionController.endAction(_$actionInfo);
     }
   }
 
   @override
-  void setTitle(String value) {
+  void setCover(String value) {
     final _$actionInfo = _$_CookbookStoreActionController.startAction(
-        name: '_CookbookStore.setTitle');
+        name: '_CookbookStore.setCover');
     try {
-      return super.setTitle(value);
+      return super.setCover(value);
     } finally {
       _$_CookbookStoreActionController.endAction(_$actionInfo);
     }
@@ -144,10 +112,33 @@ mixin _$CookbookStore on _CookbookStore, Store {
     return '''
 fetchCookbooksFuture: ${fetchCookbooksFuture},
 cookbookList: ${cookbookList},
-newTitle: ${newTitle},
 newCover: ${newCover},
-success: ${success},
 loading: ${loading}
+    ''';
+  }
+}
+
+mixin _$CookbookErrorStore on _CookbookErrorStore, Store {
+  late final _$errorAtom =
+      Atom(name: '_CookbookErrorStore.error', context: context);
+
+  @override
+  String get error {
+    _$errorAtom.reportRead();
+    return super.error;
+  }
+
+  @override
+  set error(String value) {
+    _$errorAtom.reportWrite(value, super.error, () {
+      super.error = value;
+    });
+  }
+
+  @override
+  String toString() {
+    return '''
+error: ${error}
     ''';
   }
 }

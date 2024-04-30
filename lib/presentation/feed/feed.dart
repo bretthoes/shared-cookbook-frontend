@@ -29,7 +29,7 @@ class _FeedScreenState extends State<FeedScreen> {
   Widget _buildBody() {
     return Stack(
       children: <Widget>[
-        _handleErrorMessage(),
+        //_handleErrorMessage(),
         _buildMainContent(),
       ],
     );
@@ -45,17 +45,17 @@ class _FeedScreenState extends State<FeedScreen> {
     );
   }
 
-  Widget _handleErrorMessage() {
-    return Observer(
-      builder: (context) {
-        if (_cookbookStore.errorStore.errorMessage.isNotEmpty) {
-          return _showErrorMessage(_cookbookStore.errorStore.errorMessage);
-        }
+  // Widget _handleErrorMessage() {
+  //   return Observer(
+  //     builder: (context) {
+  //       if (_cookbookStore.errorStore.errorMessage.isNotEmpty) {
+  //         return _showErrorMessage(_cookbookStore.errorStore.errorMessage);
+  //       }
 
-        return SizedBox.shrink();
-      },
-    );
-  }
+  //       return SizedBox.shrink();
+  //     },
+  //   );
+  // }
 
   // General Methods:-----------------------------------------------------------
   _showErrorMessage(String message) {

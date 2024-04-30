@@ -21,6 +21,7 @@ mixin StoreModule {
     // factories:---------------------------------------------------------------
     getIt.registerFactory(() => ErrorStore());
     getIt.registerFactory(() => FormErrorStore());
+    getIt.registerFactory(() => CookbookErrorStore());
     getIt.registerFactory(
       () => FormStore(getIt<FormErrorStore>(), getIt<ErrorStore>()),
     );
@@ -44,6 +45,7 @@ mixin StoreModule {
         getIt<GetCookbookUseCase>(),
         getIt<AddCookbookUseCase>(),
         getIt<ErrorStore>(),
+        getIt<CookbookErrorStore>(),
       ),
     );
 

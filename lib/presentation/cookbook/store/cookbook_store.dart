@@ -1,6 +1,5 @@
 import 'package:boilerplate/core/extensions/string_extension.dart';
 import 'package:boilerplate/core/stores/error/error_store.dart';
-import 'package:boilerplate/domain/entity/cookbook/cookbook.dart';
 import 'package:boilerplate/domain/entity/cookbook/cookbook_list.dart';
 import 'package:boilerplate/domain/usecase/cookbook/add_cookbook_usecase.dart';
 import 'package:boilerplate/utils/dio/dio_error_util.dart';
@@ -18,6 +17,7 @@ abstract class _CookbookStore with Store {
     this._getCookbookUseCase,
     this._addCookbookUseCase,
     this.errorStore,
+    this.cookbookErrorStore,
   );
 
   // use cases:-----------------------------------------------------------------
@@ -27,6 +27,7 @@ abstract class _CookbookStore with Store {
   // stores:--------------------------------------------------------------------
   // store for handling errors
   final ErrorStore errorStore;
+  final CookbookErrorStore cookbookErrorStore;
 
   // store variables:-----------------------------------------------------------
   static ObservableFuture<CookbookList?> emptyCookbookResponse =
@@ -37,16 +38,10 @@ abstract class _CookbookStore with Store {
       ObservableFuture<CookbookList?>(emptyCookbookResponse);
 
   @observable
-  CookbookList? cookbookList;
+  CookbookList cookbookList = new CookbookList(cookbooks: new List.empty());
 
   @observable
-  String? newTitle;
-
-  @observable
-  String? newCover;
-
-  @observable
-  bool success = false;
+  String newCover = '';
 
   @computed
   bool get loading => fetchCookbooksFuture.status == FutureStatus.pending;
@@ -57,7 +52,7 @@ abstract class _CookbookStore with Store {
     final future = _getCookbookUseCase.call(params: personId);
     fetchCookbooksFuture = ObservableFuture(future);
 
-    future.then((cookbookList) {
+    await future.then((cookbookList) {
       this.cookbookList = cookbookList;
     }).catchError((error) {
       errorStore.errorMessage = DioErrorUtil.handleError(error);
@@ -70,36 +65,70 @@ abstract class _CookbookStore with Store {
     String title,
     String cover,
   ) async {
-    final addCookbookParams = AddCookbookParams(
-        creatorPersonId: creatorPersonId, title: title, imagePath: cover);
-    final future = _addCookbookUseCase.call(params: addCookbookParams);
+    cookbookErrorStore.error = validateAddCookbook(
+      creatorPersonId,
+      title,
+      cover,
+    );
+    if (cookbookErrorStore.error.isNotEmpty) {
+      return;
+    }
 
-    future.then((addedCookbook) {
-      this.cookbookList?.cookbooks.add(addedCookbook!);
+    final params = AddCookbookParams(
+      creatorPersonId: creatorPersonId,
+      title: title,
+      imagePath: cover,
+    );
+    final future = _addCookbookUseCase.call(params: params);
+
+    await future.then((addedCookbook) {
+      if (addedCookbook == null) {
+        throw Exception("Failed to add cookbook: returned cookbook is null");
+      }
+      cookbookList.cookbooks.add(addedCookbook);
+      getCookbooks(creatorPersonId);
     }).catchError((error) {
       errorStore.errorMessage = DioErrorUtil.handleError(error);
     });
   }
 
   @action
-  void validateAddCookbook() {
-    errorStore.errorMessage = "";
-    if (newTitle.isNullOrWhitespace) {
-      errorStore.errorMessage = "please add a title";
-      return;
+  String validateAddCookbook(int creatorPersonId, String title, String cover) {
+    var error = "";
+
+    if (creatorPersonId <= 0) {
+      error = "please sign in first";
+      return error;
     }
-    if (newCover.isNullOrWhitespace) {
-      errorStore.errorMessage = "please add a cover image";
-      return;
+    if (title.isNullOrWhitespace) {
+      error = "please add a title";
+      return error;
     }
-    if (newTitle!.length < 2 || newTitle!.length > 18) {
-      errorStore.errorMessage = "must be 2-18 chars";
-      return;
+    if (cover.isNullOrWhitespace) {
+      error = "please add a cover image";
+      return error;
     }
+    if (!RegExp(r'^[a-zA-Z0-9]+$').hasMatch(title)) {
+      error = "only alphanumeric characters allowed";
+      return error;
+    }
+    if (title.length < 2 || title.length > 18) {
+      error = "must be 2-18 chars";
+      return error;
+    }
+
+    return error;
   }
 
   @action
-  void setTitle(String value) {
-    newTitle = value;
+  void setCover(String value) {
+    newCover = value;
   }
+}
+
+class CookbookErrorStore = _CookbookErrorStore with _$CookbookErrorStore;
+
+abstract class _CookbookErrorStore with Store {
+  @observable
+  String error = '';
 }

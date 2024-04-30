@@ -139,7 +139,9 @@ class _CookbookListScreenState extends State<CookbookListScreen> {
             // Handle onPressed action here
             Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => AddCookbookScreen()),
+              MaterialPageRoute(
+                builder: (context) => AddCookbookScreen(),
+              ),
             );
           },
           child: Icon(Icons.add, color: Colors.white), // Make the icon white

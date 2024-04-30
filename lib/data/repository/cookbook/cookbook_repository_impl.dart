@@ -35,6 +35,10 @@ class CookbookRepositoryImpl extends CookbookRepository {
         .then((cookbooks) => cookbooks)
         .catchError((error) => throw error);
 
+    // TODO these two lines are temporary added to always pull from api
+    _cookbookDataSource.deleteAll();
+    cookbooksFromDb = [];
+
     if (cookbooksFromDb.isNotEmpty) {
       return new CookbookList(cookbooks: cookbooksFromDb);
     }
@@ -67,12 +71,10 @@ class CookbookRepositoryImpl extends CookbookRepository {
   Future<Cookbook?> add(AddCookbookParams params) async {
     var newCookbook = await _cookbookApi.addCookbook(params);
 
-    _cookbookDataSource
+    return _cookbookDataSource
         .insert(newCookbook)
-        .then((id) => id)
+        .then((cookbook) => cookbook)
         .catchError((error) => throw error);
-
-    return newCookbook;
   }
 
   @override

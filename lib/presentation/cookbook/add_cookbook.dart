@@ -1,3 +1,5 @@
+import 'package:another_flushbar/flushbar_helper.dart';
+import 'package:boilerplate/core/widgets/back_button_app_bar_widget.dart';
 import 'package:boilerplate/presentation/login/store/person_store.dart';
 import 'package:boilerplate/utils/device/device_utils.dart';
 import 'package:carousel_slider/carousel_slider.dart';
@@ -24,11 +26,30 @@ class _AddCookbookScreenState extends State<AddCookbookScreen> {
   TextEditingController _titleController = TextEditingController();
 
   @override
+  void initState() {
+    _cookbookStore.setCover(_images[0]);
+    super.initState();
+  }
+
+  static const _images = [
+    'assets/images/covers/beige-orange-corners.png',
+    'assets/images/covers/blue-pink-stripes.png',
+    'assets/images/covers/blue-purple-stripes.png',
+    'assets/images/covers/blue-yellow-stripes.png',
+    'assets/images/covers/green-yellow-stripes.png',
+    'assets/images/covers/light-green-purple-stripes.png',
+    'assets/images/covers/light-green-purple-white-stripes.png',
+    'assets/images/covers/orange-white-stripes.png',
+    'assets/images/covers/purple-brown-corners.png',
+    'assets/images/covers/yellow-green-stripes.png',
+  ];
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(AppLocalizations.of(context).translate('add_cookbook')),
-      ),
+      primary: true,
+      appBar:
+          BackButtonAppBar(), // TODO add title to appBar title: Text(AppLocalizations.of(context).translate('add_cookbook')),
       body: _buildBody(),
     );
   }
@@ -85,67 +106,13 @@ class _AddCookbookScreenState extends State<AddCookbookScreen> {
   }
 
   Widget _getPreviewImage() {
-    var defaultImage = _filenames[0];
     return Observer(builder: (context) {
       return Image.asset(
-        _cookbookStore.newCover ?? defaultImage,
+        _cookbookStore.newCover,
         fit: BoxFit.cover,
       );
     });
   }
-
-  final List<String> _filenames = [
-    'assets/images/covers/beige-orange-corners.png',
-    'assets/images/covers/blue-pink-stripes.png',
-    'assets/images/covers/blue-purple-stripes.png',
-    'assets/images/covers/blue-yellow-stripes.png',
-    'assets/images/covers/green-yellow-stripes.png',
-    'assets/images/covers/light-green-purple-stripes.png',
-    'assets/images/covers/light-green-purple-white-stripes.png',
-    'assets/images/covers/orange-white-stripes.png',
-    'assets/images/covers/purple-brown-corners.png',
-    'assets/images/covers/yellow-green-stripes.png',
-  ];
-
-  // Widget _buildCoverSelect() {
-  //   return Column(
-  //     children: [
-  //       DropdownButton<String>(
-  //         items: _filenames.map((String value) {
-  //           return DropdownMenuItem<String>(
-  //             value: value,
-  //             child: Text(value.split('/').last), // Display filename
-  //           );
-  //         }).toList(),
-  //         onChanged: (String? newValue) {
-  //           if (newValue != null) {
-  //             setState(() {
-  //               _imageFile = File(newValue);
-  //             });
-  //           }
-  //         },
-  //         hint: Text('Select from predefined images'),
-  //         isExpanded: true,
-  //       ),
-  //       SizedBox(height: 16.0),
-  //       if (_imageFile != null)
-  //         Image.file(
-  //           _imageFile!,
-  //           height: 200,
-  //           width: double.infinity,
-  //           fit: BoxFit.cover,
-  //         ),
-  //       ElevatedButton(
-  //         onPressed: () => _getImage(ImageSource.gallery),
-  //         child: Text('Select Image from Gallery'),
-  //       ),
-  //       ElevatedButton(
-  //         onPressed: () => _getImage(ImageSource.camera),
-  //         child: Text('Take a Picture'),
-  //       ),
-  //     ],
-  //   );
-  // }
 
   Widget _buildCoverSelect() {
     return Column(
@@ -163,7 +130,7 @@ class _AddCookbookScreenState extends State<AddCookbookScreen> {
             enableInfiniteScroll: false,
             initialPage: 2,
           ),
-          items: _filenames.map((i) {
+          items: _images.map((i) {
             return _buildListItem(i);
           }).toList(),
         ),
@@ -204,9 +171,7 @@ class _AddCookbookScreenState extends State<AddCookbookScreen> {
   Widget _buildListItem(String fileName) {
     return GestureDetector(
       onTap: () {
-        setState(() {
-          _cookbookStore.newCover = fileName;
-        });
+        _cookbookStore.setCover(fileName);
       },
       child: Column(
         children: [
@@ -228,7 +193,7 @@ class _AddCookbookScreenState extends State<AddCookbookScreen> {
 
     if (pickedFile != null) {
       setState(() {
-        //_cookbookStore.cookbookToAdd?.imagePath = File(pickedFile.path);
+        _cookbookStore.setCover(pickedFile.path);
       });
     }
   }
@@ -241,10 +206,7 @@ class _AddCookbookScreenState extends State<AddCookbookScreen> {
           icon: Icons.lock,
           iconColor: _getThemeColor(),
           textController: _titleController,
-          errorText: _cookbookStore.errorStore.errorMessage,
-          onChanged: (value) {
-            _cookbookStore.setTitle(_titleController.text);
-          },
+          errorText: _cookbookStore.cookbookErrorStore.error,
         );
       },
     );
@@ -269,20 +231,33 @@ class _AddCookbookScreenState extends State<AddCookbookScreen> {
   }
 
   // General Methods:-----------------------------------------------------------
-  Future<void> _tryAddCookbook() async {
+  Future _tryAddCookbook() async {
     DeviceUtils.hideKeyboard(context);
-    _cookbookStore.validateAddCookbook();
-    // TODO add validation for _personStore.creatorPersonId here as well, check both error messages for isEmpty
-    if (_cookbookStore.errorStore.errorMessage.isEmpty) {
-      _cookbookStore.addCookbook(
-        _personStore.person?.personId ?? 0,
-        _cookbookStore.newTitle ?? "",
-        _cookbookStore.newCover ?? "",
-      );
-      if (_cookbookStore.errorStore.errorMessage.isEmpty) {
-        // TODO indicate success and redirect back to cookbookpage
-      }
+    await _cookbookStore.addCookbook(
+      _personStore.person?.personId ?? 0,
+      _titleController.text,
+      _cookbookStore.newCover,
+    );
+    if (_cookbookStore.cookbookErrorStore.error.isEmpty) {
+      _showToastMessage("Success!"); // TODO localize
+      Navigator.pop(context);
+    } else {
+      _cookbookStore.errorStore.errorMessage;
     }
+  }
+
+  _showToastMessage(String message) {
+    Future.delayed(Duration(milliseconds: 0), () {
+      if (message.isNotEmpty) {
+        FlushbarHelper.createSuccess(
+          message: 'cookbook added.',
+          title: message,
+          duration: Duration(seconds: 3),
+        )..show(context);
+      }
+    });
+
+    return SizedBox.shrink();
   }
 
   Color _getThemeColor() {

@@ -20,8 +20,9 @@ class CookbookDataSource {
   CookbookDataSource(this._sembastClient);
 
   // DB functions:--------------------------------------------------------------
-  Future<int> insert(Cookbook cookbook) async {
-    return await _cookbooksStore.add(_sembastClient.database, cookbook.toMap());
+  Future<Cookbook> insert(Cookbook cookbook) async {
+    await _cookbooksStore.add(_sembastClient.database, cookbook.toMap());
+    return cookbook;
   }
 
   Future<int> count() async {
