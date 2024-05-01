@@ -4,6 +4,7 @@ class TextFieldWidget extends StatelessWidget {
   final IconData icon;
   final String? hint;
   final String? errorText;
+  final Color? errorColor;
   final bool isObscure;
   final bool isIcon;
   final TextInputType? inputType;
@@ -39,6 +40,7 @@ class TextFieldWidget extends StatelessWidget {
                 .bodyLarge!
                 .copyWith(color: hintColor),
             errorText: errorText,
+            errorStyle: TextStyle(color: this.errorColor),
             counterText: '',
             icon: this.isIcon ? Icon(this.icon, color: iconColor) : null),
       ),
@@ -57,6 +59,7 @@ class TextFieldWidget extends StatelessWidget {
     this.padding = const EdgeInsets.all(0),
     this.hintColor = Colors.grey,
     this.iconColor = Colors.grey,
+    this.errorColor = Colors.red,
     this.focusNode,
     this.onFieldSubmitted,
     this.onChanged,

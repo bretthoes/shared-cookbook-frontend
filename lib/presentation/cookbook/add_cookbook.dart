@@ -48,8 +48,9 @@ class _AddCookbookScreenState extends State<AddCookbookScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       primary: true,
-      appBar:
-          BackButtonAppBar(), // TODO add title to appBar title: Text(AppLocalizations.of(context).translate('add_cookbook')),
+      appBar: BackButtonAppBar(
+        title: AppLocalizations.of(context).translate('add_cookbook'),
+      ),
       body: _buildBody(),
     );
   }
@@ -202,6 +203,7 @@ class _AddCookbookScreenState extends State<AddCookbookScreen> {
     return Observer(
       builder: (context) {
         return TextFieldWidget(
+          padding: const EdgeInsets.only(bottom: 8.0),
           isIcon: false,
           icon: Icons.lock,
           iconColor: _getThemeColor(),
@@ -221,12 +223,11 @@ class _AddCookbookScreenState extends State<AddCookbookScreen> {
   }
 
   Widget _buildSaveButton() {
-    // TODO make button more narrow, offset to right side of screen
     return ElevatedButton(
-      onPressed: () async => await _tryAddCookbook(),
-      child: Text(
-        AppLocalizations.of(context).translate('save'),
-      ),
+        onPressed: () async => await _tryAddCookbook(),
+        child: Text(
+          AppLocalizations.of(context).translate('save'),
+        ),
     );
   }
 
