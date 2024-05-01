@@ -131,4 +131,9 @@ class CookbookErrorStore = _CookbookErrorStore with _$CookbookErrorStore;
 abstract class _CookbookErrorStore with Store {
   @observable
   String error = '';
+
+  @action
+  void resetError() {
+    error = '';
+  }
 }

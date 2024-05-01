@@ -135,6 +135,20 @@ mixin _$CookbookErrorStore on _CookbookErrorStore, Store {
     });
   }
 
+  late final _$_CookbookErrorStoreActionController =
+      ActionController(name: '_CookbookErrorStore', context: context);
+
+  @override
+  void resetError() {
+    final _$actionInfo = _$_CookbookErrorStoreActionController.startAction(
+        name: '_CookbookErrorStore.resetError');
+    try {
+      return super.resetError();
+    } finally {
+      _$_CookbookErrorStoreActionController.endAction(_$actionInfo);
+    }
+  }
+
   @override
   String toString() {
     return '''

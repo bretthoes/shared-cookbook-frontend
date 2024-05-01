@@ -28,6 +28,7 @@ class _AddCookbookScreenState extends State<AddCookbookScreen> {
   @override
   void initState() {
     _cookbookStore.setCover(_images[0]);
+    _cookbookStore.cookbookErrorStore.resetError();
     super.initState();
   }
 
@@ -59,79 +60,75 @@ class _AddCookbookScreenState extends State<AddCookbookScreen> {
   Widget _buildBody() {
     return Material(
       child: SingleChildScrollView(
-        padding: const EdgeInsets.symmetric(horizontal: 24.0),
+        padding: const EdgeInsets.symmetric(horizontal: 48.0),
         child: _buildColumn(),
       ),
     );
   }
 
   Widget _buildColumn() {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 24.0),
-      child: Column(
-        mainAxisSize: MainAxisSize.max,
-        mainAxisAlignment: MainAxisAlignment.start,
-        children: <Widget>[
-          _buildPreviewText(),
-          _buildCookbookPreview(),
-          SizedBox(height: 16),
-          Align(
-            alignment: Alignment.centerLeft,
-            child: Text("1. Select a cover:"), // TODO localize
+    return Column(
+      mainAxisSize: MainAxisSize.max,
+      mainAxisAlignment: MainAxisAlignment.start,
+      children: <Widget>[
+        _buildPreviewText(),
+        _buildCookbookPreview(),
+        SizedBox(height: 16),
+        Align(
+          alignment: Alignment.centerLeft,
+          child: Text("1. Select a cover:"), // TODO localize
+        ),
+        CarouselSlider(
+          options: CarouselOptions(
+            height: 80,
+            viewportFraction: 0.19,
+            pageSnapping: false,
+            enableInfiniteScroll: false,
+            initialPage: 2,
           ),
-          CarouselSlider(
-            options: CarouselOptions(
-              height: 80,
-              viewportFraction: 0.19,
-              pageSnapping: false,
-              enableInfiniteScroll: false,
-              initialPage: 2,
+          items: _images.map((i) {
+            return _buildListItem(i);
+          }).toList(),
+        ),
+        Text("or"),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly, // Space evenly
+          children: [
+            OutlinedButton(
+              onPressed: () => _getImage(ImageSource.gallery),
+              style: OutlinedButton.styleFrom(
+                side: BorderSide(
+                  color: _getThemeColor(),
+                ), // Outline color
+              ),
+              child: Icon(
+                Icons.add_to_photos,
+                color: _getThemeColor(),
+              ),
             ),
-            items: _images.map((i) {
-              return _buildListItem(i);
-            }).toList(),
-          ),
-          Text("or"),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly, // Space evenly
-            children: [
-              OutlinedButton(
-                onPressed: () => _getImage(ImageSource.gallery),
-                style: OutlinedButton.styleFrom(
-                  side: BorderSide(
-                    color: _getThemeColor(),
-                  ), // Outline color
-                ),
-                child: Icon(
-                  Icons.add_to_photos,
+            OutlinedButton(
+              onPressed: () => _getImage(ImageSource.camera),
+              style: OutlinedButton.styleFrom(
+                side: BorderSide(
                   color: _getThemeColor(),
-                ),
+                ), // Outline color
               ),
-              OutlinedButton(
-                onPressed: () => _getImage(ImageSource.camera),
-                style: OutlinedButton.styleFrom(
-                  side: BorderSide(
-                    color: _getThemeColor(),
-                  ), // Outline color
-                ),
-                child: Icon(
-                  Icons.photo_camera,
-                  color: _getThemeColor(),
-                ),
+              child: Icon(
+                Icons.photo_camera,
+                color: _getThemeColor(),
               ),
-            ],
-          ),
-          SizedBox(height: 16),
-          Align(
-            alignment: Alignment.centerLeft,
-            child:
-                Text("2. Enter a title:"), // TODO localize, refactor to widget
-          ),
-          _buildTitleSelect(),
-          _buildSaveButton(),
-          SizedBox(height: 32),
-        ],
-      ),
+            ),
+          ],
+        ),
+        SizedBox(height: 16),
+        Align(
+          alignment: Alignment.centerLeft,
+          child: Text("2. Enter a title:"), // TODO localize, refactor to widget
+        ),
+        _buildTitleSelect(),
+        _buildSaveButton(),
+        SizedBox(height: 32),
+      ],
     );
   }
 
