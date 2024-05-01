@@ -75,7 +75,52 @@ class _AddCookbookScreenState extends State<AddCookbookScreen> {
           _buildPreviewText(),
           _buildCookbookPreview(),
           SizedBox(height: 16),
-          _buildCoverSelect(),
+          Align(
+            alignment: Alignment.centerLeft,
+            child: Text("1. Select a cover:"), // TODO localize
+          ),
+          CarouselSlider(
+            options: CarouselOptions(
+              height: 80,
+              viewportFraction: 0.19,
+              pageSnapping: false,
+              enableInfiniteScroll: false,
+              initialPage: 2,
+            ),
+            items: _images.map((i) {
+              return _buildListItem(i);
+            }).toList(),
+          ),
+          Text("or"),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly, // Space evenly
+            children: [
+              OutlinedButton(
+                onPressed: () => _getImage(ImageSource.gallery),
+                style: OutlinedButton.styleFrom(
+                  side: BorderSide(
+                    color: _getThemeColor(),
+                  ), // Outline color
+                ),
+                child: Icon(
+                  Icons.add_to_photos,
+                  color: _getThemeColor(),
+                ),
+              ),
+              OutlinedButton(
+                onPressed: () => _getImage(ImageSource.camera),
+                style: OutlinedButton.styleFrom(
+                  side: BorderSide(
+                    color: _getThemeColor(),
+                  ), // Outline color
+                ),
+                child: Icon(
+                  Icons.photo_camera,
+                  color: _getThemeColor(),
+                ),
+              ),
+            ],
+          ),
           SizedBox(height: 16),
           Align(
             alignment: Alignment.centerLeft,
@@ -83,8 +128,6 @@ class _AddCookbookScreenState extends State<AddCookbookScreen> {
                 Text("2. Enter a title:"), // TODO localize, refactor to widget
           ),
           _buildTitleSelect(),
-          _buildTitleFontSelect(),
-          _buildTitleColorSelect(),
           _buildSaveButton(),
           SizedBox(height: 32),
         ],
@@ -99,73 +142,15 @@ class _AddCookbookScreenState extends State<AddCookbookScreen> {
   }
 
   Widget _buildCookbookPreview() {
-    return Stack(
-      children: [
-        ClipRRect(child: _getPreviewImage()),
-      ],
-    );
-  }
-
-  Widget _getPreviewImage() {
-    return Observer(builder: (context) {
-      return Image.asset(
-        _cookbookStore.newCover,
-        fit: BoxFit.cover,
-      );
-    });
-  }
-
-  Widget _buildCoverSelect() {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        Align(
-          alignment: Alignment.centerLeft,
-          child: Text("1. Select a cover:"), // TODO localize
-        ),
-        CarouselSlider(
-          options: CarouselOptions(
-            height: 80,
-            viewportFraction: 0.19,
-            pageSnapping: false,
-            enableInfiniteScroll: false,
-            initialPage: 2,
-          ),
-          items: _images.map((i) {
-            return _buildListItem(i);
-          }).toList(),
-        ),
-        Text("or"),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly, // Space evenly
-          children: [
-            OutlinedButton(
-              onPressed: () => _getImage(ImageSource.gallery),
-              style: OutlinedButton.styleFrom(
-                side: BorderSide(
-                  color: _getThemeColor(),
-                ), // Outline color
-              ),
-              child: Icon(
-                Icons.add_to_photos,
-                color: _getThemeColor(),
-              ),
-            ),
-            OutlinedButton(
-              onPressed: () => _getImage(ImageSource.camera),
-              style: OutlinedButton.styleFrom(
-                side: BorderSide(
-                  color: _getThemeColor(),
-                ), // Outline color
-              ),
-              child: Icon(
-                Icons.photo_camera,
-                color: _getThemeColor(),
-              ),
-            ),
-          ],
-        ),
-      ],
+    return ClipRRect(
+      child: Observer(
+        builder: (context) {
+          return Image.asset(
+            _cookbookStore.newCover,
+            fit: BoxFit.cover,
+          );
+        },
+      ),
     );
   }
 
@@ -189,16 +174,6 @@ class _AddCookbookScreenState extends State<AddCookbookScreen> {
     );
   }
 
-  Future<void> _getImage(ImageSource source) async {
-    final pickedFile = await ImagePicker().pickImage(source: source);
-
-    if (pickedFile != null) {
-      setState(() {
-        _cookbookStore.setCover(pickedFile.path);
-      });
-    }
-  }
-
   Widget _buildTitleSelect() {
     return Observer(
       builder: (context) {
@@ -214,20 +189,12 @@ class _AddCookbookScreenState extends State<AddCookbookScreen> {
     );
   }
 
-  Widget _buildTitleFontSelect() {
-    return Container();
-  }
-
-  Widget _buildTitleColorSelect() {
-    return Container();
-  }
-
   Widget _buildSaveButton() {
     return ElevatedButton(
-        onPressed: () async => await _tryAddCookbook(),
-        child: Text(
-          AppLocalizations.of(context).translate('save'),
-        ),
+      onPressed: () async => await _tryAddCookbook(),
+      child: Text(
+        AppLocalizations.of(context).translate('save'),
+      ),
     );
   }
 
@@ -259,6 +226,18 @@ class _AddCookbookScreenState extends State<AddCookbookScreen> {
     });
 
     return SizedBox.shrink();
+  }
+
+  _getImage(ImageSource source) async {
+    final pickedFile = await ImagePicker().pickImage(source: source);
+
+    if (pickedFile != null) {
+      setState(
+        () {
+          _cookbookStore.setCover(pickedFile.path);
+        },
+      );
+    }
   }
 
   Color _getThemeColor() {
