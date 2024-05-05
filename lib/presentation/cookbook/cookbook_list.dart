@@ -5,6 +5,7 @@ import 'package:boilerplate/presentation/cookbook/add_cookbook.dart';
 import 'package:boilerplate/presentation/cookbook/cookbook_details.dart';
 import 'package:boilerplate/presentation/cookbook/store/cookbook_store.dart';
 import 'package:boilerplate/presentation/login/store/person_store.dart';
+import 'package:boilerplate/utils/images.dart';
 import 'package:boilerplate/utils/locale/app_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
@@ -110,16 +111,12 @@ class _CookbookListScreenState extends State<CookbookListScreen> {
           Expanded(
             child: ClipRRect(
               borderRadius: BorderRadius.circular(10.0),
-              child: Image.asset(
-                cookbook.imagePath ??
-                    'assets/images/covers/beige-orange-corners.png', // TODO replace with proper default
-                fit: BoxFit.cover,
-              ),
+              child: Images.getCoverImage(cookbook.imagePath ?? ''),
             ),
           ),
           SizedBox(height: 8),
           Text(
-            cookbook.title ?? 'No title',
+            cookbook.title ?? 'No title', // TODO localize
             textAlign: TextAlign.center,
             style: Theme.of(context).textTheme.labelMedium,
           ),
@@ -131,12 +128,11 @@ class _CookbookListScreenState extends State<CookbookListScreen> {
   Widget _buildAddCookbookButton() {
     return Padding(
       padding: EdgeInsets.only(
-          bottom: 16.0, right: 16.0), // Adjust padding as needed
+          bottom: 16.0, right: 16.0),
       child: Align(
         alignment: Alignment.bottomRight,
         child: FloatingActionButton(
           onPressed: () {
-            // Handle onPressed action here
             Navigator.push(
               context,
               MaterialPageRoute(
@@ -144,9 +140,9 @@ class _CookbookListScreenState extends State<CookbookListScreen> {
               ),
             );
           },
-          child: Icon(Icons.add, color: Colors.white), // Make the icon white
+          child: Icon(Icons.add, color: Colors.white),
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(30.0), // Make it circular
+            borderRadius: BorderRadius.circular(30.0),
           ),
         ),
       ),

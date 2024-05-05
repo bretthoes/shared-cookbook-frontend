@@ -104,7 +104,7 @@ class AppThemeData {
     error: _darkFillColor,
     onError: _darkFillColor,
     onPrimary: _darkFillColor,
-    onSecondary: _darkFillColor,
+    onSecondary: Colors.amber,
     onSurface: _darkFillColor,
     brightness: Brightness.dark,
   );
