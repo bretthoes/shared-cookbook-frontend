@@ -101,8 +101,9 @@ class _CookbookListScreenState extends State<CookbookListScreen> {
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) =>
-                CookbookDetailsScreen(cookbookId: cookbook.cookbookId ?? 0),
+            builder: (context) => CookbookDetailsScreen(
+              cookbook: cookbook,
+            ),
           ),
         );
       },
@@ -127,8 +128,7 @@ class _CookbookListScreenState extends State<CookbookListScreen> {
 
   Widget _buildAddCookbookButton() {
     return Padding(
-      padding: EdgeInsets.only(
-          bottom: 16.0, right: 16.0),
+      padding: EdgeInsets.only(bottom: 16.0, right: 16.0),
       child: Align(
         alignment: Alignment.bottomRight,
         child: FloatingActionButton(
