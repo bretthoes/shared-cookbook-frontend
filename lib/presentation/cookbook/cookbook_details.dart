@@ -3,6 +3,7 @@ import 'package:boilerplate/di/service_locator.dart';
 import 'package:boilerplate/domain/entity/cookbook/cookbook.dart';
 import 'package:boilerplate/presentation/cookbook/store/cookbook_store.dart';
 import 'package:boilerplate/presentation/login/store/person_store.dart';
+import 'package:boilerplate/presentation/recipe/store/recipe_store.dart';
 import 'package:boilerplate/utils/locale/app_localization.dart';
 import 'package:flutter/material.dart';
 
@@ -16,8 +17,8 @@ class CookbookDetailsScreen extends StatefulWidget {
 
 class _CookbookDetailsScreenState extends State<CookbookDetailsScreen> {
   //stores:---------------------------------------------------------------------
-  final CookbookStore _cookbookStore = getIt<CookbookStore>();
   final PersonStore _personStore = getIt<PersonStore>();
+  final RecipeStore _recipeStore = getIt<RecipeStore>();
   // TODO add recipe store
 
   @override
@@ -26,9 +27,9 @@ class _CookbookDetailsScreenState extends State<CookbookDetailsScreen> {
 
     // check to see if already called api
     var cookbookId = widget.cookbook.cookbookId ?? 0;
-    if (!_cookbookStore.loading) {
+    if (!_recipeStore.loading) {
       if (cookbookId > 0) {
-        // _cookbookStore.getCookbook(widget.cookbookId);
+        _recipeStore.getRecipes(cookbookId);
       }
     }
   }
