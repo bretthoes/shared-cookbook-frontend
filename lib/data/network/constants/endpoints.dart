@@ -25,4 +25,9 @@ class Endpoints {
   static const String postLogin = '$baseUrl/People/login';
   static const String addPerson = '$baseUrl/People';
   static String patchPerson(int personId) => '$baseUrl/People/$personId';
+
+  // recipe endpoints
+  static String getRecipes(int cookbookId) =>
+      '$baseUrl/Recipes/by-cookbook/$cookbookId';
+  static String addRecipe = '$baseUrl/Recipes';
 }

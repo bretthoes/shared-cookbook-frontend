@@ -10,10 +10,13 @@ import 'package:boilerplate/domain/usecase/person/login_usecase.dart';
 import 'package:boilerplate/domain/usecase/person/register_usecase.dart';
 import 'package:boilerplate/domain/usecase/person/save_login_in_status_usecase.dart';
 import 'package:boilerplate/domain/usecase/person/update_person_usecase.dart';
+import 'package:boilerplate/domain/usecase/recipe/add_recipe_usecase.dart';
+import 'package:boilerplate/domain/usecase/recipe/get_recipe_usecase.dart';
 import 'package:boilerplate/presentation/cookbook/store/cookbook_store.dart';
 import 'package:boilerplate/presentation/home/store/language/language_store.dart';
 import 'package:boilerplate/presentation/home/store/theme/theme_store.dart';
 import 'package:boilerplate/presentation/login/store/person_store.dart';
+import 'package:boilerplate/presentation/recipe/store/recipe_store.dart';
 import '../../../di/service_locator.dart';
 
 mixin StoreModule {
@@ -22,6 +25,7 @@ mixin StoreModule {
     getIt.registerFactory(() => ErrorStore());
     getIt.registerFactory(() => FormErrorStore());
     getIt.registerFactory(() => CookbookErrorStore());
+    getIt.registerFactory(() => RecipeErrorStore());
     getIt.registerFactory(
       () => FormStore(getIt<FormErrorStore>(), getIt<ErrorStore>()),
     );
@@ -46,6 +50,15 @@ mixin StoreModule {
         getIt<AddCookbookUseCase>(),
         getIt<ErrorStore>(),
         getIt<CookbookErrorStore>(),
+      ),
+    );
+
+    getIt.registerSingleton<RecipeStore>(
+      RecipeStore(
+        getIt<GetRecipeUseCase>(),
+        getIt<AddRecipeUseCase>(),
+        getIt<ErrorStore>(),
+        getIt<RecipeErrorStore>(),
       ),
     );
 

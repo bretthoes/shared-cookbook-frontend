@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:boilerplate/domain/repository/cookbook/cookbook_repository.dart';
 import 'package:boilerplate/domain/repository/person/person_repository.dart';
+import 'package:boilerplate/domain/repository/recipe/recipe_repository.dart';
 import 'package:boilerplate/domain/usecase/cookbook/delete_cookbook_usecase.dart';
 import 'package:boilerplate/domain/usecase/cookbook/find_cookbook_by_id_usecase.dart';
 import 'package:boilerplate/domain/usecase/cookbook/get_cookbook_usecase.dart';
@@ -14,8 +15,13 @@ import 'package:boilerplate/domain/usecase/person/login_usecase.dart';
 import 'package:boilerplate/domain/usecase/person/register_usecase.dart';
 import 'package:boilerplate/domain/usecase/person/save_login_in_status_usecase.dart';
 import 'package:boilerplate/domain/usecase/person/update_person_usecase.dart';
+import 'package:boilerplate/domain/usecase/recipe/delete_recipe_usecase.dart';
+import 'package:boilerplate/domain/usecase/recipe/find_recipe_by_id_usecase.dart';
+import 'package:boilerplate/domain/usecase/recipe/get_recipe_usecase.dart';
+import 'package:boilerplate/domain/usecase/recipe/update_recipe_usecase.dart';
 
 import '../../../di/service_locator.dart';
+import '../../usecase/recipe/add_recipe_usecase.dart';
 
 mixin UseCaseModule {
   static Future<void> configureUseCaseModuleInjection() async {
@@ -57,6 +63,23 @@ mixin UseCaseModule {
     );
     getIt.registerSingleton<DeleteCookbookUseCase>(
       DeleteCookbookUseCase(getIt<CookbookRepository>()),
+    );
+
+    // recipe:----------------------------------------------------------------
+    getIt.registerSingleton<GetRecipeUseCase>(
+      GetRecipeUseCase(getIt<RecipeRepository>()),
+    );
+    getIt.registerSingleton<FindRecipeByIdUseCase>(
+      FindRecipeByIdUseCase(getIt<RecipeRepository>()),
+    );
+    getIt.registerSingleton<AddRecipeUseCase>(
+      AddRecipeUseCase(getIt<RecipeRepository>()),
+    );
+    getIt.registerSingleton<UpdateRecipeUseCase>(
+      UpdateRecipeUseCase(getIt<RecipeRepository>()),
+    );
+    getIt.registerSingleton<DeleteRecipeUseCase>(
+      DeleteRecipeUseCase(getIt<RecipeRepository>()),
     );
   }
 }
