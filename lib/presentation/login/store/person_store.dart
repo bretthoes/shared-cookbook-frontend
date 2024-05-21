@@ -1,9 +1,10 @@
 import 'package:boilerplate/core/stores/error/error_store.dart';
 import 'package:boilerplate/core/stores/form/form_store.dart';
 import 'package:boilerplate/domain/usecase/person/find_person_by_email_usecase.dart';
-import 'package:boilerplate/domain/usecase/person/is_logged_in_usecase.dart';
+import 'package:boilerplate/domain/usecase/person/find_person_by_id_usecase.dart';
+import 'package:boilerplate/domain/usecase/person/get_person_id_usecase.dart';
 import 'package:boilerplate/domain/usecase/person/register_usecase.dart';
-import 'package:boilerplate/domain/usecase/person/save_login_in_status_usecase.dart';
+import 'package:boilerplate/domain/usecase/person/save_person_id_usecase.dart';
 import 'package:boilerplate/domain/usecase/person/update_person_usecase.dart';
 import 'package:boilerplate/utils/dio/dio_error_util.dart';
 import 'package:mobx/mobx.dart';
@@ -17,11 +18,12 @@ class PersonStore = _PersonStore with _$PersonStore;
 abstract class _PersonStore with Store {
   // constructor:---------------------------------------------------------------
   _PersonStore(
-    this._isLoggedInUseCase,
-    this._saveLoginStatusUseCase,
+    this._getPersonIdUseCase,
+    this._savePersonIdUseCase,
     this._loginUseCase,
     this._registerUseCase,
     this._findPersonByEmailUseCase,
+    this._findPersonByIdUseCase,
     this._updatePersonUseCase,
     this.formErrorStore,
     this.errorStore,
@@ -30,17 +32,18 @@ abstract class _PersonStore with Store {
     _setupDisposers();
 
     // checking if user is logged in
-    _isLoggedInUseCase.call(params: null).then((value) async {
-      isLoggedIn = value;
+    _getPersonIdUseCase.call(params: null).then((value) async {
+      personId = value;
     });
   }
 
   // use cases:-----------------------------------------------------------------
-  final IsLoggedInUseCase _isLoggedInUseCase;
-  final SaveLoginStatusUseCase _saveLoginStatusUseCase;
+  final GetPersonIdUseCase _getPersonIdUseCase;
+  final SavePersonIdUseCase _savePersonIdUseCase;
   final LoginUseCase _loginUseCase;
   final RegisterUseCase _registerUseCase;
   final FindPersonByEmailUseCase _findPersonByEmailUseCase;
+  final FindPersonByIdUseCase _findPersonByIdUseCase;
   final UpdatePersonUseCase _updatePersonUseCase;
 
   // stores:--------------------------------------------------------------------
@@ -64,7 +67,7 @@ abstract class _PersonStore with Store {
       ObservableFuture.value(null);
 
   // store variables:-----------------------------------------------------------
-  bool isLoggedIn = false;
+  int personId = 0;
 
   @observable
   bool success = false;
@@ -91,14 +94,10 @@ abstract class _PersonStore with Store {
 
     await future.then((value) async {
       if (value != null) {
-        await _saveLoginStatusUseCase.call(params: true);
-        this.isLoggedIn = true;
-        this.success = true;
-        this.person = value;
+        await _handleLogin(value);
       }
     }).catchError((error) {
       print(error);
-      this.isLoggedIn = false;
       this.success = false;
       errorStore.setErrorMessage(DioErrorUtil.handleError(error));
       errorStore.setErrorCode(error.response?.statusCode);
@@ -114,14 +113,10 @@ abstract class _PersonStore with Store {
 
     await future.then((value) async {
       if (value != null) {
-        await _saveLoginStatusUseCase.call(params: true);
-        this.isLoggedIn = true;
-        this.success = true;
-        this.person = value;
+        await _handleLogin(value);
       }
     }).catchError((error) {
       print(error);
-      this.isLoggedIn = false;
       this.success = false;
       errorStore.setErrorMessage(DioErrorUtil.handleError(error));
       errorStore.setErrorCode(error.response?.statusCode);
@@ -131,6 +126,19 @@ abstract class _PersonStore with Store {
   @action
   Future getPersonByEmail(String email) async {
     final future = _findPersonByEmailUseCase.call(params: email);
+    fetchPersonFuture = ObservableFuture(future);
+
+    await future.then((person) async {
+      this.person = person;
+    }).catchError((error) {
+      errorStore.setErrorMessage(DioErrorUtil.handleError(error));
+      errorStore.setErrorCode(error.response?.statusCode);
+    });
+  }
+
+  @action
+  Future getPersonById(int personId) async {
+    final future = _findPersonByIdUseCase.call(params: personId);
     fetchPersonFuture = ObservableFuture(future);
 
     await future.then((person) async {
@@ -168,8 +176,17 @@ abstract class _PersonStore with Store {
   }
 
   logout() async {
-    this.isLoggedIn = false;
-    await _saveLoginStatusUseCase.call(params: false);
+    this.success = false;
+    this.person = null;
+    this.personId = 0;
+    await _savePersonIdUseCase.call(params: 0);
+  }
+
+  _handleLogin(Person person) async {
+    this.success = true;
+    this.person = person;
+    this.personId = person.personId ?? 0;
+    await _savePersonIdUseCase.call(params: this.personId);
   }
 
   // general methods:-----------------------------------------------------------

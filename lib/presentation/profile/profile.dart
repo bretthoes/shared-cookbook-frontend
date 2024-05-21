@@ -245,12 +245,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
       title: AppLocalizations.of(context).translate('sign_out'),
       leading: Icon(Icons.logout),
       onTap: () {
-        SharedPreferences.getInstance().then(
-          (preference) {
-            preference.setBool(Preferences.is_logged_in, false);
-            Navigator.of(context).pushReplacementNamed(Routes.login);
-          },
-        );
+        _personStore.logout();
+        Navigator.of(context).pushReplacementNamed(Routes.login);
       },
     );
   }
@@ -261,10 +257,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
       title: AppLocalizations.of(context).translate('delete_account'),
       leading: Icon(Icons.delete_forever),
       onTap: () {
-        SharedPreferences.getInstance().then((preference) {
-          preference.setBool(Preferences.is_logged_in, false);
-          Navigator.of(context).pushReplacementNamed(Routes.landing);
-        });
+        _personStore.logout();
+        Navigator.of(context).pushReplacementNamed(Routes.landing);
       },
     );
   }

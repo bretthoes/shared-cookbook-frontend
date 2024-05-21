@@ -49,29 +49,29 @@ class PersonRepositoryImpl extends PersonRepository {
   }
 
   @override
-  Future<void> saveIsLoggedIn(bool value) =>
-      _sharedPrefsHelper.saveIsLoggedIn(value);
+  Future<bool> savePersonId(int value) =>
+      _sharedPrefsHelper.savePersonId(value);
 
   @override
-  Future<bool> get isLoggedIn => _sharedPrefsHelper.isLoggedIn;
+  Future<int> get personId => _sharedPrefsHelper.personId;
 
   @override
   Future<Person?> findPersonById(int id) async {
     try {
-      List<Filter> filters = [];
+      //List<Filter> filters = [];
 
       //check to see if dataLogsType is not null
-      Filter dataLogTypeFilter = Filter.equals(DBConstants.FIELD_ID, id);
-      filters.add(dataLogTypeFilter);
+      // Filter dataLogTypeFilter = Filter.equals(DBConstants.FIELD_ID, id);
+      // filters.add(dataLogTypeFilter);
 
-      var personFromDb =
-          await _personDataSource.getPersonById(filters: filters);
-      if (personFromDb != null) {
-        return personFromDb;
-      }
+      // var personFromDb =
+      //     await _personDataSource.getPersonById(filters: filters);
+      // if (personFromDb != null) {
+      //   return personFromDb;
+      // }
 
       var personFromApi = await _personApi.findPersonById(id);
-      await _personDataSource.insert(personFromApi);
+      //await _personDataSource.insert(personFromApi);
       return personFromApi;
     } catch (e) {
       throw e;

@@ -46,7 +46,21 @@ class MyApp extends StatelessWidget {
             // Built-in localization of basic text for Cupertino widgets
             GlobalCupertinoLocalizations.delegate,
           ],
-          home: _personStore.isLoggedIn ? HomeScreen() : LandingScreen(),
+          home: _personStore.personId > 0
+              ? FutureBuilder(
+                  future: _personStore.getPersonById(_personStore.personId),
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return Center(child: CircularProgressIndicator());
+                    } else if (snapshot.hasError) {
+                      // Handle the error case if needed
+                      return Center(child: Text('Error loading data'));
+                    } else {
+                      return HomeScreen();
+                    }
+                  },
+                )
+              : LandingScreen(),
         );
       },
     );

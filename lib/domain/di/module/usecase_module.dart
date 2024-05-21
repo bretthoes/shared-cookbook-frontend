@@ -10,11 +10,11 @@ import 'package:boilerplate/domain/usecase/cookbook/add_cookbook_usecase.dart';
 import 'package:boilerplate/domain/usecase/cookbook/update_cookbook_usecase.dart';
 import 'package:boilerplate/domain/usecase/person/find_person_by_email_usecase.dart';
 import 'package:boilerplate/domain/usecase/person/find_person_by_id_usecase.dart';
-import 'package:boilerplate/domain/usecase/person/is_logged_in_usecase.dart';
 import 'package:boilerplate/domain/usecase/person/login_usecase.dart';
 import 'package:boilerplate/domain/usecase/person/register_usecase.dart';
-import 'package:boilerplate/domain/usecase/person/save_login_in_status_usecase.dart';
+import 'package:boilerplate/domain/usecase/person/save_person_id_usecase.dart';
 import 'package:boilerplate/domain/usecase/person/update_person_usecase.dart';
+import 'package:boilerplate/domain/usecase/person/get_person_id_usecase.dart';
 import 'package:boilerplate/domain/usecase/recipe/delete_recipe_usecase.dart';
 import 'package:boilerplate/domain/usecase/recipe/find_recipe_by_id_usecase.dart';
 import 'package:boilerplate/domain/usecase/recipe/get_recipe_usecase.dart';
@@ -26,12 +26,6 @@ import '../../usecase/recipe/add_recipe_usecase.dart';
 mixin UseCaseModule {
   static Future<void> configureUseCaseModuleInjection() async {
     // person:------------------------------------------------------------------
-    getIt.registerSingleton<IsLoggedInUseCase>(
-      IsLoggedInUseCase(getIt<PersonRepository>()),
-    );
-    getIt.registerSingleton<SaveLoginStatusUseCase>(
-      SaveLoginStatusUseCase(getIt<PersonRepository>()),
-    );
     getIt.registerSingleton<LoginUseCase>(
       LoginUseCase(getIt<PersonRepository>()),
     );
@@ -40,6 +34,12 @@ mixin UseCaseModule {
     );
     getIt.registerSingleton<FindPersonByIdUseCase>(
       FindPersonByIdUseCase(getIt<PersonRepository>()),
+    );
+    getIt.registerSingleton<GetPersonIdUseCase>(
+      GetPersonIdUseCase(getIt<PersonRepository>()),
+    );
+    getIt.registerSingleton<SavePersonIdUseCase>(
+      SavePersonIdUseCase(getIt<PersonRepository>()),
     );
     getIt.registerSingleton<FindPersonByEmailUseCase>(
       FindPersonByEmailUseCase(getIt<PersonRepository>()),

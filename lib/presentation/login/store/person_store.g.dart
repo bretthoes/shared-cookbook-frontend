@@ -104,6 +104,14 @@ mixin _$PersonStore on _PersonStore, Store {
         .run(() => super.getPersonByEmail(email));
   }
 
+  late final _$getPersonByIdAsyncAction =
+      AsyncAction('_PersonStore.getPersonById', context: context);
+
+  @override
+  Future<dynamic> getPersonById(int personId) {
+    return _$getPersonByIdAsyncAction.run(() => super.getPersonById(personId));
+  }
+
   late final _$updatePersonAsyncAction =
       AsyncAction('_PersonStore.updatePerson', context: context);
 

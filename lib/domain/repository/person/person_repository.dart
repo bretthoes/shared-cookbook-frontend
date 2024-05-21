@@ -15,7 +15,7 @@ abstract class PersonRepository {
 
   Future<Person?> updatePerson(UpdatePersonParams params);
 
-  Future<void> saveIsLoggedIn(bool value);
+  Future<bool> savePersonId(int value);
 
-  Future<bool> get isLoggedIn;
+  Future<int> get personId;
 }

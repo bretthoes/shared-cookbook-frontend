@@ -193,7 +193,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
   Widget navigate(BuildContext context) {
     SharedPreferences.getInstance().then((prefs) {
-      prefs.setBool(Preferences.is_logged_in, true);
+      prefs.setInt(Preferences.person_id, _personStore.person?.personId ?? 0);
     });
 
     Future.delayed(Duration(milliseconds: 0), () {

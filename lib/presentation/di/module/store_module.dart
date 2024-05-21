@@ -5,10 +5,11 @@ import 'package:boilerplate/domain/repository/setting/setting_repository.dart';
 import 'package:boilerplate/domain/usecase/cookbook/get_cookbook_usecase.dart';
 import 'package:boilerplate/domain/usecase/cookbook/add_cookbook_usecase.dart';
 import 'package:boilerplate/domain/usecase/person/find_person_by_email_usecase.dart';
-import 'package:boilerplate/domain/usecase/person/is_logged_in_usecase.dart';
+import 'package:boilerplate/domain/usecase/person/find_person_by_id_usecase.dart';
+import 'package:boilerplate/domain/usecase/person/get_person_id_usecase.dart';
 import 'package:boilerplate/domain/usecase/person/login_usecase.dart';
 import 'package:boilerplate/domain/usecase/person/register_usecase.dart';
-import 'package:boilerplate/domain/usecase/person/save_login_in_status_usecase.dart';
+import 'package:boilerplate/domain/usecase/person/save_person_id_usecase.dart';
 import 'package:boilerplate/domain/usecase/person/update_person_usecase.dart';
 import 'package:boilerplate/domain/usecase/recipe/add_recipe_usecase.dart';
 import 'package:boilerplate/domain/usecase/recipe/get_recipe_usecase.dart';
@@ -33,11 +34,12 @@ mixin StoreModule {
     // stores:------------------------------------------------------------------
     getIt.registerSingleton<PersonStore>(
       PersonStore(
-        getIt<IsLoggedInUseCase>(),
-        getIt<SaveLoginStatusUseCase>(),
+        getIt<GetPersonIdUseCase>(),
+        getIt<SavePersonIdUseCase>(),
         getIt<LoginUseCase>(),
         getIt<RegisterUseCase>(),
         getIt<FindPersonByEmailUseCase>(),
+        getIt<FindPersonByIdUseCase>(),
         getIt<UpdatePersonUseCase>(),
         getIt<FormErrorStore>(),
         getIt<ErrorStore>(),
