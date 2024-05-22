@@ -1,7 +1,7 @@
-import 'package:boilerplate/core/widgets/back_button_app_bar_widget.dart';
 import 'package:boilerplate/di/service_locator.dart';
 import 'package:boilerplate/domain/entity/cookbook/cookbook.dart';
 import 'package:boilerplate/domain/entity/recipe/recipe.dart';
+import 'package:boilerplate/presentation/home/store/theme/theme_store.dart';
 import 'package:boilerplate/presentation/login/store/person_store.dart';
 import 'package:boilerplate/presentation/recipe/store/recipe_store.dart';
 import 'package:boilerplate/utils/images.dart';
@@ -20,6 +20,7 @@ class _CookbookDetailsScreenState extends State<CookbookDetailsScreen> {
   //stores:---------------------------------------------------------------------
   final PersonStore _personStore = getIt<PersonStore>();
   final RecipeStore _recipeStore = getIt<RecipeStore>();
+  final ThemeStore _themeStore = getIt<ThemeStore>();
 
   TextEditingController _searchController = TextEditingController();
   List<Recipe> _filteredRecipes = [];
@@ -64,11 +65,51 @@ class _CookbookDetailsScreenState extends State<CookbookDetailsScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       primary: true,
-      appBar: BackButtonAppBar(
-        title: widget.cookbook.title ?? 'No title', // TODO localize
+      appBar: AppBar(
+        title: Text(widget.cookbook.title ?? 'No title'),
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back),
+          onPressed: () {
+            Navigator.pop(context);
+          },
+        ),
+        actions: <Widget>[
+          PopupMenuButton<String>(
+            onSelected: (String result) {
+              switch (result) {
+                case 'edit':
+                  _editCookbook();
+                  break;
+                case 'add':
+                  _addRecipe();
+                  break;
+              }
+            },
+            itemBuilder: (BuildContext context) => <PopupMenuEntry<String>>[
+              const PopupMenuItem<String>(
+                value: 'edit',
+                child: Text('Edit cookbook'),
+              ),
+              const PopupMenuItem<String>(
+                value: 'add',
+                child: Text('Add recipe'),
+              ),
+            ],
+          ),
+        ],
       ),
       body: _buildBody(),
     );
+  }
+
+  void _editCookbook() {
+    // Implement the edit functionality
+    print('Edit cookbook');
+  }
+
+  void _addRecipe() {
+    // Implement the delete functionality
+    print('Add recipe');
   }
 
   Widget _buildBody() {
@@ -84,10 +125,18 @@ class _CookbookDetailsScreenState extends State<CookbookDetailsScreen> {
     return Column(
       mainAxisSize: MainAxisSize.max,
       mainAxisAlignment: MainAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
+        SizedBox(height: 16),
         _buildSearchBar(),
         SizedBox(height: 64),
-        Text('Recipes'),
+        Padding(
+          padding: const EdgeInsets.only(left: 16.0), // Add left padding
+          child: Text(
+            'Recipes',
+            style: Theme.of(context).textTheme.labelLarge,
+          ),
+        ),
         _buildRecipeList(),
       ],
     );
@@ -97,10 +146,29 @@ class _CookbookDetailsScreenState extends State<CookbookDetailsScreen> {
     return TextField(
       controller: _searchController,
       decoration: InputDecoration(
-        labelText: 'Search Recipes',
-        prefixIcon: Icon(Icons.search),
-        border: OutlineInputBorder(),
+        labelText: 'Search recipes, tags...',
+        labelStyle:
+            TextStyle(color: Colors.grey), // Optional: change label text color
+        prefixIcon: Icon(Icons.search,
+            color: Colors.grey), // Optional: change icon color
+        filled: true,
+        fillColor: Colors.white,
+        border: OutlineInputBorder(
+          borderSide: BorderSide(),
+          borderRadius: BorderRadius.all(Radius.circular(4.0)),
+        ),
+        enabledBorder: OutlineInputBorder(
+          borderSide: BorderSide(
+              color: Colors.black), // Optional: border color when not focused
+          borderRadius: BorderRadius.all(Radius.circular(4.0)),
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderSide: BorderSide(
+              color: Colors.blue), // Optional: border color when focused
+          borderRadius: BorderRadius.all(Radius.circular(4.0)),
+        ),
       ),
+      style: TextStyle(color: Colors.black), // Optional: change text color
     );
   }
 
@@ -126,29 +194,39 @@ class _CookbookDetailsScreenState extends State<CookbookDetailsScreen> {
 
   Widget _buildRecipeItem(Recipe recipe) {
     return Container(
-      margin: EdgeInsets.symmetric(
-          vertical: 4.0,
-          horizontal: 8.0), // Optional: adds some space around the container
+      margin: EdgeInsets.symmetric(vertical: 4.0, horizontal: 4.0),
       decoration: BoxDecoration(
         border: Border.all(
-          color: Colors.grey, // Color of the border
-          width: 1.0, // Width of the border
+          color: Colors.black,
+          width: 1.0,
         ),
-        borderRadius:
-            BorderRadius.circular(8.0), // Optional: makes the corners rounded
+        borderRadius: BorderRadius.circular(4.0),
       ),
-      child: SizedBox(
-        height: 100.0, // Set the desired height here
-        child: ListTile(
-          leading: Images.getCoverImage(recipe.imagePath ?? ''),
-          title: Text(recipe.title ?? 'No title'),
-          subtitle:
-              Text('Prep time: ${recipe.preparationTimeInMinutes} minutes'),
-          onTap: () {
-            // Handle recipe tap
-          },
+      child: ListTile(
+        leading: Images.getCoverImage(recipe.imagePath ?? ''),
+        trailing: Icon(Icons.favorite_border),
+        title: Text(recipe.title ?? 'No title'),
+        subtitle: Row(
+          children: [
+            Icon(Icons.access_time, size: 16.0),
+            SizedBox(width: 4),
+            Text(
+              _getRecipeText(recipe),
+              style: TextStyle(fontSize: 13.0),
+            ),
+          ],
         ),
+        onTap: () {
+          // Handle recipe tap
+        },
       ),
     );
+  }
+
+  String _getRecipeText(Recipe recipe) {
+    var totalTime = (recipe.bakingTimeInMinutes ?? 0) +
+        (recipe.cookingTimeInMinutes ?? 0) +
+        (recipe.preparationTimeInMinutes ?? 0);
+    return totalTime > 0 ? '${totalTime} mins' : "Not set";
   }
 }
