@@ -185,41 +185,43 @@ class _CookbookDetailsScreenState extends State<CookbookDetailsScreen> {
           itemCount: _filteredRecipes.length,
           itemBuilder: (context, index) {
             final recipe = _filteredRecipes[index];
-            return _buildRecipeItem(recipe);
+            return _buildRecipeItem(recipe, index);
           },
         );
       },
     );
   }
 
-  Widget _buildRecipeItem(Recipe recipe) {
-    return Container(
-      margin: EdgeInsets.symmetric(vertical: 4.0, horizontal: 4.0),
-      decoration: BoxDecoration(
-        border: Border.all(
-          color: Colors.black,
-          width: 1.0,
-        ),
-        borderRadius: BorderRadius.circular(4.0),
+  Widget _buildRecipeItem(Recipe recipe, int index) {
+    return ListTile(
+      leading: Images.getRecipePreviewImage(recipe.imagePath ?? ''),
+      trailing: GestureDetector(
+        child: Icon(Icons.favorite_border),
+        onTap: () {},
       ),
-      child: ListTile(
-        leading: Images.getCoverImage(recipe.imagePath ?? ''),
-        trailing: Icon(Icons.favorite_border),
-        title: Text(recipe.title ?? 'No title'),
-        subtitle: Row(
-          children: [
-            Icon(Icons.access_time, size: 16.0),
-            SizedBox(width: 4),
-            Text(
-              _getRecipeText(recipe),
-              style: TextStyle(fontSize: 13.0),
-            ),
-          ],
-        ),
-        onTap: () {
-          // Handle recipe tap
-        },
+      title: Text(recipe.title ?? 'No title'),
+      subtitle: Row(
+        children: [
+          Icon(Icons.access_time, size: 16.0),
+          SizedBox(width: 4),
+          Text(
+            _getRecipeText(recipe),
+            style: TextStyle(fontSize: 13.0),
+          ),
+        ],
       ),
+      shape: Border(
+        top: index > 0 ? BorderSide.none : BorderSide(),
+        bottom: BorderSide(),
+      ),
+      visualDensity: VisualDensity(
+        horizontal: -4,
+        vertical: 4,
+      ),
+      contentPadding: EdgeInsets.all(4),
+      onTap: () {
+        // Handle recipe tap
+      },
     );
   }
 
