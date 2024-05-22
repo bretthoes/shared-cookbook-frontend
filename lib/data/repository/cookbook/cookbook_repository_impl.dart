@@ -15,6 +15,8 @@ class CookbookRepositoryImpl extends CookbookRepository {
   // api objects
   final CookbookApi _cookbookApi;
 
+  static const bool _cacheEnabled = false;
+
   // constructor
   CookbookRepositoryImpl(this._cookbookApi, this._cookbookDataSource);
 
@@ -22,29 +24,30 @@ class CookbookRepositoryImpl extends CookbookRepository {
   @override
   Future<CookbookList> getCookbooks(int personId) async {
     //creating filter
-    List<Filter> filters = [];
+    if (_cacheEnabled) {
+      List<Filter> filters = [];
 
-    //check to see if dataLogsType is not null
-    Filter dataLogTypeFilter =
-        Filter.equals(DBConstants.CREATOR_PERSON_ID, personId);
-    filters.add(dataLogTypeFilter);
+      //check to see if dataLogsType is not null
+      Filter dataLogTypeFilter =
+          Filter.equals(DBConstants.CREATOR_PERSON_ID, personId);
+      filters.add(dataLogTypeFilter);
 
-    var cookbooksFromDb = await _cookbookDataSource
-        .getAllSortedByFilter(filters: filters)
-        .then((cookbooks) => cookbooks)
-        .catchError((error) => throw error);
+      var cookbooksFromDb = await _cookbookDataSource
+          .getAllSortedByFilter(filters: filters)
+          .then((cookbooks) => cookbooks)
+          .catchError((error) => throw error);
 
-    // TODO these two lines are temporary added to always pull from api
-    _cookbookDataSource.deleteAll();
-    cookbooksFromDb = [];
-
-    if (cookbooksFromDb.isNotEmpty) {
-      return new CookbookList(cookbooks: cookbooksFromDb);
+      if (cookbooksFromDb.isNotEmpty) {
+        return new CookbookList(cookbooks: cookbooksFromDb);
+      }
     }
 
     var cookbooksFromApi = await _cookbookApi.getCookbooks(personId);
-    for (var cookbook in cookbooksFromApi.cookbooks) {
-      await _cookbookDataSource.insert(cookbook);
+
+    if (_cacheEnabled) {
+      for (var cookbook in cookbooksFromApi.cookbooks) {
+        await _cookbookDataSource.insert(cookbook);
+      }
     }
 
     return cookbooksFromApi;

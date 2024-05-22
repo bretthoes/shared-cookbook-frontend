@@ -20,6 +20,8 @@ class PersonRepositoryImpl extends PersonRepository {
   // api objects
   final PersonApi _personApi;
 
+  static const bool _cacheEnabled = false;
+
   // constructor
   PersonRepositoryImpl(
     this._personApi,
@@ -58,20 +60,24 @@ class PersonRepositoryImpl extends PersonRepository {
   @override
   Future<Person?> findPersonById(int id) async {
     try {
-      //List<Filter> filters = [];
+      if (_cacheEnabled) {
+        List<Filter> filters = [];
+        Filter dataLogTypeFilter = Filter.equals(DBConstants.FIELD_ID, id);
+        filters.add(dataLogTypeFilter);
 
-      //check to see if dataLogsType is not null
-      // Filter dataLogTypeFilter = Filter.equals(DBConstants.FIELD_ID, id);
-      // filters.add(dataLogTypeFilter);
-
-      // var personFromDb =
-      //     await _personDataSource.getPersonById(filters: filters);
-      // if (personFromDb != null) {
-      //   return personFromDb;
-      // }
+        var personFromDb =
+            await _personDataSource.getPersonById(filters: filters);
+        if (personFromDb != null) {
+          return personFromDb;
+        }
+      }
 
       var personFromApi = await _personApi.findPersonById(id);
-      //await _personDataSource.insert(personFromApi);
+
+      if (_cacheEnabled) {
+        await _personDataSource.insert(personFromApi);
+      }
+
       return personFromApi;
     } catch (e) {
       throw e;
@@ -81,22 +87,25 @@ class PersonRepositoryImpl extends PersonRepository {
   @override
   Future<Person?> findPersonByEmail(String email) async {
     try {
-      // caching commented out for checking if
-      // user email exists in register workflow
-      // List<Filter> filters = [];
+      if (_cacheEnabled) {
+        List<Filter> filters = [];
+        Filter dataLogTypeFilter =
+            Filter.equals(DBConstants.FIELD_EMAIL, email);
+        filters.add(dataLogTypeFilter);
 
-      // //check to see if dataLogsType is not null
-      // Filter dataLogTypeFilter = Filter.equals(DBConstants.FIELD_EMAIL, email);
-      // filters.add(dataLogTypeFilter);
-
-      // var personFromDb =
-      //     await _personDataSource.getPersonByEmail(filters: filters);
-      // if (personFromDb != null) {
-      //   return personFromDb;
-      // }
+        var personFromDb =
+            await _personDataSource.getPersonByEmail(filters: filters);
+        if (personFromDb != null) {
+          return personFromDb;
+        }
+      }
 
       var personFromApi = await _personApi.findPersonByEmail(email);
-      //await _personDataSource.insert(personFromApi);
+
+      if (_cacheEnabled && personFromApi != null) {
+        await _personDataSource.insert(personFromApi);
+      }
+
       return personFromApi;
     } catch (e) {
       throw e;

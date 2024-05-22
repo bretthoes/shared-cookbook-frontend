@@ -16,35 +16,39 @@ class RecipeRepositoryImpl extends RecipeRepository {
   // api objects
   final RecipeApi _recipeApi;
 
+  static const bool _cacheEnabled = false;
+
   // constructor
   RecipeRepositoryImpl(this._recipeApi, this._recipeDataSource);
 
   // Cookbook: ---------------------------------------------------------------------
   @override
   Future<RecipeList> getRecipes(int cookbookId) async {
-    //creating filter
-    List<Filter> filters = [];
+    if (_cacheEnabled) {
+      //creating filter
+      List<Filter> filters = [];
 
-    //check to see if dataLogsType is not null
-    Filter dataLogTypeFilter = Filter.equals(DBConstants.RECIPE_ID, cookbookId);
-    filters.add(dataLogTypeFilter);
+      //check to see if dataLogsType is not null
+      Filter dataLogTypeFilter =
+          Filter.equals(DBConstants.RECIPE_ID, cookbookId);
+      filters.add(dataLogTypeFilter);
 
-    var recipesFromDb = await _recipeDataSource
-        .getAllSortedByFilter(filters: filters)
-        .then((recipes) => recipes)
-        .catchError((error) => throw error);
+      var recipesFromDb = await _recipeDataSource
+          .getAllSortedByFilter(filters: filters)
+          .then((recipes) => recipes)
+          .catchError((error) => throw error);
 
-    // TODO these two lines are temporary added to always pull from api
-    _recipeDataSource.deleteAll();
-    recipesFromDb = [];
-
-    if (recipesFromDb.isNotEmpty) {
-      return new RecipeList(recipes: recipesFromDb);
+      if (recipesFromDb.isNotEmpty) {
+        return new RecipeList(recipes: recipesFromDb);
+      }
     }
 
     var recipesFromApi = await _recipeApi.getRecipes(cookbookId);
-    for (var recipe in recipesFromApi.recipes) {
-      await _recipeDataSource.insert(recipe);
+
+    if (_cacheEnabled) {
+      for (var recipe in recipesFromApi.recipes) {
+        await _recipeDataSource.insert(recipe);
+      }
     }
 
     return recipesFromApi;
