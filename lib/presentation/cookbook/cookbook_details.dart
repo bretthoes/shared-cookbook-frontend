@@ -3,6 +3,7 @@ import 'package:boilerplate/domain/entity/cookbook/cookbook.dart';
 import 'package:boilerplate/domain/entity/recipe/recipe.dart';
 import 'package:boilerplate/presentation/home/store/theme/theme_store.dart';
 import 'package:boilerplate/presentation/login/store/person_store.dart';
+import 'package:boilerplate/presentation/recipe/recipe_details.dart';
 import 'package:boilerplate/presentation/recipe/store/recipe_store.dart';
 import 'package:boilerplate/utils/images.dart';
 import 'package:flutter/material.dart';
@@ -220,12 +221,19 @@ class _CookbookDetailsScreenState extends State<CookbookDetailsScreen> {
       ),
       contentPadding: EdgeInsets.all(4),
       onTap: () {
-        // Handle recipe tap
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => RecipeDetailsScreen(
+              recipe: recipe,
+            ),
+          ),
+        );
       },
     );
   }
 
-  String _getRecipeText(Recipe recipe) {
+  _getRecipeText(Recipe recipe) {
     var totalTime = (recipe.bakingTimeInMinutes ?? 0) +
         (recipe.cookingTimeInMinutes ?? 0) +
         (recipe.preparationTimeInMinutes ?? 0);

@@ -73,6 +73,10 @@ class AppThemeData {
         selectedIconTheme: IconThemeData(size: 32),
         unselectedIconTheme: IconThemeData(size: 32),
       ),
+      popupMenuTheme: PopupMenuThemeData(
+        color: colorScheme.primary,
+        textStyle: _textTheme.labelSmall,
+      ),
     );
   }
 
