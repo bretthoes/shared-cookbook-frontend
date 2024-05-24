@@ -35,9 +35,15 @@ class _RecipeDetailsScreenState extends State<RecipeDetailsScreen> {
     super.didChangeDependencies();
 
     // check to see if already called api
-    var cookbookId = widget.recipe.cookbookId ?? 0;
+    var recipeId = widget.recipe.recipeId ?? 0;
     if (!_recipeStore.loading) {
-      if (cookbookId > 0) {}
+      if (recipeId > 0) {
+        // get ratings
+        // get directions
+        // get ingredients
+        // get nutrition
+        // get comments
+      }
     }
   }
 
