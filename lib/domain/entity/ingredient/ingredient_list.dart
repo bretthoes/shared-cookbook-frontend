@@ -8,11 +8,11 @@ class IngredientList {
   });
 
   factory IngredientList.fromJson(List<dynamic> json) {
-    var cookbooks =
+    var ingredients =
         json.map((ingredient) => Ingredient.fromMap(ingredient)).toList();
 
     return IngredientList(
-      ingredient: cookbooks,
+      ingredient: ingredients,
     );
   }
 }

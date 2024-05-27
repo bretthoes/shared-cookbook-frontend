@@ -1,4 +1,4 @@
-class RecipeNutrition {
+class Nutrition {
   int? recipeNutritionId;
   int? recipeId;
   int? calories;
@@ -9,7 +9,7 @@ class RecipeNutrition {
   int? fiber;
   int? sodium;
 
-  RecipeNutrition({
+  Nutrition({
     this.recipeNutritionId,
     this.recipeId,
     this.calories,
@@ -21,7 +21,7 @@ class RecipeNutrition {
     this.sodium,
   });
 
-  factory RecipeNutrition.fromMap(Map<String, dynamic> json) => RecipeNutrition(
+  factory Nutrition.fromMap(Map<String, dynamic> json) => Nutrition(
         recipeNutritionId: json["recipeNutritionId"],
         recipeId: json["recipeId"],
         calories: json["calories"],
