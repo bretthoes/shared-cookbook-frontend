@@ -1,10 +1,10 @@
 import 'package:boilerplate/domain/entity/ingredient/ingredient.dart';
 
 class IngredientList {
-  final List<Ingredient> ingredient;
+  final List<Ingredient> ingredients;
 
   IngredientList({
-    required this.ingredient,
+    required this.ingredients,
   });
 
   factory IngredientList.fromJson(List<dynamic> json) {
@@ -12,7 +12,7 @@ class IngredientList {
         json.map((ingredient) => Ingredient.fromMap(ingredient)).toList();
 
     return IngredientList(
-      ingredient: ingredients,
+      ingredients: ingredients,
     );
   }
 }
