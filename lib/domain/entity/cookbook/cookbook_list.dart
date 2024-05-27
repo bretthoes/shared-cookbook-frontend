@@ -9,7 +9,6 @@ class CookbookList {
 
   factory CookbookList.fromJson(List<dynamic> json) {
     var cookbooks = json.map((cookbook) => Cookbook.fromMap(cookbook)).toList();
-    ;
 
     return CookbookList(
       cookbooks: cookbooks,

@@ -59,6 +59,18 @@ abstract class _RecipeStore with Store {
   }
 
   @action
+  Future getRecipeDetails(int recipeId) async {
+    final future = _getRecipeUseCase.call(params: recipeId);
+    fetchRecipesFuture = ObservableFuture(future);
+
+    await future.then((recipeList) {
+      this.recipeList = recipeList;
+    }).catchError((error) {
+      errorStore.errorMessage = DioErrorUtil.handleError(error);
+    });
+  }
+
+  @action
   Future addRecipe(
     int creatorPersonId,
     String title,
