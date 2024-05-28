@@ -43,6 +43,7 @@ class _RecipeDetailsScreenState extends State<RecipeDetailsScreen> {
         // get ingredients
         // get nutrition
         // get comments
+        _recipeStore.getRecipeDetails(recipeId);
       }
     }
   }

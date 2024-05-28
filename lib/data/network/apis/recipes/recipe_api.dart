@@ -12,6 +12,16 @@ class RecipeApi {
   // injecting dio instance
   RecipeApi(this._dioClient);
 
+  Future<Recipe> getRecipe(int recipeId) async {
+    try {
+      final res = await _dioClient.dio.get(Endpoints.getRecipe(recipeId));
+      return Recipe.fromMap(res.data);
+    } catch (e) {
+      print(e.toString());
+      throw e;
+    }
+  }
+
   Future<RecipeList> getRecipes(int cookbookId) async {
     try {
       final res = await _dioClient.dio.get(Endpoints.getRecipes(cookbookId));

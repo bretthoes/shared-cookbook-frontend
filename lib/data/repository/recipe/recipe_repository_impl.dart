@@ -55,19 +55,29 @@ class RecipeRepositoryImpl extends RecipeRepository {
   }
 
   @override
-  Future<Recipe> findRecipeById(int id) {
-    //creating filter
-    List<Filter> filters = [];
+  Future<Recipe?> findRecipeById(int id) async {
+    try {
+      if (_cacheEnabled) {
+        List<Filter> filters = [];
+        Filter dataLogTypeFilter = Filter.equals(DBConstants.RECIPE_ID, id);
+        filters.add(dataLogTypeFilter);
 
-    //check to see if dataLogsType is not null
-    Filter dataLogTypeFilter = Filter.equals(DBConstants.RECIPE_ID, id);
-    filters.add(dataLogTypeFilter);
+        return _recipeDataSource
+            .getAllSortedByFilter(filters: filters)
+            .then((recipes) => recipes.first)
+            .catchError((error) => throw error);
+      }
 
-    //making db call
-    return _recipeDataSource
-        .getAllSortedByFilter(filters: filters)
-        .then((recipes) => recipes.first)
-        .catchError((error) => throw error);
+      var recipeFromApi = await _recipeApi.getRecipe(id);
+
+      if (_cacheEnabled) {
+        await _recipeDataSource.insert(recipeFromApi);
+      }
+
+      return recipeFromApi;
+    } catch (e) {
+      throw e;
+    }
   }
 
   @override

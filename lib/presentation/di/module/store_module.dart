@@ -12,6 +12,7 @@ import 'package:boilerplate/domain/usecase/person/register_usecase.dart';
 import 'package:boilerplate/domain/usecase/person/save_person_id_usecase.dart';
 import 'package:boilerplate/domain/usecase/person/update_person_usecase.dart';
 import 'package:boilerplate/domain/usecase/recipe/add_recipe_usecase.dart';
+import 'package:boilerplate/domain/usecase/recipe/find_recipe_by_id_usecase.dart';
 import 'package:boilerplate/domain/usecase/recipe/get_recipe_usecase.dart';
 import 'package:boilerplate/presentation/cookbook/store/cookbook_store.dart';
 import 'package:boilerplate/presentation/home/store/language/language_store.dart';
@@ -59,6 +60,7 @@ mixin StoreModule {
       RecipeStore(
         getIt<GetRecipeUseCase>(),
         getIt<AddRecipeUseCase>(),
+        getIt<FindRecipeByIdUseCase>(),
         getIt<ErrorStore>(),
         getIt<RecipeErrorStore>(),
       ),

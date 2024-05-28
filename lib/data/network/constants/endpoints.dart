@@ -27,6 +27,7 @@ class Endpoints {
   static String patchPerson(int personId) => '$baseUrl/People/$personId';
 
   // recipe endpoints
+  static String getRecipe(int recipeId) => '$baseUrl/Recipes/$recipeId';
   static String getRecipes(int cookbookId) =>
       '$baseUrl/Recipes/by-cookbook/$cookbookId';
   static String addRecipe = '$baseUrl/Recipes';

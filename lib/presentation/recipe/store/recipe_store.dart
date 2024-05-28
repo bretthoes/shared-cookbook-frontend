@@ -1,7 +1,9 @@
 import 'package:boilerplate/core/extensions/string_extension.dart';
 import 'package:boilerplate/core/stores/error/error_store.dart';
+import 'package:boilerplate/domain/entity/recipe/recipe.dart';
 import 'package:boilerplate/domain/entity/recipe/recipe_list.dart';
 import 'package:boilerplate/domain/usecase/recipe/add_recipe_usecase.dart';
+import 'package:boilerplate/domain/usecase/recipe/find_recipe_by_id_usecase.dart';
 import 'package:boilerplate/domain/usecase/recipe/get_recipe_usecase.dart';
 import 'package:boilerplate/utils/dio/dio_error_util.dart';
 import 'package:mobx/mobx.dart';
@@ -15,6 +17,7 @@ abstract class _RecipeStore with Store {
   _RecipeStore(
     this._getRecipeUseCase,
     this._addRecipeUseCase,
+    this._findRecipeByIdUseCase,
     this.errorStore,
     this.recipeErrorStore,
   );
@@ -22,6 +25,7 @@ abstract class _RecipeStore with Store {
   // use cases:-----------------------------------------------------------------
   final GetRecipeUseCase _getRecipeUseCase;
   final AddRecipeUseCase _addRecipeUseCase;
+  final FindRecipeByIdUseCase _findRecipeByIdUseCase;
 
   // stores:--------------------------------------------------------------------
   // store for handling errors
@@ -29,12 +33,18 @@ abstract class _RecipeStore with Store {
   final RecipeErrorStore recipeErrorStore;
 
   // store variables:-----------------------------------------------------------
-  static ObservableFuture<RecipeList?> emptyRecipeResponse =
+  static ObservableFuture<RecipeList?> emptyRecipesResponse =
+      ObservableFuture.value(null);
+  static ObservableFuture<Recipe?> emptyRecipeResponse =
       ObservableFuture.value(null);
 
   @observable
   ObservableFuture<RecipeList?> fetchRecipesFuture =
-      ObservableFuture<RecipeList?>(emptyRecipeResponse);
+      ObservableFuture<RecipeList?>(emptyRecipesResponse);
+
+  @observable
+  ObservableFuture<Recipe?> fetchRecipeFuture =
+      ObservableFuture<Recipe?>(emptyRecipeResponse);
 
   @observable
   RecipeList recipeList = new RecipeList(recipes: new List.empty());
@@ -43,7 +53,9 @@ abstract class _RecipeStore with Store {
   String newCover = '';
 
   @computed
-  bool get loading => fetchRecipesFuture.status == FutureStatus.pending;
+  bool get loading =>
+      fetchRecipesFuture.status == FutureStatus.pending ||
+      fetchRecipeFuture.status == FutureStatus.pending;
 
   // actions:-------------------------------------------------------------------
   @action
@@ -60,11 +72,19 @@ abstract class _RecipeStore with Store {
 
   @action
   Future getRecipeDetails(int recipeId) async {
-    final future = _getRecipeUseCase.call(params: recipeId);
-    fetchRecipesFuture = ObservableFuture(future);
+    final future = _findRecipeByIdUseCase.call(params: recipeId);
+    fetchRecipeFuture = ObservableFuture(future);
 
-    await future.then((recipeList) {
-      this.recipeList = recipeList;
+    await future.then((recipe) {
+      if (recipe != null) {
+        final index =
+            this.recipeList.recipes.indexWhere((r) => r.recipeId == recipeId);
+        if (index != -1) {
+          this.recipeList.recipes[index] = recipe;
+        } else {
+          throw Exception("recipe not found in current list");
+        }
+      }
     }).catchError((error) {
       errorStore.errorMessage = DioErrorUtil.handleError(error);
     });
