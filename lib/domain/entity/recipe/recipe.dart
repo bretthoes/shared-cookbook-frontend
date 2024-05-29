@@ -56,13 +56,24 @@ class Recipe {
         cookingTimeInMinutes: json["cookingTimeInMinutes"],
         bakingTimeInMinutes: json["bakingTimeInMinutes"],
         servings: json["servings"],
-        nutrition: Nutrition.fromMap(json["nutrition"]),
-        ingredientCategoryList:
-            IngredientCategoryList.fromJson(json["ingredientCategories"]),
-        commentList: CommentList.fromJson(json["comments"]),
-        directionList: DirectionList.fromJson(json["directions"]),
-        ingredientList: IngredientList.fromJson(json["ingredients"]),
-        ratingList: RatingList.fromJson(json["ratings"]),
+        nutrition: json["nutrition"] != null
+            ? Nutrition.fromMap(json["nutrition"])
+            : null,
+        ingredientCategoryList: json["ingredientCategories"] != null
+            ? IngredientCategoryList.fromJson(json["ingredientCategories"])
+            : null,
+        commentList: json["recipeComments"] != null
+            ? CommentList.fromJson(json["recipeComments"])
+            : null,
+        directionList: json["recipeDirections"] != null
+            ? DirectionList.fromJson(json["recipeDirections"])
+            : null,
+        ingredientList: json["recipeIngredients"] != null
+            ? IngredientList.fromJson(json["recipeIngredients"])
+            : null,
+        ratingList: json["recipeRatings"] != null
+            ? RatingList.fromJson(json["recipeRatings"])
+            : null,
       );
 
   Map<String, dynamic> toMap() => {

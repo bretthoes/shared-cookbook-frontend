@@ -64,4 +64,28 @@ class Images {
       height: double.infinity,
     );
   }
+
+  static getRecipeFullImage(String imagePath) {
+    if (imagePath.isNullOrWhitespace) {
+      return Image.asset(
+        'assets/images/covers/default-cover.png',
+        fit: BoxFit.cover,
+        height: double.infinity,
+      );
+    }
+    // TODO handle case where network image is valid url, but not found in server
+    if (imagePath.startsWith('http')) {
+      return Image.network(
+        imagePath,
+        fit: BoxFit.cover,
+        height: double.infinity,
+      );
+    }
+
+    return Image.asset(
+      imagePath,
+      fit: BoxFit.cover,
+      height: double.infinity,
+    );
+  }
 }

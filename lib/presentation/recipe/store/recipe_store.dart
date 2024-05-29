@@ -50,6 +50,9 @@ abstract class _RecipeStore with Store {
   RecipeList recipeList = new RecipeList(recipes: new List.empty());
 
   @observable
+  int selectedRecipeIndex = -1;
+
+  @observable
   String newCover = '';
 
   @computed
@@ -77,10 +80,10 @@ abstract class _RecipeStore with Store {
 
     await future.then((recipe) {
       if (recipe != null) {
-        final index =
+        selectedRecipeIndex =
             this.recipeList.recipes.indexWhere((r) => r.recipeId == recipeId);
-        if (index != -1) {
-          this.recipeList.recipes[index] = recipe;
+        if (selectedRecipeIndex != -1) {
+          this.recipeList.recipes[selectedRecipeIndex] = recipe;
         } else {
           throw Exception("recipe not found in current list");
         }
