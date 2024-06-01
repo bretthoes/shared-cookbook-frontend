@@ -1,3 +1,4 @@
+import 'package:boilerplate/core/widgets/progress_indicator_widget.dart';
 import 'package:boilerplate/di/service_locator.dart';
 import 'package:boilerplate/domain/entity/cookbook/cookbook.dart';
 import 'package:boilerplate/domain/entity/recipe/recipe.dart';
@@ -114,7 +115,9 @@ class _CookbookDetailsScreenState extends State<CookbookDetailsScreen> {
   }
 
   Widget _buildBody() {
-    return Material(
+    return _recipeStore.loading ? 
+    CustomProgressIndicatorWidget() 
+    : Material(
       child: SingleChildScrollView(
         padding: const EdgeInsets.symmetric(horizontal: 8.0),
         child: _buildColumn(),
