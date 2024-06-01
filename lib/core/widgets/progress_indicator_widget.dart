@@ -7,6 +7,8 @@ class CustomProgressIndicatorWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // TODO replace all uses of CircularProgressIndicator with this widget
+    // TODO replace indicator with animation
     return Align(
       alignment: Alignment.center,
       child: Container(
@@ -27,8 +29,6 @@ class CustomProgressIndicatorWidget extends StatelessWidget {
             ),
           ),
         ),
-        decoration: BoxDecoration(
-            color: Color.fromARGB(100, 105, 105, 105)),
       ),
     );
   }

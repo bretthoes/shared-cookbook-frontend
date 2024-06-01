@@ -68,7 +68,7 @@ class _CookbookDetailsScreenState extends State<CookbookDetailsScreen> {
     return Scaffold(
       primary: true,
       appBar: AppBar(
-        title: Text(widget.cookbook.title ?? 'No title'),
+        title: Text(''),
         leading: IconButton(
           icon: Icon(Icons.arrow_back),
           onPressed: () {
@@ -131,6 +131,7 @@ class _CookbookDetailsScreenState extends State<CookbookDetailsScreen> {
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
+        Text(widget.cookbook.title ?? 'No title', style: Theme.of(context).textTheme.headlineLarge,),
         SizedBox(height: 16),
         _buildSearchBar(),
         SizedBox(height: 64),
