@@ -171,41 +171,39 @@ class _RecipeDetailsScreenState extends State<RecipeDetailsScreen> {
     );
   }
 
-  var _isExpanded = true;
-
   Widget _buildTimeRow() {
-    var recipe = _recipeStore.recipeList
-        .recipes[_recipeStore.selectedRecipeIndex];
-    int totalTime = (recipe.preparationTimeInMinutes ?? 0) + 
-                    (recipe.cookingTimeInMinutes ?? 0) + 
-                    (recipe.bakingTimeInMinutes ?? 0);
+  var recipe = _recipeStore.recipeList.recipes[_recipeStore.selectedRecipeIndex];
+  var prepTime = recipe.preparationTimeInMinutes ?? 0;
+  var cookTime = recipe.cookingTimeInMinutes ?? 0;
+  var bakeTime = recipe.bakingTimeInMinutes ?? 0;
 
-    return GestureDetector(
-      onTap: () {
-        setState(() {
-          _isExpanded = !_isExpanded;
-        });
-      },
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            children: [
-              Icon(Icons.access_time, color: Colors.grey),
-              SizedBox(width: 4),
-              Text('$totalTime min'),
-            ],
-          ),
-          if (_isExpanded) ...[
-            SizedBox(height: 4),
-            Text('Preparation: ${recipe.preparationTimeInMinutes ?? 0} min'),
-            Text('Cooking: ${recipe.cookingTimeInMinutes ?? 0} min'),
-            Text('Baking: ${recipe.bakingTimeInMinutes ?? 0} min'),
-          ],
-        ],
-      ),
-    );
+  var totalTime = prepTime + cookTime + bakeTime;
+
+  if (totalTime == 0) {
+    return SizedBox(height: 0);
   }
+
+  return Wrap(
+    crossAxisAlignment: WrapCrossAlignment.end,
+    children: [
+      Icon(Icons.timer, color: Colors.grey),
+      SizedBox(width: 4),
+      Text(
+        '${totalTime} min',
+        style: TextStyle(fontWeight: FontWeight.bold, fontSize: 19.0),
+      ),
+      if (prepTime > 0) ...[
+        Text(' • Prep: ${prepTime}m'),
+      ],
+      if (cookTime > 0) ...[
+        Text(' • Cooking: ${cookTime}m'),
+      ],
+      if (bakeTime > 0) ...[
+        Text('• Baking: ${bakeTime}m'),
+      ],
+    ],
+  );
+}
 
   double _calculateAverageRating(List<Rating>? list) {
     if (list == null || list.isEmpty) {
