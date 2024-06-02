@@ -1,36 +1,34 @@
 import 'package:boilerplate/core/widgets/progress_indicator_widget.dart';
 import 'package:boilerplate/di/service_locator.dart';
-import 'package:boilerplate/domain/entity/cookbook/cookbook.dart';
 import 'package:boilerplate/domain/entity/ratings/ratings.dart';
-import 'package:boilerplate/domain/entity/ratings/ratings_list.dart';
 import 'package:boilerplate/domain/entity/recipe/recipe.dart';
-import 'package:boilerplate/presentation/home/store/theme/theme_store.dart';
-import 'package:boilerplate/presentation/login/store/person_store.dart';
 import 'package:boilerplate/presentation/recipe/store/recipe_store.dart';
-import 'package:boilerplate/utils/images.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 
 class RecipeDetailsScreen extends StatefulWidget {
   final Recipe recipe;
+
   RecipeDetailsScreen({required this.recipe});
 
   @override
   _RecipeDetailsScreenState createState() => _RecipeDetailsScreenState();
 }
 
-class _RecipeDetailsScreenState extends State<RecipeDetailsScreen> {
+class _RecipeDetailsScreenState extends State<RecipeDetailsScreen>
+    with SingleTickerProviderStateMixin {
   //stores:---------------------------------------------------------------------
-  final PersonStore _personStore = getIt<PersonStore>();
   final RecipeStore _recipeStore = getIt<RecipeStore>();
-  final ThemeStore _themeStore = getIt<ThemeStore>();
 
   TextEditingController _searchController = TextEditingController();
-  List<Recipe> _filteredRecipes = [];
+  TextEditingController _commentController = TextEditingController();
+  late TabController _tabController;
+  Set<int> _struckThroughDirections = Set();
 
   @override
   void initState() {
     super.initState();
+    _tabController = TabController(length: 2, vsync: this);
   }
 
   @override
@@ -41,11 +39,6 @@ class _RecipeDetailsScreenState extends State<RecipeDetailsScreen> {
     var recipeId = widget.recipe.recipeId ?? 0;
     if (!_recipeStore.loading) {
       if (recipeId > 0) {
-        // get ratings
-        // get directions
-        // get ingredients
-        // get nutrition
-        // get comments
         _recipeStore.getRecipeDetails(recipeId);
       }
     }
@@ -54,6 +47,8 @@ class _RecipeDetailsScreenState extends State<RecipeDetailsScreen> {
   @override
   void dispose() {
     _searchController.dispose();
+    _commentController.dispose();
+    _tabController.dispose();
     super.dispose();
   }
 
@@ -83,29 +78,41 @@ class _RecipeDetailsScreenState extends State<RecipeDetailsScreen> {
             ],
           ),
         ],
+        bottom: TabBar(
+          controller: _tabController,
+          tabs: [
+            Tab(text: 'Recipe'),
+            Tab(text: 'Comments'),
+          ],
+        ),
       ),
       body: _buildBody(),
     );
   }
 
   Widget _buildBody() {
-    return Observer(builder: (context) {
-      return _recipeStore.loading
-        ? CustomProgressIndicatorWidget() 
-        : Material(
-          child: SingleChildScrollView(
-            padding: const EdgeInsets.symmetric(horizontal: 8.0),
-            child: _buildColumn(),
-          ),
-        );
+    return Observer(
+      builder: (context) {
+        return _recipeStore.loading
+            ? CustomProgressIndicatorWidget()
+            : TabBarView(
+                controller: _tabController,
+                children: [
+                  _buildDetailsTab(),
+                  _buildCommentsTab(),
+                ],
+              );
       },
     );
   }
 
-  Widget _buildColumn() {
-    return Observer(
-      builder: (_) {
-        return Column(
+  Widget _buildDetailsTab() {
+    var recipe =
+        _recipeStore.recipeList.recipes[_recipeStore.selectedRecipeIndex];
+    return Material(
+      child: SingleChildScrollView(
+        padding: const EdgeInsets.symmetric(horizontal: 8.0),
+        child: Column(
           mainAxisSize: MainAxisSize.max,
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -130,15 +137,135 @@ class _RecipeDetailsScreenState extends State<RecipeDetailsScreen> {
             ),
             const SizedBox(height: 16),
             _buildStars(),
-            _buildTimeRow()
+            const SizedBox(height: 4.0),
+            _buildTimeRow(),
+            const SizedBox(height: 12.0),
+            _buildIngredients(),
+            const SizedBox(height: 12.0),
+            _buildDirections(),
+            const SizedBox(height: 12.0),
+            _buildNutritionInfo(),
+            const SizedBox(height: 32.0),
           ],
-        );
-      },
+        ),
+      ),
     );
   }
-  
+
+  Widget _buildCommentsTab() {
+    var recipe =
+        _recipeStore.recipeList.recipes[_recipeStore.selectedRecipeIndex];
+    var comments = recipe.commentList?.comments ?? [];
+
+    return Material(
+      child: Column(
+        children: <Widget>[
+          Expanded(
+            child: ListView.builder(
+              itemCount: comments.length,
+              itemBuilder: (context, index) {
+                return ListTile(
+                  title: Text(comments[index].commentText ?? ''),
+                  subtitle:
+                      Text('Anonymous'), // TODO get commenter name with request
+                );
+              },
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Row(
+              children: <Widget>[
+                Expanded(
+                  child: TextField(
+                    controller: _commentController,
+                    decoration: InputDecoration(
+                      labelText: 'Add a comment',
+                      border: OutlineInputBorder(),
+                    ),
+                  ),
+                ),
+                IconButton(
+                  icon: Icon(Icons.send),
+                  onPressed: () {
+                    if (_commentController.text.isNotEmpty) {
+                      setState(() {
+                        // TODO post request to add comment, update list
+                        // comments.add(Comment(
+                        //   commentText: _commentController.text,
+                        //   commenterName: 'You',
+                        // ));
+                        _commentController.clear();
+                      });
+                    }
+                  },
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildNutritionInfo() {
+    var recipe =
+        _recipeStore.recipeList.recipes[_recipeStore.selectedRecipeIndex];
+    var nutrition = recipe.nutrition;
+
+    if (nutrition == null) {
+      return Center(child: Text('No nutrition information available.'));
+    }
+
+    return Material(
+      child: Column(
+        mainAxisSize: MainAxisSize.max,
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          const SizedBox(height: 16),
+          Text(
+            'Nutritional Information',
+            style: Theme.of(context).textTheme.titleLarge,
+          ),
+          Text(
+            '(per serving)',
+            style: Theme.of(context).textTheme.bodyMedium,
+          ),
+          const SizedBox(height: 16),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 8.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text('Calories: ${nutrition.calories ?? '-'}'),
+                Text('Carbs: ${nutrition.carbohydrates ?? '-'}g'),
+              ],
+            ),
+          ),
+          const SizedBox(height: 8),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 8.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text('Protein: ${nutrition.protein ?? '-'}g'),
+                Text('Fat: ${nutrition.fat ?? '-'}g'),
+              ],
+            ),
+          ),
+          const SizedBox(height: 16),
+          Text('Sugar: ${nutrition.sugar ?? '-'}g'),
+          Text('Fiber: ${nutrition.fiber ?? '-'}g'),
+          Text('Sodium: ${nutrition.sodium ?? '-'}mg'),
+        ],
+      ),
+    );
+  }
+
   Widget _buildStars() {
-    var recipe = _recipeStore.recipeList.recipes[_recipeStore.selectedRecipeIndex];
+    var recipe =
+        _recipeStore.recipeList.recipes[_recipeStore.selectedRecipeIndex];
     var ratings = recipe.ratingList?.ratings;
     double rating = _calculateAverageRating(ratings);
     // Round the rating to the nearest 0.5
@@ -163,14 +290,18 @@ class _RecipeDetailsScreenState extends State<RecipeDetailsScreen> {
     while (stars.length < 5) {
       stars.add(Icon(Icons.star_border, color: Colors.amber));
     }
-    stars.add(SizedBox(width: 6.0,));
+    stars.add(SizedBox(width: 6.0));
     stars.add(Text(rating.toString()));
-    stars.add(SizedBox(width: 6.0,));
+    stars.add(SizedBox(width: 6.0));
     stars.add(Text(('(' + (ratings?.length.toString() ?? '0') + ')')));
 
-    stars.add(SizedBox(width: 8.0,));
+    stars.add(SizedBox(width: 8.0));
 
-    stars.add(Text('• ${recipe.commentList?.comments.length ?? 0} comments'));
+    if ((recipe.servings ?? 0) == 0) {
+      stars.add(Text('• 1 serving'));
+    } else {
+      stars.add(Text('• ${recipe.servings} servings'));
+    }
 
     return Wrap(
       crossAxisAlignment: WrapCrossAlignment.end,
@@ -179,38 +310,103 @@ class _RecipeDetailsScreenState extends State<RecipeDetailsScreen> {
   }
 
   Widget _buildTimeRow() {
-  var recipe = _recipeStore.recipeList.recipes[_recipeStore.selectedRecipeIndex];
-  var prepTime = recipe.preparationTimeInMinutes ?? 0;
-  var cookTime = recipe.cookingTimeInMinutes ?? 0;
-  var bakeTime = recipe.bakingTimeInMinutes ?? 0;
+    var recipe =
+        _recipeStore.recipeList.recipes[_recipeStore.selectedRecipeIndex];
+    var prepTime = recipe.preparationTimeInMinutes ?? 0;
+    var cookTime = recipe.cookingTimeInMinutes ?? 0;
+    var bakeTime = recipe.bakingTimeInMinutes ?? 0;
 
-  var totalTime = prepTime + cookTime + bakeTime;
+    var totalTime = prepTime + cookTime + bakeTime;
 
-  if (totalTime == 0) {
-    return SizedBox(height: 0);
+    if (totalTime == 0) {
+      return SizedBox(height: 0);
+    }
+
+    return Wrap(
+      crossAxisAlignment: WrapCrossAlignment.end,
+      children: [
+        Icon(Icons.timer, color: Colors.grey),
+        SizedBox(width: 4),
+        Text(
+          '${totalTime} min',
+          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18.0),
+        ),
+        if (prepTime > 0) ...[
+          Text(' • Prep: ${prepTime}m'),
+        ],
+        if (cookTime > 0) ...[
+          Text(' • Cooking: ${cookTime}m'),
+        ],
+        if (bakeTime > 0) ...[
+          Text('• Baking: ${bakeTime}m'),
+        ],
+      ],
+    );
   }
 
-  return Wrap(
-    crossAxisAlignment: WrapCrossAlignment.end,
-    children: [
-      Icon(Icons.timer, color: Colors.grey),
-      SizedBox(width: 4),
-      Text(
-        '${totalTime} min',
-        style: TextStyle(fontWeight: FontWeight.bold, fontSize: 19.0),
-      ),
-      if (prepTime > 0) ...[
-        Text(' • Prep: ${prepTime}m'),
-      ],
-      if (cookTime > 0) ...[
-        Text(' • Cooking: ${cookTime}m'),
-      ],
-      if (bakeTime > 0) ...[
-        Text('• Baking: ${bakeTime}m'),
-      ],
-    ],
-  );
-}
+  Widget _buildIngredients() {
+    var recipe =
+        _recipeStore.recipeList.recipes[_recipeStore.selectedRecipeIndex];
+    var ingredients = recipe.ingredientList!.ingredients;
+
+    ingredients.sort((a, b) => a.ordinal!.compareTo(b.ordinal!));
+
+    return ingredients.isEmpty
+        ? Center(child: Text('No ingredients available.'))
+        : Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text('Ingredients',
+                  style: Theme.of(context).textTheme.titleMedium),
+              for (var ingredient in ingredients)
+                Padding(
+                  padding: EdgeInsets.all(2.0),
+                  child: Text(
+                    '• ${ingredient.ingredientName}',
+                  ),
+                )
+            ],
+          );
+  }
+
+  Widget _buildDirections() {
+    var recipe =
+        _recipeStore.recipeList.recipes[_recipeStore.selectedRecipeIndex];
+    var directions = recipe.directionList!.directions;
+
+    // Sort directions by the ordinal property
+    directions.sort((a, b) => a.ordinal!.compareTo(b.ordinal!));
+
+    return directions.isEmpty
+        ? Center(child: Text('No directions available.'))
+        : Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text('Directions',
+                  style: Theme.of(context).textTheme.titleMedium),
+              for (var i = 0; i < directions.length; i++)
+                GestureDetector(
+                  onTap: () {
+                    setState(() {
+                      if (_struckThroughDirections.contains(i)) {
+                        _struckThroughDirections.remove(i);
+                      } else {
+                        _struckThroughDirections.add(i);
+                      }
+                    });
+                  },
+                  child: Text(
+                    '${i + 1}. ${directions[i].directionText}',
+                    style: TextStyle(
+                      decoration: _struckThroughDirections.contains(i)
+                          ? TextDecoration.lineThrough
+                          : TextDecoration.none,
+                    ),
+                  ),
+                ),
+            ],
+          );
+  }
 
   double _calculateAverageRating(List<Rating>? list) {
     if (list == null || list.isEmpty) {

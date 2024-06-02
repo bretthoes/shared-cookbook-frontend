@@ -77,6 +77,11 @@ class AppThemeData {
         color: colorScheme.primary,
         textStyle: _textTheme.labelSmall,
       ),
+      tabBarTheme: TabBarTheme(
+        dividerColor: colorScheme.surface,
+        unselectedLabelColor: colorScheme.surface,
+        labelColor: colorScheme.surface,
+      ),
     );
   }
 
