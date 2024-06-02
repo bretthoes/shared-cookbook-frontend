@@ -138,8 +138,8 @@ class _RecipeDetailsScreenState extends State<RecipeDetailsScreen> {
   }
   
   Widget _buildStars() {
-    var ratings = _recipeStore.recipeList
-        .recipes[_recipeStore.selectedRecipeIndex].ratingList?.ratings;
+    var recipe = _recipeStore.recipeList.recipes[_recipeStore.selectedRecipeIndex];
+    var ratings = recipe.ratingList?.ratings;
     double rating = _calculateAverageRating(ratings);
     // Round the rating to the nearest 0.5
     double roundedRating = (rating * 2).round() / 2;
@@ -163,10 +163,17 @@ class _RecipeDetailsScreenState extends State<RecipeDetailsScreen> {
     while (stars.length < 5) {
       stars.add(Icon(Icons.star_border, color: Colors.amber));
     }
-
+    stars.add(SizedBox(width: 6.0,));
+    stars.add(Text(rating.toString()));
+    stars.add(SizedBox(width: 6.0,));
     stars.add(Text(('(' + (ratings?.length.toString() ?? '0') + ')')));
-    return Row(
-      mainAxisSize: MainAxisSize.min,
+
+    stars.add(SizedBox(width: 8.0,));
+
+    stars.add(Text('• ${recipe.commentList?.comments.length ?? 0} comments'));
+
+    return Wrap(
+      crossAxisAlignment: WrapCrossAlignment.end,
       children: stars,
     );
   }
