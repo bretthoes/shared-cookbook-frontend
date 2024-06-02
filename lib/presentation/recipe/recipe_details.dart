@@ -93,22 +93,22 @@ class _RecipeDetailsScreenState extends State<RecipeDetailsScreen>
   Widget _buildBody() {
     return Observer(
       builder: (context) {
+        var recipe =
+            _recipeStore.recipeList.recipes[_recipeStore.selectedRecipeIndex];
         return _recipeStore.loading
             ? CustomProgressIndicatorWidget()
             : TabBarView(
                 controller: _tabController,
                 children: [
-                  _buildDetailsTab(),
-                  _buildCommentsTab(),
+                  _buildDetailsTab(recipe),
+                  _buildCommentsTab(recipe),
                 ],
               );
       },
     );
   }
 
-  Widget _buildDetailsTab() {
-    var recipe =
-        _recipeStore.recipeList.recipes[_recipeStore.selectedRecipeIndex];
+  Widget _buildDetailsTab(Recipe recipe) {
     return Material(
       child: SingleChildScrollView(
         padding: const EdgeInsets.symmetric(horizontal: 8.0),
@@ -136,15 +136,15 @@ class _RecipeDetailsScreenState extends State<RecipeDetailsScreen>
               ),
             ),
             const SizedBox(height: 16),
-            _buildStars(),
+            _buildStars(recipe),
             const SizedBox(height: 4.0),
-            _buildTimeRow(),
+            _buildTimeRow(recipe),
             const SizedBox(height: 12.0),
-            _buildIngredients(),
+            _buildIngredients(recipe),
             const SizedBox(height: 12.0),
-            _buildDirections(),
+            _buildDirections(recipe),
             const SizedBox(height: 12.0),
-            _buildNutritionInfo(),
+            _buildNutritionInfo(recipe),
             const SizedBox(height: 32.0),
           ],
         ),
@@ -152,9 +152,7 @@ class _RecipeDetailsScreenState extends State<RecipeDetailsScreen>
     );
   }
 
-  Widget _buildCommentsTab() {
-    var recipe =
-        _recipeStore.recipeList.recipes[_recipeStore.selectedRecipeIndex];
+  Widget _buildCommentsTab(Recipe recipe) {
     var comments = recipe.commentList?.comments ?? [];
 
     return Material(
@@ -208,9 +206,7 @@ class _RecipeDetailsScreenState extends State<RecipeDetailsScreen>
     );
   }
 
-  Widget _buildNutritionInfo() {
-    var recipe =
-        _recipeStore.recipeList.recipes[_recipeStore.selectedRecipeIndex];
+  Widget _buildNutritionInfo(Recipe recipe) {
     var nutrition = recipe.nutrition;
 
     if (nutrition == null) {
@@ -263,9 +259,7 @@ class _RecipeDetailsScreenState extends State<RecipeDetailsScreen>
     );
   }
 
-  Widget _buildStars() {
-    var recipe =
-        _recipeStore.recipeList.recipes[_recipeStore.selectedRecipeIndex];
+  Widget _buildStars(Recipe recipe) {
     var ratings = recipe.ratingList?.ratings;
     double rating = _calculateAverageRating(ratings);
     // Round the rating to the nearest 0.5
@@ -309,9 +303,7 @@ class _RecipeDetailsScreenState extends State<RecipeDetailsScreen>
     );
   }
 
-  Widget _buildTimeRow() {
-    var recipe =
-        _recipeStore.recipeList.recipes[_recipeStore.selectedRecipeIndex];
+  Widget _buildTimeRow(Recipe recipe) {
     var prepTime = recipe.preparationTimeInMinutes ?? 0;
     var cookTime = recipe.cookingTimeInMinutes ?? 0;
     var bakeTime = recipe.bakingTimeInMinutes ?? 0;
@@ -344,9 +336,7 @@ class _RecipeDetailsScreenState extends State<RecipeDetailsScreen>
     );
   }
 
-  Widget _buildIngredients() {
-    var recipe =
-        _recipeStore.recipeList.recipes[_recipeStore.selectedRecipeIndex];
+  Widget _buildIngredients(Recipe recipe) {
     var ingredients = recipe.ingredientList!.ingredients;
 
     ingredients.sort((a, b) => a.ordinal!.compareTo(b.ordinal!));
@@ -369,9 +359,7 @@ class _RecipeDetailsScreenState extends State<RecipeDetailsScreen>
           );
   }
 
-  Widget _buildDirections() {
-    var recipe =
-        _recipeStore.recipeList.recipes[_recipeStore.selectedRecipeIndex];
+  Widget _buildDirections(Recipe recipe) {
     var directions = recipe.directionList!.directions;
 
     // Sort directions by the ordinal property
