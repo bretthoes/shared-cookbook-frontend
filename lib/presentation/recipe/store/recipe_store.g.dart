@@ -32,6 +32,22 @@ mixin _$RecipeStore on _RecipeStore, Store {
     });
   }
 
+  late final _$fetchRecipeFutureAtom =
+      Atom(name: '_RecipeStore.fetchRecipeFuture', context: context);
+
+  @override
+  ObservableFuture<Recipe?> get fetchRecipeFuture {
+    _$fetchRecipeFutureAtom.reportRead();
+    return super.fetchRecipeFuture;
+  }
+
+  @override
+  set fetchRecipeFuture(ObservableFuture<Recipe?> value) {
+    _$fetchRecipeFutureAtom.reportWrite(value, super.fetchRecipeFuture, () {
+      super.fetchRecipeFuture = value;
+    });
+  }
+
   late final _$recipeListAtom =
       Atom(name: '_RecipeStore.recipeList', context: context);
 
@@ -45,6 +61,22 @@ mixin _$RecipeStore on _RecipeStore, Store {
   set recipeList(RecipeList value) {
     _$recipeListAtom.reportWrite(value, super.recipeList, () {
       super.recipeList = value;
+    });
+  }
+
+  late final _$selectedRecipeIndexAtom =
+      Atom(name: '_RecipeStore.selectedRecipeIndex', context: context);
+
+  @override
+  int get selectedRecipeIndex {
+    _$selectedRecipeIndexAtom.reportRead();
+    return super.selectedRecipeIndex;
+  }
+
+  @override
+  set selectedRecipeIndex(int value) {
+    _$selectedRecipeIndexAtom.reportWrite(value, super.selectedRecipeIndex, () {
+      super.selectedRecipeIndex = value;
     });
   }
 
@@ -70,6 +102,15 @@ mixin _$RecipeStore on _RecipeStore, Store {
   @override
   Future<dynamic> getRecipes(int cookbookId) {
     return _$getRecipesAsyncAction.run(() => super.getRecipes(cookbookId));
+  }
+
+  late final _$getRecipeDetailsAsyncAction =
+      AsyncAction('_RecipeStore.getRecipeDetails', context: context);
+
+  @override
+  Future<dynamic> getRecipeDetails(int recipeId) {
+    return _$getRecipeDetailsAsyncAction
+        .run(() => super.getRecipeDetails(recipeId));
   }
 
   late final _$addRecipeAsyncAction =
@@ -110,7 +151,9 @@ mixin _$RecipeStore on _RecipeStore, Store {
   String toString() {
     return '''
 fetchRecipesFuture: ${fetchRecipesFuture},
+fetchRecipeFuture: ${fetchRecipeFuture},
 recipeList: ${recipeList},
+selectedRecipeIndex: ${selectedRecipeIndex},
 newCover: ${newCover},
 loading: ${loading}
     ''';

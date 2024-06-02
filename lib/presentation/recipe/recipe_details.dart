@@ -89,23 +89,22 @@ class _RecipeDetailsScreenState extends State<RecipeDetailsScreen> {
   }
 
   Widget _buildBody() {
-    return _recipeStore.loading 
-    ? CustomProgressIndicatorWidget() 
-    : Material(
-      child: SingleChildScrollView(
-        padding: const EdgeInsets.symmetric(horizontal: 8.0),
-        child: _buildColumn(),
-      ),
+    return Observer(builder: (context) {
+      return _recipeStore.loading
+        ? CustomProgressIndicatorWidget() 
+        : Material(
+          child: SingleChildScrollView(
+            padding: const EdgeInsets.symmetric(horizontal: 8.0),
+            child: _buildColumn(),
+          ),
+        );
+      },
     );
   }
 
   Widget _buildColumn() {
     return Observer(
       builder: (_) {
-        if (_recipeStore.selectedRecipeIndex < 0) {
-          return Center(child: CircularProgressIndicator());
-        }
-
         return Column(
           mainAxisSize: MainAxisSize.max,
           mainAxisAlignment: MainAxisAlignment.start,
@@ -168,8 +167,9 @@ class _RecipeDetailsScreenState extends State<RecipeDetailsScreen> {
   }
 
   Widget _buildStars() {
-    double rating = _calculateAverageRating(_recipeStore.recipeList
-        .recipes[_recipeStore.selectedRecipeIndex].ratingList?.ratings);
+    var ratings = _recipeStore.recipeList
+        .recipes[_recipeStore.selectedRecipeIndex].ratingList?.ratings;
+    double rating = _calculateAverageRating(ratings);
     // Round the rating to the nearest 0.5
     double roundedRating = (rating * 2).round() / 2;
 
@@ -193,6 +193,7 @@ class _RecipeDetailsScreenState extends State<RecipeDetailsScreen> {
       stars.add(Icon(Icons.star_border, color: Colors.amber));
     }
 
+    stars.add(Text(('(' + (ratings?.length.toString() ?? '0') + ')')));
     return Row(
       mainAxisSize: MainAxisSize.min,
       children: stars,

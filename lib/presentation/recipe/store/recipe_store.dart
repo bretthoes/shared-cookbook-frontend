@@ -67,7 +67,7 @@ abstract class _RecipeStore with Store {
     fetchRecipesFuture = ObservableFuture(future);
 
     await future.then((recipeList) {
-      this.recipeList = recipeList;
+      this.recipeList = recipeList; 
     }).catchError((error) {
       errorStore.errorMessage = DioErrorUtil.handleError(error);
     });
@@ -75,13 +75,12 @@ abstract class _RecipeStore with Store {
 
   @action
   Future getRecipeDetails(int recipeId) async {
+    selectedRecipeIndex =
+            this.recipeList.recipes.indexWhere((r) => r.recipeId == recipeId);
     final future = _findRecipeByIdUseCase.call(params: recipeId);
     fetchRecipeFuture = ObservableFuture(future);
-
     await future.then((recipe) {
       if (recipe != null) {
-        selectedRecipeIndex =
-            this.recipeList.recipes.indexWhere((r) => r.recipeId == recipeId);
         if (selectedRecipeIndex != -1) {
           this.recipeList.recipes[selectedRecipeIndex] = recipe;
         } else {
