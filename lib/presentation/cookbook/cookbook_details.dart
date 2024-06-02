@@ -132,9 +132,9 @@ class _CookbookDetailsScreenState extends State<CookbookDetailsScreen> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         Text(widget.cookbook.title ?? 'No title', style: Theme.of(context).textTheme.headlineLarge,),
-        SizedBox(height: 16),
+        SizedBox(height: 8.0), 
         _buildSearchBar(),
-        SizedBox(height: 64),
+        SizedBox(height: 32),// TODO add selectable tags with filtering
         Padding(
           padding: const EdgeInsets.only(left: 16.0), // Add left padding
           child: Text(
@@ -202,7 +202,9 @@ class _CookbookDetailsScreenState extends State<CookbookDetailsScreen> {
       leading: Images.getRecipePreviewImage(recipe.imagePath ?? ''),
       trailing: GestureDetector(
         child: Icon(Icons.favorite_border),
-        onTap: () {},
+        onTap: () {
+          // TODO add/remove to/from favorites
+        },
       ),
       title: Text(recipe.title ?? 'No title'),
       subtitle: Row(
