@@ -130,42 +130,13 @@ class _RecipeDetailsScreenState extends State<RecipeDetailsScreen> {
             ),
             const SizedBox(height: 16),
             _buildStars(),
+            _buildTimeRow()
           ],
         );
       },
     );
   }
-
-  Widget _buildColumn2() {
-    return Column(
-      mainAxisSize: MainAxisSize.max,
-      mainAxisAlignment: MainAxisAlignment.start,
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: <Widget>[
-        const SizedBox(height: 16),
-        Text(
-          widget.recipe.title ?? '',
-          style: Theme.of(context).textTheme.labelLarge,
-        ),
-        const SizedBox(height: 16),
-        AspectRatio(
-          aspectRatio: 16.0 / 9.0,
-          child: ClipRRect(
-            borderRadius: BorderRadius.circular(8.0),
-            child: Image.asset(
-              widget.recipe.imagePath ?? '',
-              width: double.infinity,
-              height: double.infinity,
-              fit: BoxFit.cover,
-            ),
-          ),
-        ),
-        const SizedBox(height: 16),
-        _buildStars(),
-      ],
-    );
-  }
-
+  
   Widget _buildStars() {
     var ratings = _recipeStore.recipeList
         .recipes[_recipeStore.selectedRecipeIndex].ratingList?.ratings;
@@ -197,6 +168,42 @@ class _RecipeDetailsScreenState extends State<RecipeDetailsScreen> {
     return Row(
       mainAxisSize: MainAxisSize.min,
       children: stars,
+    );
+  }
+
+  var _isExpanded = true;
+
+  Widget _buildTimeRow() {
+    var recipe = _recipeStore.recipeList
+        .recipes[_recipeStore.selectedRecipeIndex];
+    int totalTime = (recipe.preparationTimeInMinutes ?? 0) + 
+                    (recipe.cookingTimeInMinutes ?? 0) + 
+                    (recipe.bakingTimeInMinutes ?? 0);
+
+    return GestureDetector(
+      onTap: () {
+        setState(() {
+          _isExpanded = !_isExpanded;
+        });
+      },
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              Icon(Icons.access_time, color: Colors.grey),
+              SizedBox(width: 4),
+              Text('$totalTime min'),
+            ],
+          ),
+          if (_isExpanded) ...[
+            SizedBox(height: 4),
+            Text('Preparation: ${recipe.preparationTimeInMinutes ?? 0} min'),
+            Text('Cooking: ${recipe.cookingTimeInMinutes ?? 0} min'),
+            Text('Baking: ${recipe.bakingTimeInMinutes ?? 0} min'),
+          ],
+        ],
+      ),
     );
   }
 
