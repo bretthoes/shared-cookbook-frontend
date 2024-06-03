@@ -7,6 +7,7 @@ import 'package:boilerplate/presentation/login/store/person_store.dart';
 import 'package:boilerplate/presentation/recipe/recipe_details.dart';
 import 'package:boilerplate/presentation/recipe/store/recipe_store.dart';
 import 'package:boilerplate/utils/images.dart';
+import 'package:boilerplate/utils/locale/app_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 
@@ -115,14 +116,14 @@ class _CookbookDetailsScreenState extends State<CookbookDetailsScreen> {
   }
 
   Widget _buildBody() {
-    return _recipeStore.loading ? 
-    CustomProgressIndicatorWidget() 
-    : Material(
-      child: SingleChildScrollView(
-        padding: const EdgeInsets.symmetric(horizontal: 8.0),
-        child: _buildColumn(),
-      ),
-    );
+    return _recipeStore.loading
+        ? CustomProgressIndicatorWidget()
+        : Material(
+            child: SingleChildScrollView(
+              padding: const EdgeInsets.symmetric(horizontal: 8.0),
+              child: _buildColumn(),
+            ),
+          );
   }
 
   Widget _buildColumn() {
@@ -131,10 +132,13 @@ class _CookbookDetailsScreenState extends State<CookbookDetailsScreen> {
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
-        Text(widget.cookbook.title ?? 'No title', style: Theme.of(context).textTheme.headlineLarge,),
-        SizedBox(height: 8.0), 
+        Text(
+          widget.cookbook.title ?? 'No title',
+          style: Theme.of(context).textTheme.headlineLarge,
+        ),
+        SizedBox(height: 8.0),
         _buildSearchBar(),
-        SizedBox(height: 32),// TODO add selectable tags with filtering
+        SizedBox(height: 32), // TODO add selectable tags with filtering
         Padding(
           padding: const EdgeInsets.only(left: 16.0), // Add left padding
           child: Text(

@@ -1,5 +1,4 @@
 import 'package:boilerplate/core/extensions/string_extension.dart';
-import 'package:boilerplate/data/sharedpref/constants/preferences.dart';
 import 'package:boilerplate/di/service_locator.dart';
 import 'package:boilerplate/presentation/home/store/language/language_store.dart';
 import 'package:boilerplate/presentation/home/store/theme/theme_store.dart';
@@ -12,7 +11,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_settings_screen_ex/flutter_settings_screen_ex.dart';
 import 'package:material_dialog/material_dialog.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class ProfileScreen extends StatefulWidget {
   @override
@@ -33,7 +31,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      //appBar: BackButtonAppBar(),
       body: PageView(
         children: [
           _buildBody(),
@@ -45,7 +42,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
   // dispose:-------------------------------------------------------------------
   @override
   void dispose() {
-    // Clean up the controller when the Widget is removed from the Widget tree
     super.dispose();
   }
 
@@ -83,11 +79,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
               const SizedBox(height: 10),
               const Divider(),
               CustomSettingsGroup(
-                  title: AppLocalizations.of(context).translate('preferences'),
-                  children: <Widget>[
-                    _buildLanguage(),
-                    _buildDarkMode(),
-                  ]),
+                title: AppLocalizations.of(context).translate('preferences'),
+                children: <Widget>[
+                  _buildLanguage(),
+                  _buildDarkMode(),
+                ],
+              ),
               CustomSettingsGroup(
                   title: AppLocalizations.of(context).translate('content'),
                   children: <Widget>[

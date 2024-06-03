@@ -360,7 +360,7 @@ class _RecipeDetailsScreenState extends State<RecipeDetailsScreen>
           Text(' • Cooking: ${cookTime}m'),
         ],
         if (bakeTime > 0) ...[
-          Text('• Baking: ${bakeTime}m'),
+          Text(' • Baking: ${bakeTime}m'),
         ],
       ],
     );
