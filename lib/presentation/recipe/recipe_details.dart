@@ -2,6 +2,7 @@ import 'package:boilerplate/core/widgets/progress_indicator_widget.dart';
 import 'package:boilerplate/di/service_locator.dart';
 import 'package:boilerplate/domain/entity/ratings/ratings.dart';
 import 'package:boilerplate/domain/entity/recipe/recipe.dart';
+import 'package:boilerplate/presentation/recipe/recipe_focus.dart';
 import 'package:boilerplate/presentation/recipe/store/recipe_store.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
@@ -118,9 +119,40 @@ class _RecipeDetailsScreenState extends State<RecipeDetailsScreen>
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             const SizedBox(height: 16),
-            Text(
-              widget.recipe.title ?? '',
-              style: Theme.of(context).textTheme.labelLarge,
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Expanded(
+                  child: Text(
+                    widget.recipe.title ?? '',
+                    style: Theme.of(context).textTheme.labelLarge,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ),
+                Container(
+                  decoration: BoxDecoration(
+                      color: Theme.of(context).cardColor,
+                      borderRadius: BorderRadius.circular(4)),
+                  child: TextButton(
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => RecipeFullScreen(
+                            recipe: recipe,
+                          ),
+                        ),
+                      );
+                    },
+                    child: Text(
+                      'Start',
+                      style: TextStyle(
+                        color: Theme.of(context).canvasColor,
+                      ),
+                    ),
+                  ),
+                ),
+              ],
             ),
             const SizedBox(height: 16),
             AspectRatio(

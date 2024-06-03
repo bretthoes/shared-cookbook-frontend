@@ -61,6 +61,7 @@ dependencies:
   # V
   validators: ^3.0.0
   # W
+  wakelock: ^0.6.2
   # X
   xxtea: ^2.1.0
   # Y
