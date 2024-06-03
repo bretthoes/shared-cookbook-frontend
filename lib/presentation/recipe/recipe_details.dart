@@ -24,7 +24,6 @@ class _RecipeDetailsScreenState extends State<RecipeDetailsScreen>
   TextEditingController _searchController = TextEditingController();
   TextEditingController _commentController = TextEditingController();
   late TabController _tabController;
-  Set<int> _struckThroughDirections = Set();
 
   @override
   void initState() {
@@ -79,13 +78,13 @@ class _RecipeDetailsScreenState extends State<RecipeDetailsScreen>
             ],
           ),
         ],
-        bottom: TabBar(
-          controller: _tabController,
-          tabs: [
-            Tab(text: 'Recipe'),
-            Tab(text: 'Comments'),
-          ],
-        ),
+        // bottom: TabBar(
+        //   controller: _tabController,
+        //   tabs: [
+        //     Tab(text: 'Recipe'),
+        //     Tab(text: 'Comments'),
+        //   ],
+        // ),
       ),
       body: _buildBody(),
     );
@@ -156,9 +155,8 @@ class _RecipeDetailsScreenState extends State<RecipeDetailsScreen>
             ),
             const SizedBox(height: 16),
             AspectRatio(
-              aspectRatio: 16.0 / 9.0,
+              aspectRatio: 1,
               child: ClipRRect(
-                borderRadius: BorderRadius.circular(8.0),
                 child: Image.asset(
                   widget.recipe.imagePath ?? '',
                   width: double.infinity,
@@ -405,24 +403,9 @@ class _RecipeDetailsScreenState extends State<RecipeDetailsScreen>
               Text('Directions',
                   style: Theme.of(context).textTheme.titleMedium),
               for (var i = 0; i < directions.length; i++)
-                GestureDetector(
-                  onTap: () {
-                    setState(() {
-                      if (_struckThroughDirections.contains(i)) {
-                        _struckThroughDirections.remove(i);
-                      } else {
-                        _struckThroughDirections.add(i);
-                      }
-                    });
-                  },
-                  child: Text(
-                    '${i + 1}. ${directions[i].directionText}',
-                    style: TextStyle(
-                      decoration: _struckThroughDirections.contains(i)
-                          ? TextDecoration.lineThrough
-                          : TextDecoration.none,
-                    ),
-                  ),
+                Text(
+                  '${i + 1}. ${directions[i].directionText}',
+                  style: TextStyle(),
                 ),
             ],
           );
