@@ -12,12 +12,12 @@ class RecipeFullScreen extends StatefulWidget {
 }
 
 class _RecipeFullScreenState extends State<RecipeFullScreen> {
-  bool _isScreenLockEnabled = false;
-  bool _isIngredientsExpanded = true;
-  bool _isDirectionsExpanded = true;
+  var _isScreenLockEnabled = false;
+  var _isIngredientsExpanded = true;
+  var _isDirectionsExpanded = true;
 
-  // Set to track checked ingredients
-  Set<int> _checkedIngredients = Set();
+  var _checkedIngredients = Set();
+  var _struckThroughDirections = Set();
 
   @override
   void initState() {
@@ -187,8 +187,6 @@ class _RecipeFullScreenState extends State<RecipeFullScreen> {
       ],
     );
   }
-
-  Set<int> _struckThroughDirections = Set();
 
   Widget _buildDirections(Recipe recipe) {
     var directions = recipe.directionList!.directions;
