@@ -21,9 +21,13 @@ class _RecipeDetailsScreenState extends State<RecipeDetailsScreen>
   //stores:---------------------------------------------------------------------
   final RecipeStore _recipeStore = getIt<RecipeStore>();
 
-  TextEditingController _searchController = TextEditingController();
-  TextEditingController _commentController = TextEditingController();
+  var _searchController = TextEditingController();
+  var _commentController = TextEditingController();
   late TabController _tabController;
+
+  var _isIngredientsExpanded = false;
+  var _isDirectionsExpanded = false;
+  var _isNutritionExpanded = false;
 
   @override
   void initState() {
@@ -170,11 +174,11 @@ class _RecipeDetailsScreenState extends State<RecipeDetailsScreen>
             const SizedBox(height: 4.0),
             _buildTimeRow(recipe),
             const SizedBox(height: 12.0),
-            _buildIngredients(recipe),
+            _buildIngredientsSection(recipe),
             const SizedBox(height: 12.0),
-            _buildDirections(recipe),
+            _buildDirectionsSection(recipe),
             const SizedBox(height: 12.0),
-            _buildNutritionInfo(recipe),
+            _buildNutritionInfoSection(recipe),
             const SizedBox(height: 32.0),
           ],
         ),
@@ -236,6 +240,37 @@ class _RecipeDetailsScreenState extends State<RecipeDetailsScreen>
     );
   }
 
+  Widget _buildNutritionInfoSection(Recipe recipe) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        InkWell(
+          onTap: _toggleNutrition,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                'Nutrition Info',
+                style: Theme.of(context).textTheme.titleMedium,
+              ),
+              Icon(
+                _isNutritionExpanded ? Icons.expand_less : Icons.expand_more,
+              ),
+            ],
+          ),
+        ),
+        AnimatedCrossFade(
+          firstChild: _buildNutritionInfo(recipe),
+          secondChild: Container(),
+          crossFadeState: _isNutritionExpanded
+              ? CrossFadeState.showFirst
+              : CrossFadeState.showSecond,
+          duration: Duration(milliseconds: 300),
+        ),
+      ],
+    );
+  }
+
   Widget _buildNutritionInfo(Recipe recipe) {
     var nutrition = recipe.nutrition;
 
@@ -250,10 +285,6 @@ class _RecipeDetailsScreenState extends State<RecipeDetailsScreen>
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           const SizedBox(height: 16),
-          Text(
-            'Nutritional Information',
-            style: Theme.of(context).textTheme.titleLarge,
-          ),
           Text(
             '(per serving)',
             style: Theme.of(context).textTheme.bodyMedium,
@@ -366,6 +397,68 @@ class _RecipeDetailsScreenState extends State<RecipeDetailsScreen>
     );
   }
 
+  Widget _buildIngredientsSection(Recipe recipe) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        InkWell(
+          onTap: _toggleIngredients,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                'Ingredients',
+                style: Theme.of(context).textTheme.titleMedium,
+              ),
+              Icon(
+                _isIngredientsExpanded ? Icons.expand_less : Icons.expand_more,
+              ),
+            ],
+          ),
+        ),
+        AnimatedCrossFade(
+          firstChild: _buildIngredients(recipe),
+          secondChild: Container(),
+          crossFadeState: _isIngredientsExpanded
+              ? CrossFadeState.showFirst
+              : CrossFadeState.showSecond,
+          duration: Duration(milliseconds: 300),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildDirectionsSection(Recipe recipe) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        InkWell(
+          onTap: _toggleDirections,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                'Directions',
+                style: Theme.of(context).textTheme.titleMedium,
+              ),
+              Icon(
+                _isDirectionsExpanded ? Icons.expand_less : Icons.expand_more,
+              ),
+            ],
+          ),
+        ),
+        AnimatedCrossFade(
+          firstChild: _buildDirections(recipe),
+          secondChild: Container(),
+          crossFadeState: _isDirectionsExpanded
+              ? CrossFadeState.showFirst
+              : CrossFadeState.showSecond,
+          duration: Duration(milliseconds: 300),
+        ),
+      ],
+    );
+  }
+
   Widget _buildIngredients(Recipe recipe) {
     var ingredients = recipe.ingredientList!.ingredients;
 
@@ -376,8 +469,6 @@ class _RecipeDetailsScreenState extends State<RecipeDetailsScreen>
         : Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text('Ingredients',
-                  style: Theme.of(context).textTheme.titleMedium),
               for (var ingredient in ingredients)
                 Padding(
                   padding: EdgeInsets.all(2.0),
@@ -392,7 +483,6 @@ class _RecipeDetailsScreenState extends State<RecipeDetailsScreen>
   Widget _buildDirections(Recipe recipe) {
     var directions = recipe.directionList!.directions;
 
-    // Sort directions by the ordinal property
     directions.sort((a, b) => a.ordinal!.compareTo(b.ordinal!));
 
     return directions.isEmpty
@@ -400,8 +490,6 @@ class _RecipeDetailsScreenState extends State<RecipeDetailsScreen>
         : Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text('Directions',
-                  style: Theme.of(context).textTheme.titleMedium),
               for (var i = 0; i < directions.length; i++)
                 Text(
                   '${i + 1}. ${directions[i].directionText}',
@@ -420,5 +508,24 @@ class _RecipeDetailsScreenState extends State<RecipeDetailsScreen>
         (previousValue, element) => previousValue + (element.ratingValue ?? 0));
 
     return sum / list.length;
+  }
+
+  
+  void _toggleIngredients() {
+    setState(() {
+      _isIngredientsExpanded = !_isIngredientsExpanded;
+    });
+  }
+
+  void _toggleDirections() {
+    setState(() {
+      _isDirectionsExpanded = !_isDirectionsExpanded;
+    });
+  }
+
+  void _toggleNutrition() {
+    setState(() {
+      _isNutritionExpanded = !_isNutritionExpanded;
+    });
   }
 }
