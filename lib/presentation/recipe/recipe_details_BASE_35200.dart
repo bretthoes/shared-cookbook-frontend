@@ -18,6 +18,7 @@ class RecipeDetailsScreen extends StatefulWidget {
 
 class _RecipeDetailsScreenState extends State<RecipeDetailsScreen>
     with SingleTickerProviderStateMixin {
+  //stores:---------------------------------------------------------------------
   final RecipeStore _recipeStore = getIt<RecipeStore>();
 
   var _searchController = TextEditingController();
@@ -38,6 +39,7 @@ class _RecipeDetailsScreenState extends State<RecipeDetailsScreen>
   void didChangeDependencies() {
     super.didChangeDependencies();
 
+    // check to see if already called api
     var recipeId = widget.recipe.recipeId ?? 0;
     if (!_recipeStore.loading) {
       if (recipeId > 0) {
@@ -80,6 +82,13 @@ class _RecipeDetailsScreenState extends State<RecipeDetailsScreen>
             ],
           ),
         ],
+        // bottom: TabBar(
+        //   controller: _tabController,
+        //   tabs: [
+        //     Tab(text: 'Recipe'),
+        //     Tab(text: 'Comments'),
+        //   ],
+        // ),
       ),
       body: _buildBody(),
     );
@@ -165,27 +174,11 @@ class _RecipeDetailsScreenState extends State<RecipeDetailsScreen>
             const SizedBox(height: 4.0),
             _buildTimeRow(recipe),
             const SizedBox(height: 12.0),
-            _buildExpandableSection(
-              title: 'Ingredients',
-              icon: Icons.kitchen_outlined,
-              isExpanded: _isIngredientsExpanded,
-              onTap: _toggleIngredients,
-              child: _buildIngredients(recipe),
-            ),
-            _buildExpandableSection(
-              title: 'Directions',
-              icon: Icons.map_outlined,
-              isExpanded: _isDirectionsExpanded,
-              onTap: _toggleDirections,
-              child: _buildDirections(recipe),
-            ),
-            _buildExpandableSection(
-              title: 'Nutrition Info',
-              icon: Icons.fastfood_outlined,
-              isExpanded: _isNutritionExpanded,
-              onTap: _toggleNutrition,
-              child: _buildNutritionInfo(recipe),
-            ),
+            _buildIngredientsSection(recipe),
+            const SizedBox(height: 12.0),
+            _buildDirectionsSection(recipe),
+            const SizedBox(height: 12.0),
+            _buildNutritionInfoSection(recipe),
             const SizedBox(height: 32.0),
           ],
         ),
@@ -205,7 +198,8 @@ class _RecipeDetailsScreenState extends State<RecipeDetailsScreen>
               itemBuilder: (context, index) {
                 return ListTile(
                   title: Text(comments[index].commentText ?? ''),
-                  subtitle: Text('Anonymous'),
+                  subtitle:
+                      Text('Anonymous'), // TODO get commenter name with request
                 );
               },
             ),
@@ -228,6 +222,11 @@ class _RecipeDetailsScreenState extends State<RecipeDetailsScreen>
                   onPressed: () {
                     if (_commentController.text.isNotEmpty) {
                       setState(() {
+                        // TODO post request to add comment, update list
+                        // comments.add(Comment(
+                        //   commentText: _commentController.text,
+                        //   commenterName: 'You',
+                        // ));
                         _commentController.clear();
                       });
                     }
@@ -241,58 +240,34 @@ class _RecipeDetailsScreenState extends State<RecipeDetailsScreen>
     );
   }
 
-  Widget _buildExpandableSection({
-    required String title,
-    required IconData icon,
-    required bool isExpanded,
-    required VoidCallback onTap,
-    required Widget child,
-  }) {
-    return Container(
-      padding: EdgeInsets.all(8.0),
-      margin: EdgeInsets.symmetric(vertical: 4.0),
-      decoration: BoxDecoration(
-        border: Border.all(color: Colors.grey.withOpacity(0.5)),
-        borderRadius: BorderRadius.circular(8.0),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          InkWell(
-            onTap: onTap,
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Row(
-                    children: [
-                      Icon(icon),
-                      SizedBox(width: 8.0),
-                      Text(
-                        title,
-                        style: Theme.of(context).textTheme.titleMedium,
-                      ),
-                    ],
-                  ),
-                  Icon(isExpanded ? Icons.expand_less : Icons.expand_more),
-                ],
+  Widget _buildNutritionInfoSection(Recipe recipe) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        InkWell(
+          onTap: _toggleNutrition,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                'Nutrition Info',
+                style: Theme.of(context).textTheme.titleMedium,
               ),
-            ),
+              Icon(
+                _isNutritionExpanded ? Icons.expand_less : Icons.expand_more,
+              ),
+            ],
           ),
-          AnimatedCrossFade(
-            firstChild: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: child,
-            ),
-            secondChild: Container(),
-            crossFadeState: isExpanded
-                ? CrossFadeState.showFirst
-                : CrossFadeState.showSecond,
-            duration: Duration(milliseconds: 300),
-          ),
-        ],
-      ),
+        ),
+        AnimatedCrossFade(
+          firstChild: _buildNutritionInfo(recipe),
+          secondChild: Container(),
+          crossFadeState: _isNutritionExpanded
+              ? CrossFadeState.showFirst
+              : CrossFadeState.showSecond,
+          duration: Duration(milliseconds: 300),
+        ),
+      ],
     );
   }
 
@@ -343,55 +318,6 @@ class _RecipeDetailsScreenState extends State<RecipeDetailsScreen>
         ],
       ),
     );
-  }
-
-  Widget _buildIngredients(Recipe recipe) {
-    var ingredients = recipe.ingredientList!.ingredients;
-
-    ingredients.sort((a, b) => a.ordinal!.compareTo(b.ordinal!));
-
-    return ingredients.isEmpty
-        ? Center(child: Text('No ingredients available.'))
-        : Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              for (var ingredient in ingredients)
-                Padding(
-                  padding: EdgeInsets.all(2.0),
-                  child: Text('• ${ingredient.ingredientName}'),
-                )
-            ],
-          );
-  }
-
-  Widget _buildDirections(Recipe recipe) {
-    var directions = recipe.directionList!.directions;
-
-    directions.sort((a, b) => a.ordinal!.compareTo(b.ordinal!));
-
-    return directions.isEmpty
-        ? Center(child: Text('No directions available.'))
-        : Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              for (var i = 0; i < directions.length; i++)
-                Text(
-                  '${i + 1}. ${directions[i].directionText}',
-                  style: TextStyle(),
-                ),
-            ],
-          );
-  }
-
-  double _calculateAverageRating(List<Rating>? list) {
-    if (list == null || list.isEmpty) {
-      return 0.0;
-    }
-
-    int sum = list.fold(0,
-        (previousValue, element) => previousValue + (element.ratingValue ?? 0));
-
-    return sum / list.length;
   }
 
   Widget _buildStars(Recipe recipe) {
@@ -471,6 +397,120 @@ class _RecipeDetailsScreenState extends State<RecipeDetailsScreen>
     );
   }
 
+  Widget _buildIngredientsSection(Recipe recipe) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        InkWell(
+          onTap: _toggleIngredients,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                'Ingredients',
+                style: Theme.of(context).textTheme.titleMedium,
+              ),
+              Icon(
+                _isIngredientsExpanded ? Icons.expand_less : Icons.expand_more,
+              ),
+            ],
+          ),
+        ),
+        AnimatedCrossFade(
+          firstChild: _buildIngredients(recipe),
+          secondChild: Container(),
+          crossFadeState: _isIngredientsExpanded
+              ? CrossFadeState.showFirst
+              : CrossFadeState.showSecond,
+          duration: Duration(milliseconds: 300),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildDirectionsSection(Recipe recipe) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        InkWell(
+          onTap: _toggleDirections,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                'Directions',
+                style: Theme.of(context).textTheme.titleMedium,
+              ),
+              Icon(
+                _isDirectionsExpanded ? Icons.expand_less : Icons.expand_more,
+              ),
+            ],
+          ),
+        ),
+        AnimatedCrossFade(
+          firstChild: _buildDirections(recipe),
+          secondChild: Container(),
+          crossFadeState: _isDirectionsExpanded
+              ? CrossFadeState.showFirst
+              : CrossFadeState.showSecond,
+          duration: Duration(milliseconds: 300),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildIngredients(Recipe recipe) {
+    var ingredients = recipe.ingredientList!.ingredients;
+
+    ingredients.sort((a, b) => a.ordinal!.compareTo(b.ordinal!));
+
+    return ingredients.isEmpty
+        ? Center(child: Text('No ingredients available.'))
+        : Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              for (var ingredient in ingredients)
+                Padding(
+                  padding: EdgeInsets.all(2.0),
+                  child: Text(
+                    '• ${ingredient.ingredientName}',
+                  ),
+                )
+            ],
+          );
+  }
+
+  Widget _buildDirections(Recipe recipe) {
+    var directions = recipe.directionList!.directions;
+
+    directions.sort((a, b) => a.ordinal!.compareTo(b.ordinal!));
+
+    return directions.isEmpty
+        ? Center(child: Text('No directions available.'))
+        : Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              for (var i = 0; i < directions.length; i++)
+                Text(
+                  '${i + 1}. ${directions[i].directionText}',
+                  style: TextStyle(),
+                ),
+            ],
+          );
+  }
+
+  double _calculateAverageRating(List<Rating>? list) {
+    if (list == null || list.isEmpty) {
+      return 0.0;
+    }
+
+    int sum = list.fold(0,
+        (previousValue, element) => previousValue + (element.ratingValue ?? 0));
+
+    return sum / list.length;
+  }
+
+  
   void _toggleIngredients() {
     setState(() {
       _isIngredientsExpanded = !_isIngredientsExpanded;

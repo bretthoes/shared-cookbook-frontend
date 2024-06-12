@@ -242,59 +242,57 @@ class _RecipeDetailsScreenState extends State<RecipeDetailsScreen>
   }
 
   Widget _buildExpandableSection({
-    required String title,
-    required IconData icon,
-    required bool isExpanded,
-    required VoidCallback onTap,
-    required Widget child,
-  }) {
-    return Container(
-      padding: EdgeInsets.all(8.0),
-      margin: EdgeInsets.symmetric(vertical: 4.0),
-      decoration: BoxDecoration(
-        border: Border.all(color: Colors.grey.withOpacity(0.5)),
-        borderRadius: BorderRadius.circular(8.0),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          InkWell(
-            onTap: onTap,
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Row(
-                    children: [
-                      Icon(icon),
-                      SizedBox(width: 8.0),
-                      Text(
-                        title,
-                        style: Theme.of(context).textTheme.titleMedium,
-                      ),
-                    ],
-                  ),
-                  Icon(isExpanded ? Icons.expand_less : Icons.expand_more),
-                ],
-              ),
+  required String title,
+  required IconData icon,
+  required bool isExpanded,
+  required VoidCallback onTap,
+  required Widget child,
+}) {
+  return Container(
+    padding: EdgeInsets.all(8.0),
+    margin: EdgeInsets.symmetric(vertical: 4.0),
+    decoration: BoxDecoration(
+      border: Border.all(color: Colors.grey.withOpacity(0.5)),
+      borderRadius: BorderRadius.circular(8.0),
+    ),
+    child: Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        InkWell(
+          onTap: onTap,
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Row(
+                  children: [
+                    Icon(icon),
+                    SizedBox(width: 8.0),
+                    Text(
+                      title,
+                      style: Theme.of(context).textTheme.titleMedium,
+                    ),
+                  ],
+                ),
+                Icon(isExpanded ? Icons.expand_less : Icons.expand_more),
+              ],
             ),
           ),
-          AnimatedCrossFade(
-            firstChild: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: child,
-            ),
-            secondChild: Container(),
-            crossFadeState: isExpanded
-                ? CrossFadeState.showFirst
-                : CrossFadeState.showSecond,
-            duration: Duration(milliseconds: 300),
+        ),
+        AnimatedCrossFade(
+          firstChild: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: child,
           ),
-        ],
-      ),
-    );
-  }
+          secondChild: Container(),
+          crossFadeState: isExpanded ? CrossFadeState.showFirst : CrossFadeState.showSecond,
+          duration: Duration(milliseconds: 300),
+        ),
+      ],
+    ),
+  );
+}
 
   Widget _buildNutritionInfo(Recipe recipe) {
     var nutrition = recipe.nutrition;
