@@ -8,6 +8,8 @@ import 'package:boilerplate/domain/entity/ratings/ratings_list.dart';
 class Recipe {
   int? recipeId;
   int? cookbookId;
+  String? authorName;
+  String? authorImagePath;
   String? title;
   int? personId;
   String? summary;
@@ -27,6 +29,8 @@ class Recipe {
   Recipe({
     this.recipeId,
     this.cookbookId,
+    this.authorName,
+    this.authorImagePath,
     this.title,
     this.personId,
     this.summary,
@@ -47,6 +51,8 @@ class Recipe {
   factory Recipe.fromMap(Map<String, dynamic> json) => Recipe(
         recipeId: json["recipeId"],
         cookbookId: json["cookbookId"],
+        authorName: json["authorName"],
+        authorImagePath: json["authorImagePath"],
         title: json["title"],
         personId: json["personId"],
         summary: json["summary"],
@@ -79,6 +85,8 @@ class Recipe {
   Map<String, dynamic> toMap() => {
         "recipeId": recipeId,
         "cookbookId": cookbookId,
+        "authorName": authorName,
+        "authorImagePath": authorImagePath,
         "title": title,
         "personId": personId,
         "summary": summary,
