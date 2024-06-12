@@ -82,13 +82,6 @@ class _RecipeDetailsScreenState extends State<RecipeDetailsScreen>
             ],
           ),
         ],
-        // bottom: TabBar(
-        //   controller: _tabController,
-        //   tabs: [
-        //     Tab(text: 'Recipe'),
-        //     Tab(text: 'Comments'),
-        //   ],
-        // ),
       ),
       body: _buildBody(),
     );
@@ -101,27 +94,20 @@ class _RecipeDetailsScreenState extends State<RecipeDetailsScreen>
             _recipeStore.recipeList.recipes[_recipeStore.selectedRecipeIndex];
         return _recipeStore.loading
             ? CustomProgressIndicatorWidget()
-            : TabBarView(
-                controller: _tabController,
-                children: [
-                  _buildDetailsTab(recipe),
-                  _buildCommentsTab(recipe),
-                ],
-              );
+            : _buildDetailsColumn(recipe);
       },
     );
   }
 
-  Widget _buildDetailsTab(Recipe recipe) {
+  Widget _buildDetailsColumn(Recipe recipe) {
     return Material(
       child: SingleChildScrollView(
-        padding: const EdgeInsets.symmetric(horizontal: 8.0),
+        padding: const EdgeInsets.symmetric(horizontal: 6.0),
         child: Column(
           mainAxisSize: MainAxisSize.max,
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            const SizedBox(height: 16),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -179,6 +165,8 @@ class _RecipeDetailsScreenState extends State<RecipeDetailsScreen>
             _buildDirectionsSection(recipe),
             const SizedBox(height: 12.0),
             _buildNutritionInfoSection(recipe),
+            const SizedBox(height: 12.0),
+            _buildReviewSection(recipe),
             const SizedBox(height: 32.0),
           ],
         ),
@@ -186,57 +174,55 @@ class _RecipeDetailsScreenState extends State<RecipeDetailsScreen>
     );
   }
 
-  Widget _buildCommentsTab(Recipe recipe) {
+  Widget _buildReviewSection(Recipe recipe) {
     var comments = recipe.commentList?.comments ?? [];
 
-    return Material(
-      child: Column(
-        children: <Widget>[
-          Expanded(
-            child: ListView.builder(
-              itemCount: comments.length,
-              itemBuilder: (context, index) {
-                return ListTile(
-                  title: Text(comments[index].commentText ?? ''),
-                  subtitle:
-                      Text('Anonymous'), // TODO get commenter name with request
-                );
-              },
-            ),
+    return Column(
+      children: <Widget>[
+        Expanded(
+          child: ListView.builder(
+            itemCount: comments.length,
+            itemBuilder: (context, index) {
+              return ListTile(
+                title: Text(comments[index].commentText ?? ''),
+                subtitle:
+                    Text('Anonymous'), // TODO get commenter name with request
+              );
+            },
           ),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Row(
-              children: <Widget>[
-                Expanded(
-                  child: TextField(
-                    controller: _commentController,
-                    decoration: InputDecoration(
-                      labelText: 'Add a comment',
-                      border: OutlineInputBorder(),
-                    ),
+        ),
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Row(
+            children: <Widget>[
+              Expanded(
+                child: TextField(
+                  controller: _commentController,
+                  decoration: InputDecoration(
+                    labelText: 'Add a comment',
+                    border: OutlineInputBorder(),
                   ),
                 ),
-                IconButton(
-                  icon: Icon(Icons.send),
-                  onPressed: () {
-                    if (_commentController.text.isNotEmpty) {
-                      setState(() {
-                        // TODO post request to add comment, update list
-                        // comments.add(Comment(
-                        //   commentText: _commentController.text,
-                        //   commenterName: 'You',
-                        // ));
-                        _commentController.clear();
-                      });
-                    }
-                  },
-                ),
-              ],
-            ),
+              ),
+              IconButton(
+                icon: Icon(Icons.send),
+                onPressed: () {
+                  if (_commentController.text.isNotEmpty) {
+                    setState(() {
+                      // TODO post request to add comment, update list
+                      // comments.add(Comment(
+                      //   commentText: _commentController.text,
+                      //   commenterName: 'You',
+                      // ));
+                      _commentController.clear();
+                    });
+                  }
+                },
+              ),
+            ],
           ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 
@@ -284,7 +270,6 @@ class _RecipeDetailsScreenState extends State<RecipeDetailsScreen>
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          const SizedBox(height: 16),
           Text(
             '(per serving)',
             style: Theme.of(context).textTheme.bodyMedium,
@@ -510,7 +495,6 @@ class _RecipeDetailsScreenState extends State<RecipeDetailsScreen>
     return sum / list.length;
   }
 
-  
   void _toggleIngredients() {
     setState(() {
       _isIngredientsExpanded = !_isIngredientsExpanded;
