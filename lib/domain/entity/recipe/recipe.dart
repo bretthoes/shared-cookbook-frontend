@@ -1,4 +1,4 @@
-import 'package:boilerplate/domain/entity/Direction/direction_list.dart';
+import 'package:boilerplate/domain/entity/direction/direction_list.dart';
 import 'package:boilerplate/domain/entity/comment/comment_list.dart';
 import 'package:boilerplate/domain/entity/ingredient/ingredient_list.dart';
 import 'package:boilerplate/domain/entity/ingredient_category/ingredient_category_list.dart';
