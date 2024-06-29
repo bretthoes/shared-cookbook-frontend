@@ -2,12 +2,9 @@ import 'package:boilerplate/core/widgets/progress_indicator_widget.dart';
 import 'package:boilerplate/di/service_locator.dart';
 import 'package:boilerplate/domain/entity/cookbook/cookbook.dart';
 import 'package:boilerplate/domain/entity/recipe/recipe.dart';
-import 'package:boilerplate/presentation/home/store/theme/theme_store.dart';
-import 'package:boilerplate/presentation/login/store/person_store.dart';
 import 'package:boilerplate/presentation/recipe/recipe_details.dart';
 import 'package:boilerplate/presentation/recipe/store/recipe_store.dart';
 import 'package:boilerplate/utils/images.dart';
-import 'package:boilerplate/utils/locale/app_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 
@@ -21,9 +18,7 @@ class CookbookDetailsScreen extends StatefulWidget {
 
 class _CookbookDetailsScreenState extends State<CookbookDetailsScreen> {
   //stores:---------------------------------------------------------------------
-  final PersonStore _personStore = getIt<PersonStore>();
   final RecipeStore _recipeStore = getIt<RecipeStore>();
-  final ThemeStore _themeStore = getIt<ThemeStore>();
 
   TextEditingController _searchController = TextEditingController();
   List<Recipe> _filteredRecipes = [];

@@ -10,7 +10,7 @@ description: A flutter boilerplate project created using MobX and Provider.
 version: 1.0.0+1
 
 environment:
-  sdk: '>=3.0.6 <4.0.0'
+  sdk: '>=3.4.3 <4.0.0'
   
 dependencies:
   flutter:
