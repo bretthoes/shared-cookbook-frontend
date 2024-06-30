@@ -57,8 +57,11 @@ class AppThemeData {
       ),
       elevatedButtonTheme: ElevatedButtonThemeData(
         style: ElevatedButton.styleFrom(
-          shape:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(2.0)),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(2.0),
+          ),
+          backgroundColor: colorScheme.onSurface,
+          foregroundColor: colorScheme.primary,
           minimumSize: Size(double.infinity, 60),
           textStyle: _textTheme.labelLarge,
         ),
