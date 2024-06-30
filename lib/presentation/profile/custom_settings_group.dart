@@ -1,7 +1,7 @@
 import 'package:boilerplate/di/service_locator.dart';
 import 'package:boilerplate/presentation/home/store/theme/theme_store.dart';
+import 'package:boilerplate/presentation/profile/settings_group.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_settings_screen_ex/flutter_settings_screen_ex.dart';
 
 class CustomSettingsGroup extends StatelessWidget {
   final String title;

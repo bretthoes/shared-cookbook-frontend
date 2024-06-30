@@ -5,12 +5,12 @@ import 'package:boilerplate/presentation/home/store/theme/theme_store.dart';
 import 'package:boilerplate/presentation/login/store/person_store.dart';
 import 'package:boilerplate/presentation/profile/custom_settings_group.dart';
 import 'package:boilerplate/presentation/profile/edit_profile.dart';
+import 'package:boilerplate/presentation/profile/simpe_settings_tile.dart';
 import 'package:boilerplate/utils/locale/app_localization.dart';
 import 'package:boilerplate/utils/routes/routes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
-import 'package:flutter_settings_screen_ex/flutter_settings_screen_ex.dart';
-import 'package:material_dialog/material_dialog.dart';
+//import 'package:material_dialog/material_dialog.dart';
 
 class ProfileScreen extends StatefulWidget {
   @override
@@ -132,58 +132,58 @@ class _ProfileScreenState extends State<ProfileScreen> {
       title: AppLocalizations.of(context).translate('language'),
       leading: Icon(Icons.language),
       onTap: () {
-        _buildLanguageDialog();
+        //_buildLanguageDialog();
       },
     );
   }
 
-  _buildLanguageDialog() {
-    _showDialog<String>(
-      context: context,
-      child: MaterialDialog(
-        borderRadius: 5.0,
-        enableFullWidth: true,
-        title: Text(
-          AppLocalizations.of(context).translate('choose_language'),
-          style: TextStyle(
-            color: Colors.white,
-            fontSize: 16.0,
-          ),
-        ),
-        headerColor: Theme.of(context).primaryColor,
-        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-        closeButtonColor: Colors.white,
-        enableCloseButton: true,
-        enableBackButton: false,
-        onCloseButtonClicked: () {
-          Navigator.of(context).pop();
-        },
-        children: _languageStore.supportedLanguages
-            .map(
-              (object) => ListTile(
-                dense: true,
-                contentPadding: EdgeInsets.all(0.0),
-                title: Text(
-                  object.language,
-                  style: TextStyle(
-                    color: _languageStore.locale == object.locale
-                        ? Theme.of(context).primaryColor
-                        : _themeStore.darkMode
-                            ? Colors.white
-                            : Colors.black,
-                  ),
-                ),
-                onTap: () {
-                  Navigator.of(context).pop();
-                  // change user language based on selected locale
-                  _languageStore.changeLanguage(object.locale);
-                },
-              ),
-            )
-            .toList(),
-      ),
-    );
-  }
+  // _buildLanguageDialog() {
+  //   _showDialog<String>(
+  //     context: context,
+  //     child: MaterialDialog(
+  //       borderRadius: 5.0,
+  //       enableFullWidth: true,
+  //       title: Text(
+  //         AppLocalizations.of(context).translate('choose_language'),
+  //         style: TextStyle(
+  //           color: Colors.white,
+  //           fontSize: 16.0,
+  //         ),
+  //       ),
+  //       headerColor: Theme.of(context).primaryColor,
+  //       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+  //       closeButtonColor: Colors.white,
+  //       enableCloseButton: true,
+  //       enableBackButton: false,
+  //       onCloseButtonClicked: () {
+  //         Navigator.of(context).pop();
+  //       },
+  //       children: _languageStore.supportedLanguages
+  //           .map(
+  //             (object) => ListTile(
+  //               dense: true,
+  //               contentPadding: EdgeInsets.all(0.0),
+  //               title: Text(
+  //                 object.language,
+  //                 style: TextStyle(
+  //                   color: _languageStore.locale == object.locale
+  //                       ? Theme.of(context).primaryColor
+  //                       : _themeStore.darkMode
+  //                           ? Colors.white
+  //                           : Colors.black,
+  //                 ),
+  //               ),
+  //               onTap: () {
+  //                 Navigator.of(context).pop();
+  //                 // change user language based on selected locale
+  //                 _languageStore.changeLanguage(object.locale);
+  //               },
+  //             ),
+  //           )
+  //           .toList(),
+  //     ),
+  //   );
+  // }
 
   _showDialog<T>({required BuildContext context, required Widget child}) {
     showDialog<T>(

@@ -31,7 +31,7 @@ dependencies:
   event_bus: ^2.0.0
   # F
   flutter_mobx: ^2.0.6+5
-  flutter_settings_screen_ex: ^0.0.1+5
+  # flutter_settings_screen_ex: ^0.0.1+5
   # G
   get_it: ^7.2.0
   google_fonts: ^6.1.0
@@ -44,7 +44,7 @@ dependencies:
   # K
   # L
   # M
-  material_dialog: ^1.0.0-nullsafety.1
+  # material_dialog: ^1.0.0-nullsafety.1
   mobx: ^2.1.4
   # N
   # O

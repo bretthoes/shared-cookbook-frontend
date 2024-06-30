@@ -90,7 +90,7 @@ class AppThemeData {
     primaryContainer: Colors.red,
     secondary: Color(0xFFE6E4BF),
     secondaryContainer: Colors.blue,
-    surface: Color(0xFF10382D),
+    surface: Color(0xFFFFF2E6),
     error: _lightFillColor,
     onError: _lightFillColor,
     onPrimary: _lightFillColor,
