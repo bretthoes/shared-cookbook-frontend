@@ -128,11 +128,13 @@ class _AddCookbookScreenState extends State<AddCookbookScreen> {
 
   Widget _buildCookbookPreview() {
     return ClipRRect(
+      borderRadius: BorderRadius.circular(2.0),
       child: Observer(
         builder: (context) {
-          return Image.asset(
-            _cookbookStore.newCover,
-            fit: BoxFit.cover,
+          return Container(
+            width: 180.0,
+            height: 260.0,
+            child: Images.getCoverImage(_cookbookStore.newCover),
           );
         },
       ),

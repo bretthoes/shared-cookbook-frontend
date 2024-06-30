@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'package:boilerplate/core/extensions/string_extension.dart';
 import 'package:flutter/material.dart';
 
@@ -19,11 +20,20 @@ class Images {
 
   static getCoverImage(String imagePath) {
     if (imagePath.isNullOrWhitespace) {
+      // TODO change to default error image, log error when this happens
       return Image.asset(
         'assets/images/covers/default-cover.png',
         fit: BoxFit.cover,
       );
     }
+
+    if (imagePath.contains('data')) {
+      return Image.file(
+        File(imagePath),
+        fit: BoxFit.cover,
+      );
+    }
+
     // TODO handle case where network image is valid url, but not found in server
     if (imagePath.startsWith('http')) {
       return Image.network(
