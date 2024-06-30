@@ -44,7 +44,6 @@ dependencies:
   # K
   # L
   # M
-  # material_dialog: ^1.0.0-nullsafety.1
   mobx: ^2.1.4
   # N
   # O
