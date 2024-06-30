@@ -132,8 +132,8 @@ class _AddCookbookScreenState extends State<AddCookbookScreen> {
       child: Observer(
         builder: (context) {
           return Container(
-            width: 180.0,
-            height: 260.0,
+            width: 160.0,
+            height: 225.0,
             child: Images.getCoverImage(_cookbookStore.newCover),
           );
         },
