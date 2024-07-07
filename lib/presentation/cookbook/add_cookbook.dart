@@ -1,8 +1,8 @@
+import 'dart:io';
 import 'package:another_flushbar/flushbar_helper.dart';
 import 'package:boilerplate/core/widgets/back_button_app_bar_widget.dart';
 import 'package:boilerplate/presentation/login/store/person_store.dart';
 import 'package:boilerplate/utils/device/device_utils.dart';
-import 'package:boilerplate/utils/images.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:boilerplate/core/widgets/textfield_widget.dart';
@@ -19,6 +19,19 @@ class AddCookbookScreen extends StatefulWidget {
 }
 
 class _AddCookbookScreenState extends State<AddCookbookScreen> {
+  static const staticCoverImages = [
+    'assets/images/covers/beige-orange-corners.png',
+    'assets/images/covers/blue-pink-stripes.png',
+    'assets/images/covers/blue-purple-stripes.png',
+    'assets/images/covers/blue-yellow-stripes.png',
+    'assets/images/covers/green-yellow-stripes.png',
+    'assets/images/covers/light-green-purple-stripes.png',
+    'assets/images/covers/light-green-purple-white-stripes.png',
+    'assets/images/covers/orange-white-stripes.png',
+    'assets/images/covers/purple-brown-corners.png',
+    'assets/images/covers/yellow-green-stripes.png',
+  ];
+
   //stores:---------------------------------------------------------------------
   final CookbookStore _cookbookStore = getIt<CookbookStore>();
   final ThemeStore _themeStore = getIt<ThemeStore>();
@@ -28,7 +41,7 @@ class _AddCookbookScreenState extends State<AddCookbookScreen> {
 
   @override
   void initState() {
-    _cookbookStore.setCover(Images.coverImages[0]);
+    _cookbookStore.setCover(staticCoverImages[0]);
     _cookbookStore.cookbookErrorStore.resetError();
     super.initState();
   }
@@ -74,7 +87,7 @@ class _AddCookbookScreenState extends State<AddCookbookScreen> {
             enableInfiniteScroll: false,
             initialPage: 2,
           ),
-          items: Images.coverImages.map((i) {
+          items: staticCoverImages.map((i) {
             return _buildListItem(i);
           }).toList(),
         ),
@@ -134,7 +147,7 @@ class _AddCookbookScreenState extends State<AddCookbookScreen> {
           return Container(
             width: 160.0,
             height: 225.0,
-            child: Images.getCoverImage(_cookbookStore.newCover),
+            child: _getCoverPreviewImage(_cookbookStore.newCover),
           );
         },
       ),
@@ -150,7 +163,10 @@ class _AddCookbookScreenState extends State<AddCookbookScreen> {
         children: [
           Expanded(
             child: ClipRRect(
-              child: Images.getCoverImage(fileName),
+              child: Image.asset(
+                fileName,
+                fit: BoxFit.cover,
+              ),
             ),
           ),
         ],
@@ -224,8 +240,21 @@ class _AddCookbookScreenState extends State<AddCookbookScreen> {
     }
   }
 
-  Color _getThemeColor() {
+  _getThemeColor() {
     return _themeStore.darkMode ? Colors.white70 : Colors.black54;
+  }
+
+  _getCoverPreviewImage(String image) {
+    if (image.contains('data')) {
+      return Image.file(
+        File(image),
+        fit: BoxFit.cover,
+      );
+    }
+    return Image.asset(
+      image,
+      fit: BoxFit.cover,
+    );
   }
 
   // dispose:-------------------------------------------------------------------
