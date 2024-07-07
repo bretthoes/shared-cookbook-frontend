@@ -8,6 +8,7 @@ import 'package:boilerplate/presentation/cookbook/cookbook_details.dart';
 import 'package:boilerplate/presentation/cookbook/store/cookbook_store.dart';
 import 'package:boilerplate/presentation/login/store/person_store.dart';
 import 'package:boilerplate/utils/locale/app_localization.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:carousel_slider/carousel_slider.dart';
@@ -162,10 +163,11 @@ class _CookbookListScreenState extends State<CookbookListScreen> {
     if (image.split('.').first.isGuid) {
       var bucketName = Strings.bucketName;
       var region = Strings.region;
-      final imageUrl = 'https://$bucketName.s3.$region.amazonaws.com/$image';
-      return Image.network(
-        imageUrl,
+      return CachedNetworkImage(
+        imageUrl: 'https://$bucketName.s3.$region.amazonaws.com/$image',
         fit: BoxFit.cover,
+        placeholder: (context, url) => CircularProgressIndicator(),
+        errorWidget: (context, url, error) => Icon(Icons.error),
       );
     }
 

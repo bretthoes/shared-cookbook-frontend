@@ -6,6 +6,7 @@ import 'package:boilerplate/domain/entity/cookbook/cookbook.dart';
 import 'package:boilerplate/domain/entity/recipe/recipe.dart';
 import 'package:boilerplate/presentation/recipe/recipe_details.dart';
 import 'package:boilerplate/presentation/recipe/store/recipe_store.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 
@@ -258,9 +259,14 @@ class _CookbookDetailsScreenState extends State<CookbookDetailsScreen> {
     if (image.split('.').first.isGuid) {
       var bucketName = Strings.bucketName;
       var region = Strings.region;
-      final imageUrl = 'https://$bucketName.s3.$region.amazonaws.com/$image';
-      return Image.network(imageUrl,
-          fit: BoxFit.cover, width: 80, height: double.infinity);
+      return CachedNetworkImage(
+        imageUrl: 'https://$bucketName.s3.$region.amazonaws.com/$image',
+        fit: BoxFit.cover,
+        width: 80,
+        height: double.infinity,
+        placeholder: (context, url) => CircularProgressIndicator(),
+        errorWidget: (context, url, error) => Icon(Icons.error),
+      );
     }
 
     return Image.asset(image,
