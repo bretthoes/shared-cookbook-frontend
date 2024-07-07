@@ -1,3 +1,5 @@
+import 'package:boilerplate/constants/strings.dart';
+import 'package:boilerplate/core/extensions/string_extension.dart';
 import 'package:boilerplate/core/widgets/progress_indicator_widget.dart';
 import 'package:boilerplate/di/service_locator.dart';
 import 'package:boilerplate/domain/entity/cookbook/cookbook.dart';
@@ -5,7 +7,6 @@ import 'package:boilerplate/presentation/cookbook/add_cookbook.dart';
 import 'package:boilerplate/presentation/cookbook/cookbook_details.dart';
 import 'package:boilerplate/presentation/cookbook/store/cookbook_store.dart';
 import 'package:boilerplate/presentation/login/store/person_store.dart';
-import 'package:boilerplate/utils/images.dart';
 import 'package:boilerplate/utils/locale/app_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
@@ -112,7 +113,7 @@ class _CookbookListScreenState extends State<CookbookListScreen> {
           Expanded(
             child: ClipRRect(
               borderRadius: BorderRadius.circular(10.0),
-              child: Images.getCoverImage(cookbook.imagePath ?? ''),
+              child: _getCoverImage(cookbook.imagePath ?? ''),
             ),
           ),
           SizedBox(height: 8),
@@ -146,6 +147,31 @@ class _CookbookListScreenState extends State<CookbookListScreen> {
           ),
         ),
       ),
+    );
+  }
+
+  _getCoverImage(String image) {
+    if (image.isNullOrWhitespace) {
+      // TODO change to default error image, log error when this happens
+      return Image.asset(
+        'assets/images/covers/default-cover.png',
+        fit: BoxFit.cover,
+      );
+    }
+
+    if (image.split('.').first.isGuid) {
+      var bucketName = Strings.bucketName;
+      var region = Strings.region;
+      final imageUrl = 'https://$bucketName.s3.$region.amazonaws.com/$image';
+      return Image.network(
+        imageUrl,
+        fit: BoxFit.cover,
+      );
+    }
+
+    return Image.asset(
+      image,
+      fit: BoxFit.cover,
     );
   }
 }

@@ -1,10 +1,11 @@
+import 'package:boilerplate/constants/strings.dart';
+import 'package:boilerplate/core/extensions/string_extension.dart';
 import 'package:boilerplate/core/widgets/progress_indicator_widget.dart';
 import 'package:boilerplate/di/service_locator.dart';
 import 'package:boilerplate/domain/entity/cookbook/cookbook.dart';
 import 'package:boilerplate/domain/entity/recipe/recipe.dart';
 import 'package:boilerplate/presentation/recipe/recipe_details.dart';
 import 'package:boilerplate/presentation/recipe/store/recipe_store.dart';
-import 'package:boilerplate/utils/images.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 
@@ -198,7 +199,7 @@ class _CookbookDetailsScreenState extends State<CookbookDetailsScreen> {
 
   Widget _buildRecipeItem(Recipe recipe, int index) {
     return ListTile(
-      leading: Images.getRecipePreviewImage(recipe.imagePath ?? ''),
+      leading: _getRecipePreviewImage(recipe.imagePath ?? ''),
       trailing: GestureDetector(
         child: Icon(Icons.favorite_border),
         onTap: () {
@@ -243,5 +244,26 @@ class _CookbookDetailsScreenState extends State<CookbookDetailsScreen> {
         (recipe.cookingTimeInMinutes ?? 0) +
         (recipe.preparationTimeInMinutes ?? 0);
     return totalTime > 0 ? '${totalTime} mins' : "Not set";
+  }
+
+  _getRecipePreviewImage(String image) {
+    if (image.isNullOrWhitespace) {
+      // TODO change to default error image, log error when this happens
+      return Image.asset(
+        'assets/images/covers/default-cover.png',
+        fit: BoxFit.cover,
+      );
+    }
+
+    if (image.split('.').first.isGuid) {
+      var bucketName = Strings.bucketName;
+      var region = Strings.region;
+      final imageUrl = 'https://$bucketName.s3.$region.amazonaws.com/$image';
+      return Image.network(imageUrl,
+          fit: BoxFit.cover, width: 80, height: double.infinity);
+    }
+
+    return Image.asset(image,
+        fit: BoxFit.cover, width: 80, height: double.infinity);
   }
 }
