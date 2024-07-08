@@ -160,20 +160,17 @@ class _CookbookListScreenState extends State<CookbookListScreen> {
       );
     }
 
-    if (image.split('.').first.isGuid) {
-      var bucketName = Strings.bucketName;
-      var region = Strings.region;
-      return CachedNetworkImage(
-        imageUrl: 'https://$bucketName.s3.$region.amazonaws.com/$image',
-        fit: BoxFit.cover,
-        placeholder: (context, url) => CircularProgressIndicator(),
-        errorWidget: (context, url, error) => Icon(Icons.error),
-      );
+    if (image.contains('assets')) {
+      return Image.asset(image, fit: BoxFit.cover);
     }
 
-    return Image.asset(
-      image,
+    var bucketName = Strings.bucketName;
+    var region = Strings.region;
+    return CachedNetworkImage(
+      imageUrl: 'https://$bucketName.s3.$region.amazonaws.com/$image',
       fit: BoxFit.cover,
+      placeholder: (context, url) => CircularProgressIndicator(),
+      errorWidget: (context, url, error) => Icon(Icons.error),
     );
   }
 }

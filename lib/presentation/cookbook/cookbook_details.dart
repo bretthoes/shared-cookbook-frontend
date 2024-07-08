@@ -256,20 +256,20 @@ class _CookbookDetailsScreenState extends State<CookbookDetailsScreen> {
       );
     }
 
-    if (image.split('.').first.isGuid) {
-      var bucketName = Strings.bucketName;
-      var region = Strings.region;
-      return CachedNetworkImage(
-        imageUrl: 'https://$bucketName.s3.$region.amazonaws.com/$image',
-        fit: BoxFit.cover,
-        width: 80,
-        height: double.infinity,
-        placeholder: (context, url) => CircularProgressIndicator(),
-        errorWidget: (context, url, error) => Icon(Icons.error),
-      );
+    if (image.contains('asset')) {
+      return Image.asset(image,
+          fit: BoxFit.cover, width: 80, height: double.infinity);
     }
 
-    return Image.asset(image,
-        fit: BoxFit.cover, width: 80, height: double.infinity);
+    var bucketName = Strings.bucketName;
+    var region = Strings.region;
+    return CachedNetworkImage(
+      imageUrl: 'https://$bucketName.s3.$region.amazonaws.com/$image',
+      fit: BoxFit.cover,
+      width: 80,
+      height: double.infinity,
+      placeholder: (context, url) => CircularProgressIndicator(),
+      errorWidget: (context, url, error) => Icon(Icons.error),
+    );
   }
 }

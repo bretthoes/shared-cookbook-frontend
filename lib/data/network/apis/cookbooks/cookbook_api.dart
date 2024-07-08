@@ -1,10 +1,10 @@
 import 'dart:async';
-import 'dart:io';
 import 'package:boilerplate/core/data/network/dio/dio_client.dart';
 import 'package:boilerplate/data/network/constants/endpoints.dart';
 import 'package:boilerplate/domain/entity/cookbook/cookbook.dart';
 import 'package:boilerplate/domain/entity/cookbook/cookbook_list.dart';
 import 'package:boilerplate/domain/usecase/cookbook/add_cookbook_usecase.dart';
+import 'package:boilerplate/utils/image_utils.dart';
 import 'package:dio/dio.dart';
 
 class CookbookApi {
@@ -14,7 +14,6 @@ class CookbookApi {
   // injecting dio instance
   CookbookApi(this._dioClient);
 
-  // Returns list of cookbooks in response
   Future<CookbookList> getCookbooks(int personId) async {
     try {
       final res = await _dioClient.dio.get(Endpoints.getCookbooks(personId));
@@ -25,23 +24,17 @@ class CookbookApi {
     }
   }
 
-  // Adds a cookbook
   Future<Cookbook> addCookbook(AddCookbookParams params) async {
     try {
-      var cookbook = new Cookbook(
-        creatorPersonId: params.creatorPersonId,
-        title: params.title,
-        imagePath: params.imagePath,
-      );
+      var compressedImage =
+          await ImageUtils.getCompressedImage(params.imagePath);
 
-      var coverFile = File(cookbook.imagePath!);
-
-      // Create a FormData object
+      // create a FormData object to post image file
       var formData = FormData.fromMap({
-        'creatorPersonId': cookbook.creatorPersonId,
-        'title': cookbook.title,
-        'cover': await MultipartFile.fromFile(coverFile.path,
-            filename: coverFile.path.split('/').last),
+        'creatorPersonId': params.creatorPersonId,
+        'title': params.title,
+        'cover': await MultipartFile.fromFile(compressedImage.path,
+            filename: compressedImage.path.split('/').last),
       });
 
       final res = await _dioClient.dio.post(

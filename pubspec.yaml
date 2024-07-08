@@ -31,6 +31,7 @@ dependencies:
   # E
   event_bus: ^2.0.0
   # F
+  flutter_image_compress: ^2.3.0
   flutter_mobx: ^2.0.6+5
   # flutter_settings_screen_ex: ^0.0.1+5
   # G
@@ -58,6 +59,7 @@ dependencies:
   sembast: ^3.4.4
   # T
   # U
+  uuid: ^4.4.0
   # V
   validators: ^3.0.0
   # W
