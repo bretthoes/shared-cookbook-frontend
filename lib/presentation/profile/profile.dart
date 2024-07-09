@@ -76,7 +76,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 style: Theme.of(context).textTheme.bodyMedium,
               ),
               const SizedBox(height: 10),
-              const Divider(),
               CustomSettingsGroup(
                 title: AppLocalizations.of(context).translate('preferences'),
                 children: <Widget>[

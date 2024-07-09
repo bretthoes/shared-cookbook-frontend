@@ -181,6 +181,7 @@ class _SettingsTileDivider extends StatelessWidget {
   Widget build(BuildContext context) {
     return const Divider(
       height: 0.0,
+      color: Colors.grey,
     );
   }
 }
