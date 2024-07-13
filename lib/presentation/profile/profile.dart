@@ -1,3 +1,4 @@
+import 'package:boilerplate/constants/strings.dart';
 import 'package:boilerplate/core/extensions/string_extension.dart';
 import 'package:boilerplate/di/service_locator.dart';
 import 'package:boilerplate/presentation/home/store/language/language_store.dart';
@@ -8,6 +9,7 @@ import 'package:boilerplate/presentation/profile/edit_profile.dart';
 import 'package:boilerplate/presentation/profile/simpe_settings_tile.dart';
 import 'package:boilerplate/utils/locale/app_localization.dart';
 import 'package:boilerplate/utils/routes/routes.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 
@@ -50,6 +52,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
       child: ListView(
         children: <Widget>[
           Column(
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
               _buildProfileImage(),
               const SizedBox(height: 10),
@@ -103,7 +106,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     _buildFeedback(),
                   ]),
             ],
-            mainAxisAlignment: MainAxisAlignment.center,
           ),
         ],
       ),
@@ -116,11 +118,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
       height: 120,
       child: ClipRRect(
         borderRadius: BorderRadius.circular(100),
-        child: Image(
-            image: _personStore.person?.imagePath.isNullOrWhitespace ?? true
-                ? AssetImage('assets/images/blank-profile-picture.png')
-                : AssetImage(_personStore.person!.imagePath!) // TODO load url
-            ),
+        child: _getProfileImage(_personStore.person?.imagePath ?? ''),
       ),
     );
   }
@@ -253,6 +251,24 @@ class _ProfileScreenState extends State<ProfileScreen> {
       title: AppLocalizations.of(context).translate('send_feedback'),
       leading: Icon(Icons.thumb_up),
       onTap: () {},
+    );
+  }
+
+  _getProfileImage(String image) {
+    if (image.isNullOrWhitespace) {
+      return Image.asset('assets/images/blank-profile-picture.png',
+          width: 120, height: 120, fit: BoxFit.cover);
+    }
+
+    var bucketName = Strings.bucketName;
+    var region = Strings.region;
+    return CachedNetworkImage(
+      imageUrl: 'https://$bucketName.s3.$region.amazonaws.com/$image',
+      fit: BoxFit.cover,
+      width: 120,
+      height: 120,
+      placeholder: (context, url) => CircularProgressIndicator(),
+      errorWidget: (context, url, error) => Icon(Icons.error),
     );
   }
 }

@@ -1,4 +1,6 @@
+import 'dart:io';
 import 'package:another_flushbar/flushbar_helper.dart';
+import 'package:boilerplate/constants/strings.dart';
 import 'package:boilerplate/core/extensions/string_extension.dart';
 import 'package:boilerplate/core/stores/form/form_store.dart';
 import 'package:boilerplate/core/widgets/back_button_app_bar_widget.dart';
@@ -8,8 +10,10 @@ import 'package:boilerplate/presentation/home/store/theme/theme_store.dart';
 import 'package:boilerplate/presentation/login/store/person_store.dart';
 import 'package:boilerplate/utils/device/device_utils.dart';
 import 'package:boilerplate/utils/locale/app_localization.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:image_picker/image_picker.dart';
 
 class EditProfileScreen extends StatefulWidget {
   @override
@@ -39,9 +43,8 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      primary: true,
       appBar: BackButtonAppBar(),
-      body: _buildBody(),
+      body: PageView(children: [_buildBody()]),
     );
   }
 
@@ -55,34 +58,50 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   // body methods:--------------------------------------------------------------
   Widget _buildBody() {
     return Material(
-      child: Stack(
+      child: ListView(
         children: <Widget>[
-          _handleErrorMessage(),
-          _buildMainContent(),
+          Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              _handleErrorMessage(),
+              _buildProfileImage(),
+              _buildNameField(),
+              SizedBox(height: 16),
+              _buildSaveButton()
+            ],
+          ),
         ],
       ),
     );
   }
 
-  Widget _buildMainContent() {
-    return Material(child: _buildListView());
-  }
-
-  Widget _buildListView() {
-    return SingleChildScrollView(
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 24.0),
-        child: Column(
-          mainAxisSize: MainAxisSize.max,
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            //_buildProfileImage(),
-            _buildNameField(),
-            SizedBox(height: 16),
-            _buildSaveButton()
-          ],
-        ),
+  Widget _buildProfileImage() {
+    return SizedBox(
+      width: 120,
+      height: 120,
+      child: Stack(
+        children: [
+          ClipRRect(
+            borderRadius: BorderRadius.circular(100),
+            child: _getProfileImage(_imagePath ?? ''),
+          ),
+          Positioned(
+            bottom: 0,
+            right: 0,
+            child: GestureDetector(
+              onTap: _pickImage,
+              child: Container(
+                width: 30,
+                height: 30,
+                decoration: BoxDecoration(
+                  color: Colors.blue,
+                  shape: BoxShape.circle,
+                ),
+                child: Icon(Icons.edit, color: Colors.white, size: 20),
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }
@@ -105,6 +124,19 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
         );
       },
     );
+  }
+
+  String? _imagePath;
+
+  Future<void> _pickImage() async {
+    final pickedFile =
+        await ImagePicker().pickImage(source: ImageSource.gallery);
+    if (pickedFile != null) {
+      setState(() {
+        _imagePath = pickedFile.path;
+      });
+      // TODO: Upload the image to your server or storage
+    }
   }
 
   Widget _buildSaveButton() {
@@ -168,5 +200,28 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
     return errorKey.isNullOrWhitespace
         ? ''
         : AppLocalizations.of(context).translate(errorKey!);
+  }
+
+  _getProfileImage(String image) {
+    if (image.isNullOrWhitespace) {
+      return Image.asset('assets/images/blank-profile-picture.png',
+          width: 120, height: 120, fit: BoxFit.cover);
+    }
+
+    if (image.contains('data')) {
+      return Image.file(File(image),
+          width: 120, height: 120, fit: BoxFit.cover);
+    }
+
+    var bucketName = Strings.bucketName;
+    var region = Strings.region;
+    return CachedNetworkImage(
+      imageUrl: 'https://$bucketName.s3.$region.amazonaws.com/$image',
+      fit: BoxFit.cover,
+      width: 120,
+      height: 120,
+      placeholder: (context, url) => CircularProgressIndicator(),
+      errorWidget: (context, url, error) => Icon(Icons.error),
+    );
   }
 }
