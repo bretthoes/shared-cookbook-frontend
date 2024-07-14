@@ -43,8 +43,14 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: BackButtonAppBar(),
-      body: PageView(children: [_buildBody()]),
+      appBar: BackButtonAppBar(
+        title: AppLocalizations.of(context).translate('edit_profile'),
+      ),
+      body: _buildBody(),
+      bottomNavigationBar: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+        child: _buildSaveButton(),
+      ),
     );
   }
 
@@ -52,6 +58,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   @override
   void dispose() {
     // Clean up the controller when the Widget is removed from the Widget tree
+    _nameController.dispose();
     super.dispose();
   }
 
@@ -59,19 +66,47 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   Widget _buildBody() {
     return Material(
       child: ListView(
+        padding: const EdgeInsets.all(16.0),
         children: <Widget>[
           Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               _handleErrorMessage(),
-              _buildProfileImage(),
-              _buildNameField(),
+              _buildProfilePictureSection(),
               SizedBox(height: 16),
-              _buildSaveButton()
+              _buildUsernameSection(),
             ],
           ),
         ],
       ),
+    );
+  }
+
+  Widget _buildProfilePictureSection() {
+    return Column(
+      children: [
+        Text(
+          AppLocalizations.of(context).translate('edit_profile_picture'),
+          style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+          textAlign: TextAlign.left,
+        ),
+        SizedBox(height: 8),
+        _buildProfileImage(),
+      ],
+    );
+  }
+
+  Widget _buildUsernameSection() {
+    return Column(
+      children: [
+        Text(
+          AppLocalizations.of(context).translate('edit_display_name'),
+          style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+          textAlign: TextAlign.left,
+        ),
+        SizedBox(height: 8),
+        _buildNameField(),
+      ],
     );
   }
 
