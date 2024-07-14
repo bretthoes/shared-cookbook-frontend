@@ -72,41 +72,30 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               _handleErrorMessage(),
-              _buildProfilePictureSection(),
+              Align(
+                alignment: Alignment.centerLeft,
+                child: Text(
+                  AppLocalizations.of(context)
+                      .translate('edit_profile_picture'),
+                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                ),
+              ),
+              SizedBox(height: 8),
+              _buildProfileImage(),
               SizedBox(height: 16),
-              _buildUsernameSection(),
+              Align(
+                alignment: Alignment.centerLeft,
+                child: Text(
+                  AppLocalizations.of(context).translate('edit_display_name'),
+                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                ),
+              ),
+              SizedBox(height: 8),
+              _buildNameField(),
             ],
           ),
         ],
       ),
-    );
-  }
-
-  Widget _buildProfilePictureSection() {
-    return Column(
-      children: [
-        Text(
-          AppLocalizations.of(context).translate('edit_profile_picture'),
-          style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-          textAlign: TextAlign.left,
-        ),
-        SizedBox(height: 8),
-        _buildProfileImage(),
-      ],
-    );
-  }
-
-  Widget _buildUsernameSection() {
-    return Column(
-      children: [
-        Text(
-          AppLocalizations.of(context).translate('edit_display_name'),
-          style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-          textAlign: TextAlign.left,
-        ),
-        SizedBox(height: 8),
-        _buildNameField(),
-      ],
     );
   }
 
