@@ -8,6 +8,7 @@ import 'package:boilerplate/core/widgets/textfield_widget.dart';
 import 'package:boilerplate/di/service_locator.dart';
 import 'package:boilerplate/presentation/home/store/theme/theme_store.dart';
 import 'package:boilerplate/presentation/login/store/person_store.dart';
+import 'package:boilerplate/presentation/profile/custom_settings_group.dart';
 import 'package:boilerplate/utils/device/device_utils.dart';
 import 'package:boilerplate/utils/locale/app_localization.dart';
 import 'package:cached_network_image/cached_network_image.dart';
@@ -72,26 +73,22 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               _handleErrorMessage(),
-              Align(
-                alignment: Alignment.centerLeft,
-                child: Text(
-                  AppLocalizations.of(context)
-                      .translate('edit_profile_picture'),
-                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-                ),
+              CustomSettingsGroup(
+                title: AppLocalizations.of(context)
+                    .translate('edit_profile_picture'),
+                children: <Widget>[
+                  SizedBox(height: 16),
+                  _buildProfileImage(),
+                ],
               ),
-              SizedBox(height: 8),
-              _buildProfileImage(),
-              SizedBox(height: 16),
-              Align(
-                alignment: Alignment.centerLeft,
-                child: Text(
-                  AppLocalizations.of(context).translate('edit_display_name'),
-                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-                ),
+              CustomSettingsGroup(
+                title:
+                    AppLocalizations.of(context).translate('edit_display_name'),
+                children: <Widget>[
+                  SizedBox(height: 8),
+                  _buildNameField(),
+                ],
               ),
-              SizedBox(height: 8),
-              _buildNameField(),
             ],
           ),
         ],
