@@ -81,6 +81,9 @@ abstract class _PersonStore with Store {
   @observable
   Person? person;
 
+  @observable
+  String newProfileImage = '';
+
   @computed
   bool get isLoading => loginFuture.status == FutureStatus.pending;
 
@@ -187,6 +190,11 @@ abstract class _PersonStore with Store {
     this.person = person;
     this.personId = person.personId ?? 0;
     await _savePersonIdUseCase.call(params: this.personId);
+  }
+
+  @action
+  void setNewProfileImage(String value) {
+    newProfileImage = value;
   }
 
   // general methods:-----------------------------------------------------------

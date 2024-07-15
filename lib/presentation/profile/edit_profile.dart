@@ -34,6 +34,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   void initState() {
     super.initState();
     _nameController.text = _personStore.person?.displayName ?? '';
+    _personStore.setNewProfileImage(_personStore.person?.imagePath ?? '');
   }
 
   @override
@@ -104,7 +105,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
         children: [
           ClipRRect(
             borderRadius: BorderRadius.circular(100),
-            child: _getProfileImage(_imagePath ?? ''),
+            child: _getProfileImage(_personStore.newProfileImage),
           ),
           Positioned(
             bottom: 0,
@@ -147,16 +148,13 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
     );
   }
 
-  String? _imagePath;
-
   Future<void> _pickImage() async {
     final pickedFile =
         await ImagePicker().pickImage(source: ImageSource.gallery);
     if (pickedFile != null) {
       setState(() {
-        _imagePath = pickedFile.path;
+        _personStore.setNewProfileImage(pickedFile.path);
       });
-      // TODO: Upload the image to your server or storage
     }
   }
 
@@ -175,10 +173,9 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
             await _personStore.updatePerson(
               personId,
               _nameController.text,
-              null,
+              _personStore.newProfileImage,
               null,
             );
-            // TODO api call to update person
             // TODO display save successful
             return;
           }

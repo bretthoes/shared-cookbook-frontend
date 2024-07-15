@@ -8,7 +8,7 @@ part of 'update_person_usecase.dart';
 
 UpdatePersonParams _$UpdatePersonParamsFromJson(Map<String, dynamic> json) =>
     UpdatePersonParams(
-      personId: json['personId'] as int,
+      personId: (json['personId'] as num).toInt(),
       displayName: json['displayName'] as String?,
       imagePath: json['imagePath'] as String?,
       password: json['password'] as String?,

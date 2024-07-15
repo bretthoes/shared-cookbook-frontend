@@ -79,6 +79,22 @@ mixin _$PersonStore on _PersonStore, Store {
     });
   }
 
+  late final _$newProfileImageAtom =
+      Atom(name: '_PersonStore.newProfileImage', context: context);
+
+  @override
+  String get newProfileImage {
+    _$newProfileImageAtom.reportRead();
+    return super.newProfileImage;
+  }
+
+  @override
+  set newProfileImage(String value) {
+    _$newProfileImageAtom.reportWrite(value, super.newProfileImage, () {
+      super.newProfileImage = value;
+    });
+  }
+
   late final _$loginAsyncAction =
       AsyncAction('_PersonStore.login', context: context);
 
@@ -122,6 +138,20 @@ mixin _$PersonStore on _PersonStore, Store {
         () => super.updatePerson(personId, displayName, imagePath, password));
   }
 
+  late final _$_PersonStoreActionController =
+      ActionController(name: '_PersonStore', context: context);
+
+  @override
+  void setNewProfileImage(String value) {
+    final _$actionInfo = _$_PersonStoreActionController.startAction(
+        name: '_PersonStore.setNewProfileImage');
+    try {
+      return super.setNewProfileImage(value);
+    } finally {
+      _$_PersonStoreActionController.endAction(_$actionInfo);
+    }
+  }
+
   @override
   String toString() {
     return '''
@@ -129,6 +159,7 @@ success: ${success},
 loginFuture: ${loginFuture},
 fetchPersonFuture: ${fetchPersonFuture},
 person: ${person},
+newProfileImage: ${newProfileImage},
 isLoading: ${isLoading}
     ''';
   }

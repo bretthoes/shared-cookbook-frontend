@@ -8,7 +8,7 @@ part of 'add_recipe_usecase.dart';
 
 AddRecipeParams _$AddRecipeParamsFromJson(Map<String, dynamic> json) =>
     AddRecipeParams(
-      creatorPersonId: json['creatorPersonId'] as int,
+      creatorPersonId: (json['creatorPersonId'] as num).toInt(),
       title: json['title'] as String,
       imagePath: json['imagePath'] as String,
     );

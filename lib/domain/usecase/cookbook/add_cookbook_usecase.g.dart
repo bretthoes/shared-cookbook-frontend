@@ -8,7 +8,7 @@ part of 'add_cookbook_usecase.dart';
 
 AddCookbookParams _$AddCookbookParamsFromJson(Map<String, dynamic> json) =>
     AddCookbookParams(
-      creatorPersonId: json['creatorPersonId'] as int,
+      creatorPersonId: (json['creatorPersonId'] as num).toInt(),
       title: json['title'] as String,
       imagePath: json['imagePath'] as String,
     );
