@@ -42,12 +42,7 @@ class PersonRepositoryImpl extends PersonRepository {
 
   @override
   Future<Person?> updatePerson(UpdatePersonParams params) async {
-    return await _personApi.patch(
-      params.personId,
-      params.displayName,
-      params.imagePath,
-      params.password,
-    );
+    return await _personApi.patch(params);
   }
 
   @override

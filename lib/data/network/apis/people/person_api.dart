@@ -1,9 +1,9 @@
-import 'dart:async';
 import 'package:boilerplate/core/data/network/dio/dio_client.dart';
 import 'package:boilerplate/data/network/constants/endpoints.dart';
 import 'package:boilerplate/domain/entity/person/person.dart';
 import 'package:boilerplate/domain/usecase/person/login_usecase.dart';
 import 'package:boilerplate/domain/usecase/person/register_usecase.dart';
+import 'package:boilerplate/domain/usecase/person/update_person_usecase.dart';
 
 class PersonApi {
   // dio instance
@@ -69,17 +69,16 @@ class PersonApi {
     }
   }
 
-  Future<Person> patch(
-    int personId,
-    String? displayName,
-    String? imagePath,
-    String? password,
-  ) async {
+  Future<Person> patch(UpdatePersonParams params) async {
     try {
-      var patchDocument = _buildPatchDocument(displayName, imagePath, password);
+      var patchDocument = await _buildPatchDocument(
+        params.displayName,
+        params.imagePath,
+        params.password,
+      );
 
       final res = await _dioClient.dio.patch(
-        Endpoints.patchPerson(personId),
+        Endpoints.patchPerson(params.personId),
         data: patchDocument,
       );
 
