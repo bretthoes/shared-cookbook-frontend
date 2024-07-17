@@ -69,6 +69,18 @@ class PersonApi {
     }
   }
 
+  // TODO add endoint to go out to AddPersonImage endpoint,
+  // use below method to upload and call as soon as img selected
+  // Future<FormData> toFormData() async {
+  //   MultipartFile? imageData;
+  //   if (imagePath?.isNotEmpty ?? false) {
+  //     final compressedImage = await ImageUtils.getCompressedImage(imagePath!);
+  //     imageData = await MultipartFile.fromFile(
+  //       compressedImage.path,
+  //       filename: compressedImage.path.split('/').last,
+  //     );
+  //   }
+
   Future<Person> patch(UpdatePersonParams params) async {
     try {
       var patchDocument = await _buildPatchDocument(
