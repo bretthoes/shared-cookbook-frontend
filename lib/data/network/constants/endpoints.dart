@@ -2,7 +2,7 @@ class Endpoints {
   Endpoints._();
 
   // base url
-  static const String baseUrl = "http://10.0.2.2:5238/api";
+  static const String baseUrl = "https://10.0.2.2:5001/api";
 
   // receiveTimeout
   static const int receiveTimeout = 15000;
@@ -19,12 +19,12 @@ class Endpoints {
   static String addCookbook = '$baseUrl/Cookbooks';
 
   // person endpoints
-  static String getPerson(int personId) => '$baseUrl/People/$personId';
+  static String getPerson(int personId) => '$baseUrl/Users/$personId';
   static String getPersonByEmail(String email) =>
       '$baseUrl/People/by-email/$email';
-  static const String postLogin = '$baseUrl/People/login';
-  static const String addPerson = '$baseUrl/People';
-  static String patchPerson(int personId) => '$baseUrl/People/$personId';
+  static const String postLogin = '$baseUrl/Users/login';
+  static const String addPerson = '$baseUrl/Users';
+  static String patchPerson(int personId) => '$baseUrl/Users/$personId';
 
   // recipe endpoints
   static String getRecipe(int recipeId) => '$baseUrl/Recipes/$recipeId';
