@@ -21,7 +21,7 @@ class Endpoints {
   // person endpoints
   static String getPerson(int personId) => '$baseUrl/Users/$personId';
   static String getPersonByEmail(String email) =>
-      '$baseUrl/People/by-email/$email';
+      '$baseUrl/Users/by-email/$email';
   static const String postLogin = '$baseUrl/Users/login';
   static const String addPerson = '$baseUrl/Users';
   static String patchPerson(int personId) => '$baseUrl/Users/$personId';

@@ -14,15 +14,15 @@ class Person {
   });
 
   factory Person.fromMap(Map<String, dynamic> json) => Person(
-        personId: json["personId"],
-        displayName: json["displayName"],
+        personId: json["id"],
+        displayName: json["userName"],
         email: json["email"],
         imagePath: json["imagePath"],
       );
 
   Map<String, dynamic> toMap() => {
-        "personId": personId,
-        "displayName": displayName,
+        "id": personId,
+        "userName": displayName,
         "email": email,
         "imagePath": imagePath,
         "password": password,

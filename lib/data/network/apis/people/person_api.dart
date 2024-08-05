@@ -12,19 +12,18 @@ class PersonApi {
   // injecting dio instance
   PersonApi(this._dioClient);
 
+  // TODO update endpoint to use auth token; throw not found exception if
+  // person not found by email
   Future<Person> login(LoginParams loginParams) async {
     try {
-      var person = new Person(
-        email: loginParams.email,
-        password: loginParams.password,
-      );
-
       final res = await _dioClient.dio.post(
         Endpoints.postLogin,
-        data: person.toMap(),
+        data: loginParams.toJson(),
       );
 
-      return Person.fromMap(res.data);
+      final person = await findPersonByEmail(loginParams.email);
+
+      return person!;
     } catch (e) {
       print(e.toString());
       throw e;
